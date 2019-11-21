@@ -12,10 +12,16 @@ Option Explicit
 
 
 Private Sub Workbook_AfterSave(ByVal Success As Boolean)
-
-    SourceControlH.ExportEmptyComponents = False
-    SourceControlH.ExportProjectComponents ThisWorkbook, ThisWorkbook.Path & "/src"
+    
+    Const SourceControlEnabled As Boolean = True
+    
+    If SourceControlEnabled Then
+        DirectoryH.RemoveAllFilesFromFolder ThisWorkbook.Path & "/src"
+        SourceControlH.ExportEmptyComponents = False
+        SourceControlH.ExportProjectComponents ThisWorkbook, ThisWorkbook.Path & "/src"
+    End If
     TestRunner.Start
+    
 
 End Sub
 
