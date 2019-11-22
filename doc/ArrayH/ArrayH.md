@@ -1,7 +1,9 @@
 # ArrayH module
-Represents a collection of helper method to work with an array type.
 
-## Method
+Represents a collection of helper methods to work with an array type.
+
+## Methods
+
 |Name|Description|
 |-|-|
 |[Exists (Variant, Variant)](./Exists.md)|Checks if given elements exists in the array.|

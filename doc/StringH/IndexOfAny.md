@@ -1,9 +1,11 @@
 # IndexOfAny
+
 Reports the zero-based index of the first occurrence in this instance of any character in a specified array of characters.
 
-```vb 
+```vb
 Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
 ```
+
 ### Parameters
 
 **Str** `String` <br>
@@ -22,6 +24,7 @@ The zero-based index position of the first occurrence in this instance where any
 
 ## Examples
 The following example finds the first occurrence of either 1 or 2 in the string.
+
 ```vb
 Option Explicit
 Public Sub Start()

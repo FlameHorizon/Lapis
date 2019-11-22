@@ -1,7 +1,9 @@
 # StringH module
+
 Represents a collection of helper methods to work with a string type.
 
 ## Methods
+
 |Name|Description|
 |-|-|
 |[Concat (ParamArray Variant()](./Concat.md)|Concatenates the members of a constructed Variant ParamArray of type String.|
