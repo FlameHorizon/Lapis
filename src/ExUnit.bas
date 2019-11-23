@@ -6,6 +6,7 @@ Private Const ModuleName As String = "ExUnit"
 Private pShowPassingTest As Boolean
 
 
+' Gets or sets if passing tests should be displayed.
 Public Property Get ShowPassingTest() As Boolean
     ShowPassingTest = pShowPassingTest
 End Property

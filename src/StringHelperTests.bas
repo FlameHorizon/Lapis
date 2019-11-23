@@ -99,7 +99,6 @@ Private Sub IndexOfAnyThrowsArgumentExceptionWhenAnyOfArrayIsNotInitalizedTest()
     
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -122,7 +121,6 @@ Private Sub RemoveTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
         
 End Sub
 
@@ -137,7 +135,6 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
     Exit Sub
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -152,7 +149,6 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThenLengthTest(
     Exit Sub
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -167,7 +163,6 @@ Private Sub RemoveRangeTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -181,7 +176,6 @@ Private Sub RemoveRangeReturnsEmptyStringWhenLengthIsZeroTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -194,7 +188,6 @@ Private Sub RemoveRangeThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -207,7 +200,6 @@ Private Sub RemoveRangeThrowsArgumentOutOfRangeWhenCountIsNegetiveTest()
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -220,7 +212,6 @@ Private Sub RemoveRangeThrowsArgumentOutOfRangeWhenStartIndexPlusCountIndexIsNot
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -234,7 +225,6 @@ Private Sub ConcatTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -249,7 +239,6 @@ Private Sub EndsWithTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -263,7 +252,6 @@ Private Sub EndsWithReturnsTrueWhenValueStringIsNullStringTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -277,7 +265,6 @@ Private Sub EndsWithReturnsTrueWhenStrAndValueAreTheSameTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -290,7 +277,6 @@ Private Sub EndsWithThrowsArgumentOutOfRangeWhenStringComparisonIsDatabaseCompar
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -303,7 +289,6 @@ Private Sub EndsWithThrowsArgumentExceptionWhenStrIsNullStringTest()
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -318,7 +303,6 @@ Private Sub StartsWithTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -332,7 +316,6 @@ Private Sub StartsWithReturnsTrueWhenValueStringIsNullStringTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -346,7 +329,6 @@ Private Sub StartsWithReturnsTrueWhenStrAndValueAreTheSameTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -359,7 +341,6 @@ Private Sub StartsWithThrowsArgumentOutOfRangeWhenStringComparisonIsDatabaseComp
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -372,7 +353,6 @@ Private Sub StartsWithThrowsArgumentExceptionWhenStrIsNullStringTest()
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -387,7 +367,6 @@ Private Sub InsertTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -400,7 +379,6 @@ Private Sub InsertThrowsArgumentExceptionWhenValueIsNullStringTest()
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -413,7 +391,6 @@ Private Sub InsertThrowsArgumentOutOfRangeWhenStartIndexIsNegativeTest()
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -426,7 +403,6 @@ Private Sub InsertThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThanStrLenTest(
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -441,7 +417,6 @@ Private Sub LastIndexOfTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -455,7 +430,6 @@ Private Sub LastIndexOfReturnsMinusOneWhenValueNotFound()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -468,7 +442,6 @@ Private Sub LastIndexOfThrowsArgumentExceptionWhenStrIsNullStringTest()
     
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -481,7 +454,6 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexIsLesserThanZeroTes
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -494,7 +466,6 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThanStrLen
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -507,7 +478,6 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenWhenCountIsLesserThanZeroTest
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -520,7 +490,6 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexMinusCountIsLesserT
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -533,7 +502,6 @@ Private Sub LastIndexOfThrowsThrowsArgumentOutOfRangeWhenWhenComparisonMethodIsD
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
 
 End Sub
 
@@ -575,7 +543,6 @@ Private Sub LastIndexOfAnyThrowsArgumentExceptionWhenAnyOfArrayIsNotInitalizedTe
     
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -589,8 +556,5 @@ Private Sub LastIndexOfAnyThrowsArgumentExceptionWhenAnyOfIsEmpty()
     
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
-
-

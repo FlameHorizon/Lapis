@@ -25,15 +25,15 @@ End Sub
 Private Sub InitializationTest()
     
     Const MethodName As String = "InitializationTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
     
     Dim Stack As New Stack: Stack.Init1 10
     ExUnit.AreEqual 0, Stack.Count, GetFullSig(MethodName)
     
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
-
+    
 End Sub
 
 
@@ -46,7 +46,6 @@ Private Sub ThrowArgumentNullExceptionWhenInitialCapacityIsNegativeTest()
     
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
-    On Error GoTo 0
     
 End Sub
 
@@ -59,7 +58,7 @@ End Function
 Private Sub PushTest()
 
     Const MethodName As String = "PushTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
     
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push "a"
@@ -70,7 +69,7 @@ Private Sub PushTest()
     ExUnit.AreEqual 2, Stack.Count, GetFullSig(MethodName)
     
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -79,7 +78,7 @@ End Sub
 Private Sub PopTest()
 
     Const MethodName As String = "PopTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
 
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push "a"
@@ -90,7 +89,7 @@ Private Sub PopTest()
     ExUnit.AreEqual 1, Stack.Count, GetFullSig(MethodName)
     
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -99,7 +98,7 @@ End Sub
 Private Sub ContainsTest()
 
     Const MethodName As String = "ContainsTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
     
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push 123
@@ -107,7 +106,7 @@ Private Sub ContainsTest()
     ExUnit.IsTrue Stack.Contains(123, New LongEqualityComparer), GetFullSig(MethodName)
     
     Exit Sub
-RuntimeError:
+ErrHandler:
     TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -116,7 +115,7 @@ End Sub
 Private Sub PushItemAfterClearTest()
 
     Const MethodName As String = "PushItemAfterClearTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
 
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push 123
@@ -126,7 +125,7 @@ Private Sub PushItemAfterClearTest()
     ExUnit.AreEqual 123, Stack.Peek, GetFullSig(MethodName)
 
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -135,7 +134,7 @@ End Sub
 Private Sub ClearTest()
 
     Const MethodName As String = "ClearTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
 
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push 123
@@ -145,7 +144,7 @@ Private Sub ClearTest()
     ExUnit.AreEqual 0, Stack.Count, GetFullSig(MethodName)
 
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -154,7 +153,7 @@ End Sub
 Private Sub ToArrayTest()
 
     Const MethodName As String = "ToArrayTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
 
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push "a"
@@ -169,7 +168,7 @@ Private Sub ToArrayTest()
     ExUnit.AreEqual "a", Arr(2), GetFullSig(MethodName)
     
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -178,7 +177,7 @@ End Sub
 Private Sub PeekTest()
 
     Const MethodName As String = "PeekTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
 
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push "a"
@@ -188,7 +187,7 @@ Private Sub PeekTest()
     ExUnit.AreEqual "b", Stack.Peek, GetFullSig(MethodName)
 
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -197,7 +196,7 @@ End Sub
 Private Sub CopyToTest()
 
     Const MethodName As String = "CopyToTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
 
     Dim Stack As New Stack: Stack.Init1 10
     Stack.Push "a"
@@ -212,7 +211,7 @@ Private Sub CopyToTest()
     ExUnit.AreEqual "a", Arr(2), GetFullSig(MethodName)
 
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
@@ -221,7 +220,7 @@ End Sub
 Private Sub PushPeekPopObjectTest()
 
     Const MethodName As String = "PushPeekPopObjectTest"
-    On Error GoTo RuntimeError
+    On Error GoTo ErrHandler
     
     Dim Stk As New Stack: Stk.Init1 10
 
@@ -230,7 +229,7 @@ Private Sub PushPeekPopObjectTest()
     ExUnit.AreSame ThisWorkbook, Stk.Pop, GetFullSig(MethodName)
     
     Exit Sub
-RuntimeError:
+ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
 
 End Sub
