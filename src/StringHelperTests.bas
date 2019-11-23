@@ -104,10 +104,15 @@ End Sub
 
 
 Private Sub IndexOfAnyReturnsZeroWhenAnyOfIsEmptyStringTest()
-
+    
+    On Error GoTo ErrHandler
     Const MethodName = "IndexOfAnyReturnsZeroWhenAnyOfIsEmptyStringTest"
     Dim EmptyArr(0) As String
     ExUnit.AreEqual 0, StringH.IndexOfAny("ab", EmptyArr), GetFullSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetFullSig(MethodName)
     
 End Sub
 
@@ -129,10 +134,8 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
 
     On Error GoTo ErrHandler
     Const MethodName = "RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest"
-    Dim NotInit() As String
     ExUnit.AreEqual "foo", StringH.Remove("foo-bar", -1), GetFullSig(MethodName)
     
-    Exit Sub
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
 
@@ -143,10 +146,8 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThenLengthTest(
 
     On Error GoTo ErrHandler
     Const MethodName = "RemoveThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThenLengthTest"
-    Dim NotInit() As String
     ExUnit.AreEqual "foo", StringH.Remove("foo-bar", 10), GetFullSig(MethodName)
     
-    Exit Sub
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetFullSig(MethodName)
 
@@ -558,3 +559,5 @@ ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
     
 End Sub
+
+

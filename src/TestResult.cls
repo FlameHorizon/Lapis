@@ -1,0 +1,45 @@
+VERSION 1.0 CLASS
+BEGIN
+  MultiUse = -1  'True
+END
+Attribute VB_Name = "TestResult"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = False
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = False
+'@Folder("Tests")
+Option Explicit
+
+Private pSource As String
+Private pResult As TestOutcome
+Private pDescription As String
+
+
+Public Property Get Source() As String
+    Source = pSource
+End Property
+
+
+Public Property Let Source(ByVal Value As String)
+    pSource = Value
+End Property
+
+
+Public Property Get Result() As TestOutcome
+    Result = pResult
+End Property
+
+
+Public Property Let Result(ByVal Value As TestOutcome)
+    pResult = Value
+End Property
+
+
+Public Property Get Description() As String
+    Description = pDescription
+End Property
+
+
+Public Property Let Description(ByVal Value As String)
+    pDescription = Value
+End Property

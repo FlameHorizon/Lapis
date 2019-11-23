@@ -3,7 +3,20 @@ Option Explicit
 '@Folder("Lapis")
 
 Private Const ModuleName As String = "ExUnit"
+Private Const FailedTag As String = "FAILED"
+Private Const PassedTag As String = "PASSED"
 Private pShowPassingTest As Boolean
+Private pTestResults As TestResults
+
+
+Public Sub Setup()
+    Set pTestResults = New TestResults
+End Sub
+
+
+Public Sub Teardown()
+    Set pTestResults = Nothing
+End Sub
 
 
 ' Gets or sets if passing tests should be displayed.
@@ -14,6 +27,12 @@ End Property
 
 Public Property Let ShowPassingTest(ByVal Value As Boolean)
     pShowPassingTest = Value
+End Property
+
+
+' Gets results of last test run.
+Public Property Get TestResults() As TestResults
+    Set TestResults = pTestResults
 End Property
 
 
@@ -76,40 +95,72 @@ End Sub
 
 Public Sub TestPass(ByVal Source As String, Optional ByVal Msg As String)
     
-    If ShowPassingTest = True Then
-        PrintTestResult "PASSED", Source, Msg
+    If IsAdhocRun Then
+        PrintTestResult PassedTag, Source, Msg
+        
+    ElseIf ShowPassingTest Then
+        pTestResults.Add CreateTestResult(Source, TestOutcome.Passed, Msg)
+        
     End If
 
 End Sub
+
+
+Private Function CreateTestResult(ByVal Source As String, _
+                                  ByVal Outcome As TestOutcome, _
+                                  ByVal Description As String) As TestResult
+
+    Dim Output As New TestResult
+    With Output
+        .Source = Source
+        .Result = Outcome
+        .Description = Description
+    End With
+    Set CreateTestResult = Output
+
+End Function
 
 
 Private Sub PrintTestResult(ByVal Result As String, _
                             ByVal Source As String, _
                             Optional ByVal Msg As String)
     
-    If Result = "PASSED" Then
-        Debug.Print Result & "; " & Source
-        Exit Sub
-    End If
+    Dim Printer As New TestResultImmediatePrinter
     
-    If Msg = vbNullString Then
-        Debug.Print Result & "; ; " & Source
+    If Result = PassedTag Then
+        Printer.PrintSingle CreateTestResult(Source, TestOutcome.Passed, Msg)
     Else
-        Debug.Print Result & "; " & Msg & "; " & Source
+        Printer.PrintSingle CreateTestResult(Source, TestOutcome.Failed, Msg)
     End If
     
 End Sub
 
 
 Public Sub TestFail(ByVal Source As String, Optional ByVal Msg As String)
-    PrintTestResult "FAILED", Source, Msg
+
+    If IsAdhocRun Then
+        PrintTestResult FailedTag, Source, Msg
+    Else
+        pTestResults.Add CreateTestResult(Source, TestOutcome.Failed, Msg)
+    End If
+    
 End Sub
+
+
+' AdhocRun means that test is ran from the test method.
+Private Function IsAdhocRun() As Boolean
+    IsAdhocRun = (pTestResults Is Nothing)
+End Function
 
 
 Public Sub TestFailRunTime(ByVal Source As String, Optional ByVal Msg As String)
     
-    Debug.Print Err.Description, Source
-    PrintTestResult "FAILED", Source, Msg
+    If IsAdhocRun Then
+        Debug.Print Err.Description, Source
+        PrintTestResult FailedTag, Source, Msg
+    Else
+        pTestResults.Add CreateTestResult(Source, TestOutcome.Failed, Msg)
+    End If
     
 End Sub
 
@@ -139,8 +190,8 @@ End Sub
 Public Sub DoesNotContains(ByVal Expected As Variant, _
                            ByRef Items As Collection, _
                            ByRef Comparer As IVBAEqualityComparer, _
-                           ByVal Source As String, Optional _
-                                                  ByVal Msg As String)
+                           ByVal Source As String, _
+                           Optional ByVal Msg As String)
                            
     IsFalse CollectionH.Contains(Expected, Items, Comparer), Source, Msg
 End Sub
@@ -186,9 +237,51 @@ Public Sub IsException(ByVal Expected As ExceptionCode, _
                        ByVal Actual As Long, _
                        ByVal Source As String, _
                        Optional ByVal Msg As String)
-                       
-    AreEqual Expected, Actual, Source, Msg
+    
+    IsTrue Expected = Actual, Source, FormatExpectedAndActualExceptions(Expected, Actual) & Msg
 End Sub
 
 
+Private Function FormatExpectedAndActualExceptions(ByVal Expected As Long, _
+                                                   ByVal Actual As Long) As String
 
+    Dim ExpectedExpName As String
+    ExpectedExpName = GetExceptionName(Expected)
+    
+    Dim ActualExpName As String
+    ActualExpName = GetExceptionName(Actual)
+    
+    FormatExpectedAndActualExceptions = "Expected exception [" & ExpectedExpName & "], Actual exception [" & ActualExpName & "]"
+
+End Function
+
+
+' Returns name of the exception based on the ExceptionCode
+' or VBAErrorCode enumerators.
+' Some errors may not be defined, then
+' number of the error (ExpCode) will be returned instead.
+Private Function GetExceptionName(ByVal ExpCode As Long) As String
+
+    Dim Output As String
+    
+    If ExceptionCodeEnum.TryToString(ExpCode, Output) Then
+        GetExceptionName = Output
+        
+    ElseIf ErrorNumberEnum.TryToString(ExpCode, Output) Then
+        GetExceptionName = Output
+        
+    Else
+        GetExceptionName = ExpCode
+    End If
+
+End Function
+
+
+Public Sub PrintTestResults(ByVal Printer As ITestResultPrinter)
+    
+    If IsAdhocRun Then
+        Exception.InvalidOperationException vbNullString, ModuleName & ".PrintTestResults"
+    End If
+    Printer.PrintMany pTestResults
+    
+End Sub

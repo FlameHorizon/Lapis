@@ -6,10 +6,14 @@ Option Explicit
 Public Sub Start()
 
     ExUnit.ShowPassingTest = False
+    ExUnit.Setup
+    
     StackTests.Start
     StringHelperTests.Start
     TreeNodeTests.Start
+
+    ExUnit.PrintTestResults New TestResultImmediatePrinter
+    ExUnit.Teardown
     
 End Sub
-
 

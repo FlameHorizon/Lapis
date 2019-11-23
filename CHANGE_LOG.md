@@ -1,5 +1,76 @@
 # Change log
 
+## Changes in 0.7.0
+
+* ExUnit, instead of displaying error numbers when test fails, now user can see name of the error. This applies for both, custom defined exceptions in `Exception` class as well as for VBA's error numbers.
+
+```vb
+Option Explicit
+Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest"
+    ExUnit.AreEqual "foo", StringH.Remove("foo-bar", -1), "StringHelperTests." & MethodName
+
+ErrHandler:
+    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, "StringHelperTests." & MethodName
+
+End Sub
+
+' This example produces the following results:
+'
+' FAILED; Expected exception [ArgumentOutOfRange], Actual exception [ArgumentNull]; StringHelperTests.RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest
+```
+
+* Added `ExceptionCodeEnum.ToString` and `ExceptionCodeEnum.TryToString` to retrieve exception names.
+
+* Added `ErrorNumber` enumerator which lists error numbers for every built-in VBA error.
+
+* Added `ErrorNumberEnum.ToString` and `ErrorNumberEnum.TryToString` to retrieve error names for built-in VBA errors.
+
+* Instead of displaying each assertion result separately, `ExUnit` now groups test results based on the source. Each test method is represented by one test result.
+
+> Remarks: This behavior is expected only when ExUnit is setup like in following example.
+
+```vb
+Option Explicit
+Public Sub TestRunner()
+
+    ExUnit.ShowPassingTest = True
+    ExUnit.Setup
+
+    TestMethod
+
+    ExUnit.PrintTestResults New TestResultImmediatePrinter
+    ExUnit.Teardown
+
+End Sub
+
+
+Private Sub TestMethod()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "TestMethod"
+    ExUnit.AreEqual 1, 1, "TestModule." & MethodName
+    ExUnit.AreEqual 2, 2, "TestModule." & MethodName
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime "TestModule." & MethodName
+
+End Sub
+
+' This example produces the following results:
+'
+' PASSED; TestModule.TestMethod
+```
+
+* Users can now have access to the dictionary of test results by calling `ExUnit.TestResults` at the end of each test run.
+
+* ExUnit now print test results into any container which implements `ITestResultPrinter` interface. At moment there is only class which impelemnts mentioned interface, it's `TestResultImmediatePrinter`.
+
+---
+
 ## Changes in 0.6.0
 
 * Exposed `ExUnit.TestPass` and `ExUnit.TestFail` methods to better express some test's intentions.
