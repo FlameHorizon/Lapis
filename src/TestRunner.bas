@@ -11,6 +11,7 @@ Public Sub Start()
     StackTests.Start
     StringHelperTests.Start
     TreeNodeTests.Start
+    TestResultsTests.Start
 
     ExUnit.PrintTestResults New TestResultImmediatePrinter
     ExUnit.Teardown

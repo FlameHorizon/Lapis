@@ -20,7 +20,11 @@ Public Sub Add(ByVal Item As TestResult)
     Const MethodName = "Add"
     
     If Item Is Nothing Then
-        Exception.ArgumentNullException "Item", ClassName & "." & MethodName
+        Exception.ArgumentNullException "Item", GetSig(MethodName)
+    End If
+    
+    If Item.Source = vbNullString Then
+        Exception.ArgumentException "Item", GetSig(MethodName)
     End If
     
     If pItems.Exists(Item.Source) Then
@@ -33,6 +37,11 @@ Public Sub Add(ByVal Item As TestResult)
     End If
     
 End Sub
+
+
+Private Function GetSig(ByVal MethodName As String) As String
+    GetSig = ClassName & "." & MethodName
+End Function
 
 
 Private Function ShouldUpdateTestResult(ByVal Result As TestResult) As Boolean
