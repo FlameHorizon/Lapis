@@ -14,7 +14,8 @@ Public Sub Start()
     TestResultsTests.Start
     ImmediatePrinterFormatterTests.Start
 
-    ExUnit.PrintTestResults New TestResultImmediatePrinter
+    ' By defualt, method will print test results in the Immediate window.
+    ExUnit.PrintTestResults
     ExUnit.Teardown
     
 End Sub

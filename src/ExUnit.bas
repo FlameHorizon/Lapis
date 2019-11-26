@@ -277,10 +277,15 @@ Private Function GetExceptionName(ByVal ExpCode As Long) As String
 End Function
 
 
-Public Sub PrintTestResults(ByVal Printer As ITestResultPrinter)
+' By defualt, method will print test results in the Immediate window.
+Public Sub PrintTestResults(Optional ByVal Printer As ITestResultPrinter)
     
     If IsAdhocRun Then
         Exception.InvalidOperationException vbNullString, ModuleName & ".PrintTestResults"
+    End If
+    
+    If Printer Is Nothing Then
+        Set Printer = New TestResultImmediatePrinter
     End If
     Printer.PrintMany pTestResults
     
