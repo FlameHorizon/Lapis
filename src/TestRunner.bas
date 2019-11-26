@@ -12,6 +12,7 @@ Public Sub Start()
     StringHelperTests.Start
     TreeNodeTests.Start
     TestResultsTests.Start
+    ImmediatePrinterFormatterTests.Start
 
     ExUnit.PrintTestResults New TestResultImmediatePrinter
     ExUnit.Teardown

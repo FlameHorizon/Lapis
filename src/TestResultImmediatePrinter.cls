@@ -13,6 +13,7 @@ Option Explicit
 Implements ITestResultPrinter
 
 Private Const ClassName As String = "TestResultImmediatePrinter"
+Private pFormatter As New ImmediatePrinterFormatter
 
 
 Public Sub PrintMany(ByVal Items As TestResults)
@@ -30,12 +31,7 @@ Public Sub PrintSingle(ByVal Item As TestResult)
     If Item Is Nothing Then
         Exception.ArgumentNullException "Item", ClassName & ".PrintSingle"
     End If
-    
-    If Item.Outcome = TestOutcome.Passed Then
-        Debug.Print TestOutcomeEnum.ToString(Item.Outcome) & "; " & Item.Source
-    Else
-        Debug.Print TestOutcomeEnum.ToString(Item.Outcome) & "; " & Item.Description & "; " & Item.Source
-    End If
+    Debug.Print pFormatter.Format(Item)
     
 End Sub
 
