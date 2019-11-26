@@ -3,8 +3,6 @@ Option Explicit
 '@Folder("ExUnit")
 
 Private Const ModuleName As String = "ExUnit"
-Private Const FailedTag As String = "FAILED"
-Private Const PassedTag As String = "PASSED"
 Private pShowPassingTest As Boolean
 Private pTestResults As TestResults
 
@@ -96,7 +94,7 @@ End Sub
 Public Sub TestPass(ByVal Source As String, Optional ByVal Msg As String)
     
     If IsAdhocRun Then
-        PrintTestResult PassedTag, Source, Msg
+        PrintTestResult TestOutcome.Passed, Source, Msg
         
     ElseIf ShowPassingTest Then
         pTestResults.Add CreateTestResult(Source, TestOutcome.Passed, Msg)
@@ -121,17 +119,12 @@ Private Function CreateTestResult(ByVal Source As String, _
 End Function
 
 
-Private Sub PrintTestResult(ByVal Result As String, _
+Private Sub PrintTestResult(ByVal Outcome As TestOutcome, _
                             ByVal Source As String, _
                             Optional ByVal Msg As String)
     
     Dim Printer As New TestResultImmediatePrinter
-    
-    If Result = PassedTag Then
-        Printer.PrintSingle CreateTestResult(Source, TestOutcome.Passed, Msg)
-    Else
-        Printer.PrintSingle CreateTestResult(Source, TestOutcome.Failed, Msg)
-    End If
+    Printer.PrintSingle CreateTestResult(Source, Outcome, Msg)
     
 End Sub
 
@@ -139,7 +132,7 @@ End Sub
 Public Sub TestFail(ByVal Source As String, Optional ByVal Msg As String)
 
     If IsAdhocRun Then
-        PrintTestResult FailedTag, Source, Msg
+        PrintTestResult TestOutcome.Failed, Source, Msg
     Else
         pTestResults.Add CreateTestResult(Source, TestOutcome.Failed, Msg)
     End If
@@ -157,7 +150,7 @@ Public Sub TestFailRunTime(ByVal Source As String, Optional ByVal Msg As String)
     
     If IsAdhocRun Then
         Debug.Print Err.Description, Source
-        PrintTestResult FailedTag, Source, Msg
+        PrintTestResult TestOutcome.Failed, Source, Msg
     Else
         pTestResults.Add CreateTestResult(Source, TestOutcome.Failed, Msg)
     End If
