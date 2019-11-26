@@ -1,5 +1,5 @@
 Attribute VB_Name = "TestOutcomeEnum"
-'@Folder("Tests")
+'@Folder("ExUnit")
 Option Explicit
 
 Public Enum TestOutcome

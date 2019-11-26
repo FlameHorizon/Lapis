@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@Folder("Tests")
+'@Folder("ExUnit")
 Option Explicit
 
 Private Const ClassName As String = "TestResults"
@@ -35,10 +35,10 @@ Public Sub Add(ByVal Item As TestResult)
 End Sub
 
 
-Private Function ShouldUpdateTestResult(ByVal Tr As TestResult) As Boolean
+Private Function ShouldUpdateTestResult(ByVal Result As TestResult) As Boolean
 
-    ShouldUpdateTestResult = (pItems.Item(Tr.Source).Result = TestOutcome.Passed _
-                              And Tr.Result = TestOutcome.Failed)
+    ShouldUpdateTestResult = (pItems.Item(Result.Source).Result = TestOutcome.Passed _
+                              And Result.Result = TestOutcome.Failed)
                               
 End Function
 

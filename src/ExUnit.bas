@@ -1,6 +1,6 @@
 Attribute VB_Name = "ExUnit"
 Option Explicit
-'@Folder("Lapis")
+'@Folder("ExUnit")
 
 Private Const ModuleName As String = "ExUnit"
 Private Const FailedTag As String = "FAILED"
