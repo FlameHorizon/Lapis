@@ -1,6 +1,6 @@
 Attribute VB_Name = "TreeNodeTests"
 Option Explicit
-'@Folder("Collection")
+'@Folder("Tests")
 
 Private Const ModuleName As String = "TreeTests"
 
