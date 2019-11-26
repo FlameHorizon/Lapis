@@ -253,7 +253,7 @@ Public Function ToString(ByVal Value As ErrorNumber) As String
             ToString = "A property or method call cannot include a reference to a private object, either as an argument or as a return value"
             
         Case ClassDoesNotImplementTheSystemCollectionsICollectionInterface
-             ToString = "Class does not implement the System.Collections.ICollection interface"
+            ToString = "Class does not implement the System.Collections.ICollection interface"
             
         Case SystemResourceOrDllCouldNotBeLoaded
             ToString = "System resource or DLL could not be loaded"

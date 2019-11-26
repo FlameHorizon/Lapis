@@ -24,7 +24,7 @@ Private Sub Add()
     Dim Item As New TestResult
     With Item
         .Source = "Example.Source"
-        .Result = TestOutcome.Passed
+        .Outcome = TestOutcome.Passed
         .Description = "Example"
     End With
     Dim TestResults As New TestResults
@@ -56,21 +56,21 @@ Private Sub AddTestResultsWithSameSource()
     Dim Item1 As New TestResult
     With Item1
         .Source = "Example.Source"
-        .Result = TestOutcome.Passed
+        .Outcome = TestOutcome.Passed
         .Description = "Example"
     End With
     
     Dim Item2 As New TestResult
     With Item2
         .Source = "Example.Source"
-        .Result = TestOutcome.Failed
+        .Outcome = TestOutcome.Failed
         .Description = "Example"
     End With
     
     Dim Item3 As New TestResult
     With Item3
         .Source = "Example.Source"
-        .Result = TestOutcome.Passed
+        .Outcome = TestOutcome.Passed
         .Description = "Example"
     End With
     
@@ -84,7 +84,7 @@ Private Sub AddTestResultsWithSameSource()
     ' Assert
     ExUnit.AreEqual 1, TestResults.Count, GetSig(MethodName)
     ExUnit.AreEqual "Example.Source", TestResults.Enumerator.Item("Example.Source").Source, GetSig(MethodName)
-    ExUnit.AreEqual TestOutcome.Failed, TestResults.Enumerator.Item("Example.Source").Result, GetSig(MethodName)
+    ExUnit.AreEqual TestOutcome.Failed, TestResults.Enumerator.Item("Example.Source").Outcome, GetSig(MethodName)
     
     Exit Sub
 ErrHandler:
@@ -121,7 +121,7 @@ Private Sub AddThrowsArgumentExceptionWhenItemSourceIsVbNullString()
     Dim Item As New TestResult
     With Item
         .Source = vbNullString
-        .Result = TestOutcome.Passed
+        .Outcome = TestOutcome.Passed
         .Description = "Example"
     End With
     Dim TestResults As New TestResults
@@ -133,3 +133,5 @@ ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
 
 End Sub
+
+

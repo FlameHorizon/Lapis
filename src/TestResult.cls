@@ -11,7 +11,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private pSource As String
-Private pResult As TestOutcome
+Private pOutcome As TestOutcome
 Private pDescription As String
 
 
@@ -25,13 +25,13 @@ Public Property Let Source(ByVal Value As String)
 End Property
 
 
-Public Property Get Result() As TestOutcome
-    Result = pResult
+Public Property Get Outcome() As TestOutcome
+    Outcome = pOutcome
 End Property
 
 
-Public Property Let Result(ByVal Value As TestOutcome)
-    pResult = Value
+Public Property Let Outcome(ByVal Value As TestOutcome)
+    pOutcome = Value
 End Property
 
 
@@ -43,3 +43,5 @@ End Property
 Public Property Let Description(ByVal Value As String)
     pDescription = Value
 End Property
+
+

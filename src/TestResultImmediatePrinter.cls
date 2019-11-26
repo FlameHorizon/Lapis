@@ -31,10 +31,10 @@ Public Sub PrintSingle(ByVal Item As TestResult)
         Exception.ArgumentNullException "Item", ClassName & ".PrintSingle"
     End If
     
-    If Item.Result = TestOutcome.Passed Then
-        Debug.Print TestOutcomeEnum.ToString(Item.Result) & "; " & Item.Source
+    If Item.Outcome = TestOutcome.Passed Then
+        Debug.Print TestOutcomeEnum.ToString(Item.Outcome) & "; " & Item.Source
     Else
-        Debug.Print TestOutcomeEnum.ToString(Item.Result) & "; " & Item.Description & "; " & Item.Source
+        Debug.Print TestOutcomeEnum.ToString(Item.Outcome) & "; " & Item.Description & "; " & Item.Source
     End If
     
 End Sub
@@ -48,4 +48,5 @@ End Sub
 Private Sub ITestResultPrinter_PrintSingle(ByVal Item As TestResult)
     PrintSingle Item
 End Sub
+
 

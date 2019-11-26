@@ -113,7 +113,7 @@ Private Function CreateTestResult(ByVal Source As String, _
     Dim Output As New TestResult
     With Output
         .Source = Source
-        .Result = Outcome
+        .Outcome = Outcome
         .Description = Description
     End With
     Set CreateTestResult = Output
@@ -285,3 +285,6 @@ Public Sub PrintTestResults(ByVal Printer As ITestResultPrinter)
     Printer.PrintMany pTestResults
     
 End Sub
+
+
+

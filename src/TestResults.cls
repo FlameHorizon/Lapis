@@ -46,8 +46,8 @@ End Function
 
 Private Function ShouldUpdateTestResult(ByVal Result As TestResult) As Boolean
 
-    ShouldUpdateTestResult = (pItems.Item(Result.Source).Result = TestOutcome.Passed _
-                              And Result.Result = TestOutcome.Failed)
+    ShouldUpdateTestResult = (pItems.Item(Result.Source).Outcome = TestOutcome.Passed _
+                              And Result.Outcome = TestOutcome.Failed)
                               
 End Function
 
@@ -60,3 +60,6 @@ End Property
 Public Property Get Enumerator() As Dictionary
     Set Enumerator = pItems
 End Property
+
+
+
