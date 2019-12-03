@@ -28,6 +28,8 @@ End Sub
 
 * Added `ErrorNumberEnum.ToString` and `ErrorNumberEnum.TryToString` to retrieve error names for built-in VBA errors.
 
+* TODO: Tests which do fail assertion have more better descriptions.
+
 * Instead of displaying each assertion result separately, `ExUnit` now groups test results based on the source. Each test method is represented by one `TestResult` object.
 
 > Remarks: This behavior is expected only when ExUnit is setup like in following example.
