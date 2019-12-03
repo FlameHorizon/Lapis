@@ -40,7 +40,7 @@ End Function
 ' Returns the zero-based index of the first occurrence of the specified string in the current string.
 ' Throws ArgumentException when Str is empty string.
 ' Throws ArgumentOutOfRangeException when StartIndex points outside of Value bound or
-' Count exceedes availablue scope of Value.
+' Count exceeds available scope of Value.
 ' Throws ArgumentException when CompareMethod value is not valid.
 ' Params:
 ' Str - String to look in.
@@ -50,11 +50,19 @@ End Function
 ' ComparisonMethod - defines rule for the search.
 Public Function IndexOf(ByVal Str As String, _
                         ByVal Value As String, _
-                        ByVal StartIndex As Long, _
-                        ByVal Count As Long, _
-                        ByVal ComparisonMethod As VbCompareMethod) As Long
+                        Optional ByVal StartIndex As Long = System.LongMinValue, _
+                        Optional ByVal Count As Long = System.LongMinValue, _
+                        Optional ByVal ComparisonMethod As VbCompareMethod = VbCompareMethod.vbTextCompare) As Long
     
     Const MethodName = "IndexOf"
+    
+    If StartIndex = System.LongMinValue Then
+        StartIndex = 0
+    End If
+    
+    If Count = System.LongMinValue Then
+        Count = VBA.Len(Str) - StartIndex
+    End If
     
     If Str = vbNullString Then
         Exception.ArgumentException "Str", _
@@ -90,10 +98,6 @@ Private Function InternalIndexOf(ByVal Str As String, _
     
     InternalIndexOf = InStr(StartIndex + 1, Str, Value, ComparisonMethod) - 1
     
-    If InternalIndexOf > Count - 1 Then
-        InternalIndexOf = -1
-    End If
-    
 End Function
 
 
@@ -102,7 +106,7 @@ End Function
 ' Str - String to look in.
 ' Value - String to look for in Str.
 Public Function Contains(ByVal Str As String, ByVal Value As String) As Boolean
-    Contains = IndexOf(Str, Value, 0, Len(Str), vbTextCompare) >= 0
+    Contains = IndexOf(Str, Value, 0, Len(Str), VbCompareMethod.vbTextCompare) >= 0
 End Function
 
 
@@ -204,7 +208,9 @@ Public Function StartsWith(ByVal Str As String, ByVal Value As String, ByVal Str
 End Function
 
 
-Public Function EndsWith(ByVal Str As String, ByVal Value As String, ByVal StringComparison As VbCompareMethod) As Boolean
+Public Function EndsWith(ByVal Str As String, _
+                         ByVal Value As String, _
+                         ByVal StringComparison As VbCompareMethod) As Boolean
     
     Const MethodName = "EndsWith"
     
@@ -262,11 +268,19 @@ End Function
 
 Public Function LastIndexOf(ByVal Str As String, _
                             ByVal Value As String, _
-                            ByVal StartIndex As Long, _
-                            ByVal Count As Long, _
-                            ByVal ComparisonMethod As VbCompareMethod) As Long
+                            Optional ByVal StartIndex As Long = System.LongMinValue, _
+                            Optional ByVal Count As Long = System.LongMinValue, _
+                            Optional ByVal ComparisonMethod As VbCompareMethod = VbCompareMethod.vbTextCompare) As Long
     
     Const MethodName = "LastIndexOf"
+    
+    If StartIndex = System.LongMinValue Then
+        StartIndex = VBA.Len(Str) - 1
+    End If
+
+    If Count = System.LongMinValue Then
+        Count = VBA.Len(Str)
+    End If
     
     LastIndexOf = -1
     
@@ -278,7 +292,7 @@ Public Function LastIndexOf(ByVal Str As String, _
         Exception.ArgumentException "Value", ModuleName & "." & MethodName
     End If
     
-    If Len(Str) = 0 And (StartIndex = -1 Or StartIndex - 0) Then
+    If Len(Str) = 0 And (StartIndex = -1 Or StartIndex = 0) Then
         LastIndexOf = IIf(Len(Value) = 0, 0, -1)
     End If
     
@@ -347,6 +361,8 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
     Next i
 
 End Function
+
+
 
 
 

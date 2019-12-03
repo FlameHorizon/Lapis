@@ -412,8 +412,8 @@ Private Sub LastIndexOfTest()
     
     On Error GoTo ErrHandler
     Const MethodName = "LastIndexOfTest"
-    ExUnit.AreEqual 5, StringH.LastIndexOf("bbbaaa", "a", Len("bbbaaa") - 1, Len("bbbaaa"), VbCompareMethod.vbTextCompare), GetFullSig(MethodName)
-    ExUnit.AreEqual 2, StringH.LastIndexOf("bbbaaa", "b", Len("bbbaaa") - 1, Len("bbbaaa"), VbCompareMethod.vbTextCompare), GetFullSig(MethodName)
+    ExUnit.AreEqual 5, StringH.LastIndexOf("bbbaaa", "a"), GetFullSig(MethodName)
+    ExUnit.AreEqual 2, StringH.LastIndexOf("bbbaaa", "b"), GetFullSig(MethodName)
     
     Exit Sub
 ErrHandler:
@@ -426,7 +426,7 @@ Private Sub LastIndexOfReturnsMinusOneWhenValueNotFound()
     
     On Error GoTo ErrHandler
     Const MethodName = "LastIndexOfReturnsMinusOneWhenValueNotFound"
-    ExUnit.AreEqual -1, StringH.LastIndexOf("bbbaaa", "z", Len("bbbaaa") - 1, Len("bbbaaa"), VbCompareMethod.vbTextCompare), GetFullSig(MethodName)
+    ExUnit.AreEqual -1, StringH.LastIndexOf("bbbaaa", "z"), GetFullSig(MethodName)
     
     Exit Sub
 ErrHandler:
@@ -439,7 +439,7 @@ Private Sub LastIndexOfThrowsArgumentExceptionWhenStrIsNullStringTest()
     
     On Error GoTo ErrHandler
     Const MethodName = "LastIndexOfThrowsArgumentExceptionWhenStrIsNullStringTest"
-    StringH.LastIndexOf vbNullString, "a", Len("bbbaaa") - 1, Len("bbbaaa"), VbCompareMethod.vbTextCompare
+    StringH.LastIndexOf vbNullString, "a"
     
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetFullSig(MethodName)
