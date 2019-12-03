@@ -11,18 +11,21 @@ Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
 **Str** `String` <br>
 A source string which will be examined.
 
-**AnyOf** `Long` <br>
+**AnyOf** `String()` <br>
 Array of strings containing one or more characters to seek.
 
 ### Returns
+
 `Long` <br>
 The zero-based index position of the first occurrence in this instance where any character in `AnyOf` was found, -1 if no character in `AnyOf` was found.
 
 ### Exceptions
+
 `ArgumentException` <br>
 `AnyOf` is not initialized.
 
 ## Examples
+
 The following example finds the first occurrence of either 1 or 2 in the string.
 
 ```vb
@@ -36,4 +39,5 @@ End Sub
 ```
 
 ### Remarks
+
 The search is case-insensitive. If value of `Str` parameter is empty, method returns -1.

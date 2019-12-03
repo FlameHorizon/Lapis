@@ -58,8 +58,8 @@ Public Sub Start()
 
     Debug.Print "Case insensitive search: " & StringH.IndexOf("aaAAaa", "a")
     Debug.Print "Case sensitive search: " & StringH.IndexOf("aaAAaa", "A", , , vbCompareMethod.vbBinaryCompare)
-    Debug.Print StringH.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbTextCompare)
-    Debug.Print StringH.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case insensitive search: " & StringH.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbTextCompare)
+    Debug.Print "Case sensitive search: " & StringH.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbBinaryCompare)
 
 End Sub
 
