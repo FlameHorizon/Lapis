@@ -37,4 +37,3 @@ End Sub
 
 ### Remarks
 The search is case-insensitive. If value of `Str` parameter is empty, method returns -1.
-
