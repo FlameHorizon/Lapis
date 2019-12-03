@@ -15,7 +15,7 @@ Option Explicit
 
 
 ' Determines whether the specified objects are equal.
-Public Function Equals(ByVal Obj1 As Variant, ByVal Obj2 As Variant) As Boolean
+Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
 End Function
 
 

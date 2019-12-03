@@ -152,7 +152,7 @@ Public Sub TestFailRunTime(ByVal Source As String, Optional ByVal Msg As String)
         Debug.Print Err.Description, Source
         PrintTestResult TestOutcome.Failed, Source, Msg
     Else
-        pTestResults.Add CreateTestResult(Source, TestOutcome.Failed, Msg)
+        pTestResults.Add CreateTestResult(Source, TestOutcome.Failed, Err.Description)
     End If
     
 End Sub

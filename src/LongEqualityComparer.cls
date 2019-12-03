@@ -13,20 +13,18 @@ Option Explicit
 Implements IVBAEqualityComparer
 
 
-Public Function Equals(ByVal Obj1 As Variant, ByVal Obj2 As Variant) As Boolean
+Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
     
-    If (Not IsNumeric(Obj1) Or Not IsNumeric(Obj2)) Then
+    If (Not IsNumeric(x) Or Not IsNumeric(y)) Then
         Equals = False
         Exit Function
     End If
     
-    Equals = (Obj1 = Obj2)
+    Equals = (x = y)
     
 End Function
 
 
-Private Function IVBAEqualityComparer_Equals(ByVal Obj1 As Variant, ByVal Obj2 As Variant) As Boolean
-    IVBAEqualityComparer_Equals = Equals(Obj1, Obj2)
+Private Function IVBAEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
+    IVBAEqualityComparer_Equals = Equals(x, y)
 End Function
-
-

@@ -29,7 +29,7 @@ Private Sub InitializationTest()
     
     Dim Stack As New Stack: Stack.Init1 10
     ExUnit.AreEqual 0, Stack.Count, GetFullSig(MethodName)
-    
+
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetFullSig(MethodName)
