@@ -5,10 +5,6 @@ Option Explicit
 Private Const ModuleName As String = "StringHelper"
 
 
-' If str parameter is empty, then function returns -1,
-' if no element was found in str, then function returns 0 else,
-' returns the index of the first occurrence of any character in value.
-' Note: Function does not check if array is initialized properly.
 Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
     
     Const MethodName = "IndexOfAny"
@@ -37,17 +33,6 @@ Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
 End Function
 
 
-' Returns the zero-based index of the first occurrence of the specified string in the current string.
-' Throws ArgumentException when Str is empty string.
-' Throws ArgumentOutOfRangeException when StartIndex points outside of Value bound or
-' Count exceeds available scope of Value.
-' Throws ArgumentException when CompareMethod value is not valid.
-' Params:
-' Str - String to look in.
-' Value - String to look for in Str.
-' StartIndex - Index where search will start at.
-' Count - Number of characters after StartIndex which will be checked.
-' ComparisonMethod - defines rule for the search.
 Public Function IndexOf(ByVal Str As String, _
                         ByVal Value As String, _
                         Optional ByVal StartIndex As Long = System.LongMinValue, _
@@ -101,17 +86,11 @@ Private Function InternalIndexOf(ByVal Str As String, _
 End Function
 
 
-' Returns a value indicating whether a specified substring occurs within this string.
-' Params:
-' Str - String to look in.
-' Value - String to look for in Str.
 Public Function Contains(ByVal Str As String, ByVal Value As String) As Boolean
     Contains = IndexOf(Str, Value, 0, Len(Str), VbCompareMethod.vbTextCompare) >= 0
 End Function
 
 
-' Returns a new string in which all the characters in the current instance,
-' beginning at a specified position and continuing through the last position, have been deleted.
 Public Function Remove(ByVal Str As String, ByVal StartIndex As Long) As String
     
     Const MethodName = "Remove"
@@ -130,8 +109,6 @@ Public Function Remove(ByVal Str As String, ByVal StartIndex As Long) As String
 End Function
 
 
-' Returns a new string in which a specified number of characters in the current instance
-' beginning at a specified position have been deleted.
 Public Function RemoveRange(ByVal Str As String, ByVal StartIndex As Long, ByVal Count As Long) As String
 
     Const MethodName = "RemoveRange"
@@ -163,7 +140,6 @@ Public Function RemoveRange(ByVal Str As String, ByVal StartIndex As Long, ByVal
 End Function
 
 
-' Concatenates the members of a constructed Variant ParamArray of type String.
 Public Function Concat(ParamArray Items() As Variant) As String
     
     Dim Output As String
@@ -279,7 +255,7 @@ Public Function LastIndexOf(ByVal Str As String, _
     End If
 
     If Count = System.LongMinValue Then
-        Count = VBA.Len(Str)
+        Count = VBA.Len(Str) - StartIndex
     End If
     
     LastIndexOf = -1
@@ -333,7 +309,6 @@ Public Function LastIndexOf(ByVal Str As String, _
             
     End Select
     
-    
 End Function
 
 
@@ -361,8 +336,3 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
     Next i
 
 End Function
-
-
-
-
-
