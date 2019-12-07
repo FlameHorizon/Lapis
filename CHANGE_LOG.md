@@ -2,7 +2,7 @@
 
 ## Changes in 0.7.0
 
-* ExUnit, instead of displaying error numbers when test fails, now user can see name of the error. This applies for both, custom defined exceptions in `Exception` class as well as for VBA's error numbers.
+* ExUnit, instead of displaying error numbers when test fails, now shows name of the error. This applies for both, custom defined exceptions in `Exception` class as well as for VBA's error numbers.
 
 ```vb
 Option Explicit
@@ -22,13 +22,15 @@ End Sub
 ' FAILED; Expected exception [ArgumentOutOfRange], Actual exception [ArgumentNull]; StringHelperTests.RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest
 ```
 
-* Added `ExceptionCodeEnum.ToString` and `ExceptionCodeEnum.TryToString` to retrieve exception names.
+* Added `ExceptionCodeEnum.ToString` and `ExceptionCodeEnum.TryToString` to retrieve custom exception names.
 
 * Added `ErrorNumber` enumerator which lists error numbers for every built-in VBA error.
 
 * Added `ErrorNumberEnum.ToString` and `ErrorNumberEnum.TryToString` to retrieve error names for built-in VBA errors.
 
-* Instead of displaying each assertion result separately, `ExUnit` now groups test results based on the source. Each test method is represented by one test result.
+* TODO: Tests which do fail assertion have more better descriptions.
+
+* Instead of displaying each assertion result separately, `ExUnit` now groups test results based on the source. Each test method is represented by one `TestResult` object.
 
 > Remarks: This behavior is expected only when ExUnit is setup like in following example.
 
@@ -65,9 +67,9 @@ End Sub
 ' PASSED; TestModule.TestMethod
 ```
 
-* Users can now have access to the dictionary of test results by calling `ExUnit.TestResults` at the end of each test run.
+* Users can now have access to the test results by calling `ExUnit.TestResults` at the end of each test run.
 
-* ExUnit now print test results into any container which implements `ITestResultPrinter` interface. At moment there is only class which impelemnts mentioned interface, it's `TestResultImmediatePrinter`.
+* ExUnit can now print test results into any place which is handled by `ITestResultPrinter` interface. At moment there is only one class which impelemnts mentioned interface, it's `TestResultImmediatePrinter`.
 
 ---
 
