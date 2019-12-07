@@ -45,8 +45,12 @@ Public Sub AreEqual(ByVal Expected As Variant, _
                                     "AreEqual supports only value type comparisons." _
                                     & ModuleName & ".NotEqual"
     End If
-
-    IsTrue Expected = Actual, Source, FormatExpectedAndActualValues(Expected, Actual) & Msg
+    
+    If Expected = Actual Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, FormatExpectedAndActualValues(Expected, Actual) & Msg
+    End If
     
 End Sub
 
@@ -63,7 +67,11 @@ Public Sub AreNotEqual(ByRef Expected As Variant, _
                                     & ModuleName & ".NotEqual"
     End If
     
-    IsTrue Expected <> Actual, Source, FormatExpectedAndActualValues(Expected, Actual) & Msg
+    If Expected <> Actual Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, "Expected value [" & Expected & "] to not be equal but with the actual, but it is." & Msg
+    End If
     
 End Sub
 
@@ -76,7 +84,13 @@ End Function
 
 
 Public Sub IsFalse(ByVal Eval As Boolean, ByVal Source As String, Optional ByVal Msg As String)
-    IsTrue Not (Eval), Source, Msg
+    
+    If Eval = False Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, FormatExpectedAndActualValues(False, True) & Msg
+    End If
+        
 End Sub
 
 
@@ -85,7 +99,7 @@ Public Sub IsTrue(ByVal Eval As Boolean, ByVal Source As String, Optional ByVal 
     If Eval = True Then
         TestPass Source, Msg
     Else
-        TestFail Source, Msg
+        TestFail Source, FormatExpectedAndActualValues(True, False) & Msg
     End If
 
 End Sub
@@ -140,7 +154,7 @@ Public Sub TestFail(ByVal Source As String, Optional ByVal Msg As String)
 End Sub
 
 
-' AdhocRun means that test is ran from the test method.
+' AdhocRun means that test is run from the test method.
 Private Function IsAdhocRun() As Boolean
     IsAdhocRun = (pTestResults Is Nothing)
 End Function
@@ -159,12 +173,17 @@ End Sub
 
 
 ' Verifies that a string contains a given sub-string.
-Public Sub ContainsSubstring(ByVal Expected As String, _
-                             ByVal Actual As String, _
+Public Sub ContainsSubstring(ByVal Value As String, _
+                             ByVal Substring As String, _
                              ByVal Source As String, _
                              Optional ByVal Msg As String)
 
-    IsTrue StringH.Contains(Expected, Actual), Source, Msg
+    If StringH.Contains(Value, Substring) Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, "Expected [ " & Value & " ] to be in [" & Substring & "], but it doesn't. " & Msg
+    End If
+    
 End Sub
 
 
@@ -174,8 +193,13 @@ Public Sub Contains(ByVal Expected As Variant, _
                     ByRef Comparer As IVBAEqualityComparer, _
                     ByVal Source As String, _
                     Optional ByVal Msg As String)
-                    
-    IsTrue CollectionH.Contains(Expected, Items, Comparer), Source, Msg
+                 
+    If CollectionH.Contains(Expected, Items, Comparer) Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, "Expected Value to be in collection, but it wasn't found. " & Msg
+    End If
+                 
 End Sub
 
 
@@ -186,7 +210,12 @@ Public Sub DoesNotContains(ByVal Expected As Variant, _
                            ByVal Source As String, _
                            Optional ByVal Msg As String)
                            
-    IsFalse CollectionH.Contains(Expected, Items, Comparer), Source, Msg
+    If CollectionH.Contains(Expected, Items, Comparer) Then
+        TestFail Source, "Expected Value to not be in collection, but it was found. " & Msg
+    Else
+        TestPass Source, Msg
+    End If
+    
 End Sub
 
 
@@ -194,14 +223,25 @@ End Sub
 Public Sub IsNotNothing(ByVal Obj As Object, _
                         ByVal Source As String, _
                         Optional ByVal Msg As String)
+    
+    If Obj Is Nothing Then
+        TestFail Source, "Expected Obj to be not nothing, but it is. " & Msg
+    Else
+        TestPass Source, Msg
+    End If
 
-    IsTrue Not (Obj Is Nothing), Source, Msg
 End Sub
 
 
 ' Verifies that an object reference is nothing.
 Public Sub IsNothing(ByVal Obj As Object, ByVal Source As String, Optional ByVal Msg As String)
-    IsTrue Obj Is Nothing, Source, Msg
+    
+    If Obj Is Nothing Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, "Expected Obj to be nothing, but it isn't. " & Msg
+    End If
+    
 End Sub
 
 
@@ -210,8 +250,13 @@ Public Sub AreSame(ByVal Expected As Object, _
                    ByVal Actual As Object, _
                    ByVal Source As String, _
                    Optional ByVal Msg As String)
+    
+    If Expected Is Actual Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, "Expected Value to be the same, but it isn't. " & Msg
+    End If
 
-    IsTrue Expected Is Actual, Source, Msg
 End Sub
 
 
@@ -221,7 +266,12 @@ Public Sub AreNotSame(ByVal Expected As Object, _
                       ByVal Source As String, _
                       Optional ByVal Msg As String)
 
-    IsTrue Not (Expected Is Actual), Source, Msg
+    If Expected Is Actual Then
+        TestFail Source, "Expected Value to be not the same, but it is. " & Msg
+    Else
+        TestPass Source, Msg
+    End If
+    
 End Sub
 
 
@@ -231,7 +281,12 @@ Public Sub IsException(ByVal Expected As ExceptionCode, _
                        ByVal Source As String, _
                        Optional ByVal Msg As String)
     
-    IsTrue Expected = Actual, Source, FormatExpectedAndActualExceptions(Expected, Actual) & Msg
+    If Expected = Actual Then
+        TestPass Source, Msg
+    Else
+        TestFail Source, FormatExpectedAndActualExceptions(Expected, Actual) & Msg
+    End If
+
 End Sub
 
 
