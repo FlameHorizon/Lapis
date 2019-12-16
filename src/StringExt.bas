@@ -1,4 +1,4 @@
-Attribute VB_Name = "StringH"
+Attribute VB_Name = "StringExt"
 Option Explicit
 '@Folder("Helper")
 
@@ -9,8 +9,8 @@ Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
     
     Const MethodName = "IndexOfAny"
     
-    If ArrayH.IsInitialized(ArrayH.ToVariantArray(AnyOf)) = False Then
-        Exception.ArgumentException "AnyOf", ModuleName & "." & MethodName
+    If ArrayExt.IsInitialized(ArrayExt.ToVariantArray(AnyOf)) = False Then
+        Errors.OnArgumentError "AnyOf", ModuleName & "." & MethodName
     End If
 
     IndexOfAny = -1
@@ -41,47 +41,34 @@ Public Function IndexOf(ByVal Str As String, _
     
     Const MethodName = "IndexOf"
     
-    If StartIndex = System.LongMinValue Then
-        StartIndex = 0
-    End If
+    Dim Start As Long
+    Start = IIf(StartIndex = System.LongMinValue, 0, StartIndex)
     
-    If Count = System.LongMinValue Then
-        Count = VBA.Len(Str) - StartIndex
-    End If
+    Dim Cnt As Long
+    Cnt = IIf(Count = System.LongMinValue, VBA.Len(Str) - StartIndex, Count)
     
     If Str = vbNullString Then
-        Exception.ArgumentException "Str", _
+        Errors.OnArgumentError "Str", _
                                     "Str value can't be empty string. " _
                                     & ModuleName & "." & MethodName
     End If
     
-    If StartIndex < 0 Or StartIndex > Len(Str) Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+    If Start < 0 Or Start > Len(Str) Then
+        Errors.OnArgumentOutOfRange "Start", ModuleName & "." & MethodName
     End If
     
-    If Count < 0 Or StartIndex > Len(Str) - Count Then
-        Exception.ArgumentOutOfRangeException "Count", ModuleName & "." & MethodName
+    If Count < 0 Or Start > Len(Str) - Cnt Then
+        Errors.OnArgumentOutOfRange "Cnt", ModuleName & "." & MethodName
     End If
     
     Select Case ComparisonMethod
         Case VbCompareMethod.vbBinaryCompare, VbCompareMethod.vbTextCompare
-            IndexOf = InternalIndexOf(Str, Value, StartIndex, Count, ComparisonMethod)
+            IndexOf = InStr(StartIndex + 1, Str, Value, ComparisonMethod) - 1
         
         Case Else
-            Exception.ArgumentOutOfRangeException "ComparisonMethod", "Not supported string comparison. " & MethodName & "." & MethodName
+            Errors.OnArgumentOutOfRange "ComparisonMethod", "Not supported string comparison. " & MethodName & "." & MethodName
             
     End Select
-    
-End Function
-
-
-Private Function InternalIndexOf(ByVal Str As String, _
-                                 ByVal Value As String, _
-                                 ByVal StartIndex As Long, _
-                                 ByVal Count As Long, _
-                                 ByVal ComparisonMethod As VbCompareMethod) As Long
-    
-    InternalIndexOf = InStr(StartIndex + 1, Str, Value, ComparisonMethod) - 1
     
 End Function
 
@@ -95,11 +82,11 @@ Public Function Remove(ByVal Str As String, ByVal StartIndex As Long) As String
     
     Const MethodName = "Remove"
     If StartIndex < 0 Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "StartIndex", ModuleName & "." & MethodName
     End If
     
     If StartIndex >= VBA.Len(Str) Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "StartIndex", ModuleName & "." & MethodName
     End If
     
     ' Vba.Mid method does exactly the same thing as
@@ -113,15 +100,15 @@ Public Function RemoveRange(ByVal Str As String, ByVal StartIndex As Long, ByVal
 
     Const MethodName = "RemoveRange"
     If StartIndex < 0 Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "StartIndex", ModuleName & "." & MethodName
     End If
     
     If Count < 0 Then
-        Exception.ArgumentOutOfRangeException "Count", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "Count", ModuleName & "." & MethodName
     End If
     
     If Count > Len(Str) - StartIndex Then
-        Exception.ArgumentOutOfRangeException "Count", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "Count", ModuleName & "." & MethodName
     End If
     
     If Len(Str) - Count = 0 Then
@@ -158,11 +145,11 @@ Public Function StartsWith(ByVal Str As String, ByVal Value As String, ByVal Str
     Const MethodName = "StartsWith"
     
     If StringComparison = VbCompareMethod.vbDatabaseCompare Then
-        Exception.ArgumentOutOfRangeException "StringComparison", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "StringComparison", ModuleName & "." & MethodName
     End If
     
     If Str = vbNullString Then
-        Exception.ArgumentException "Str", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Str", ModuleName & "." & MethodName
     End If
     
     If Len(Value) = 0 Then
@@ -191,11 +178,11 @@ Public Function EndsWith(ByVal Str As String, _
     Const MethodName = "EndsWith"
     
     If StringComparison = VbCompareMethod.vbDatabaseCompare Then
-        Exception.ArgumentOutOfRangeException "StringComparison", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "StringComparison", ModuleName & "." & MethodName
     End If
     
     If Str = vbNullString Then
-        Exception.ArgumentException "Str", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Str", ModuleName & "." & MethodName
     End If
     
     If Len(Value) = 0 Then
@@ -224,11 +211,11 @@ Public Function Insert(ByVal Str As String, _
     Const MethodName = "Insert"
 
     If Value = vbNullString Then
-        Exception.ArgumentException "Value", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Value", ModuleName & "." & MethodName
     End If
     
     If StartIndex < 0 Or StartIndex > Len(Str) Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "StartIndex", ModuleName & "." & MethodName
     End If
     
     Dim Lhs As String
@@ -250,62 +237,60 @@ Public Function LastIndexOf(ByVal Str As String, _
     
     Const MethodName = "LastIndexOf"
     
-    If StartIndex = System.LongMinValue Then
-        StartIndex = VBA.Len(Str) - 1
-    End If
+    Dim Start As Long
+    Start = IIf(StartIndex = System.LongMinValue, VBA.Len(Str) - 1, StartIndex)
 
-    If Count = System.LongMinValue Then
-        Count = VBA.Len(Str) - StartIndex
-    End If
+    Dim Cnt As Long
+    Cnt = IIf(Count = System.LongMinValue, VBA.Len(Str) - Start, Count)
     
     LastIndexOf = -1
     
     If Str = vbNullString Then
-        Exception.ArgumentException "Str", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Str", ModuleName & "." & MethodName
     End If
 
     If Value = vbNullString Then
-        Exception.ArgumentException "Value", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Value", ModuleName & "." & MethodName
     End If
     
-    If Len(Str) = 0 And (StartIndex = -1 Or StartIndex = 0) Then
+    If Len(Str) = 0 And (Start = -1 Or Start = 0) Then
         LastIndexOf = IIf(Len(Value) = 0, 0, -1)
     End If
     
-    If StartIndex < 0 Or StartIndex > Len(Str) Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+    If Start < 0 Or Start > Len(Str) Then
+        Errors.OnArgumentOutOfRange "Start", ModuleName & "." & MethodName
     End If
     
-    If StartIndex = Len(Str) Then
-        StartIndex = StartIndex - 1
-        If Count > 0 Then
-            Count = Count - 1
+    If Start = Len(Str) Then
+        Start = Start - 1
+        If Cnt > 0 Then
+            Cnt = Cnt - 1
         End If
         
-        If Len(Value) = 0 And Count >= 0 And StartIndex - Count + 1 >= 0 Then
-            LastIndexOf = StartIndex
+        If Len(Value) = 0 And Cnt >= 0 And Start - Cnt + 1 >= 0 Then
+            LastIndexOf = Start
             Exit Function
         End If
     End If
     
-    If Count < 0 Or StartIndex - Count + 1 < 0 Then
-        Exception.ArgumentOutOfRangeException "Count", ModuleName & "." & MethodName
+    If Cnt < 0 Or Start - Cnt + 1 < 0 Then
+        Errors.OnArgumentOutOfRange "Cnt", ModuleName & "." & MethodName
     End If
     
     Select Case ComparisonMethod
         Case CompareMethod.BinaryCompare, CompareMethod.TextCompare
             Dim MinIndex As Long
-            MinIndex = StartIndex - Count + 1
+            MinIndex = Start - Cnt + 1
             
             Dim i As Long
-            For i = StartIndex To MinIndex Step -1
+            For i = Start To MinIndex Step -1
                 If InStrRev(Str, Value, i + 1, ComparisonMethod) <> 0 Then
                     LastIndexOf = InStrRev(Str, Value, i + 1, ComparisonMethod) - 1
                     Exit For
                 End If
             Next i
         Case Else
-            Exception.ArgumentOutOfRangeException "ComparisonMethod", "Not supported string comparison. " & MethodName & "." & MethodName
+            Errors.OnArgumentOutOfRange "ComparisonMethod", "Not supported string comparison. " & MethodName & "." & MethodName
             
     End Select
     
@@ -316,8 +301,8 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
     
     Const MethodName = "LastIndexOfAny"
     
-    If ArrayH.IsInitialized(ArrayH.ToVariantArray(AnyOf)) = False Then
-        Exception.ArgumentException "AnyOf", ModuleName & "." & MethodName
+    If ArrayExt.IsInitialized(ArrayExt.ToVariantArray(AnyOf)) = False Then
+        Errors.OnArgumentError "AnyOf", ModuleName & "." & MethodName
     End If
 
     LastIndexOfAny = -1
@@ -336,3 +321,4 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
     Next i
 
 End Function
+

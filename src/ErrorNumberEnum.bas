@@ -445,7 +445,7 @@ Public Function ToString(ByVal Value As ErrorNumber) As String
             ToString = "Feature not yet implemented"
             
         Case Else
-            Exception.ArgumentOutOfRangeException vbNullString, ModuleName & ".ToString"
+            Errors.OnArgumentOutOfRange vbNullString, ModuleName & ".ToString"
         
     End Select
     
@@ -465,7 +465,7 @@ ErrHandler:
             TryToString = False
         
         Case Else
-            Exception.UnhandledException ModuleName & ".TryToString"
+            Errors.OnUnhandledError ModuleName & ".TryToString"
             
     End Select
     

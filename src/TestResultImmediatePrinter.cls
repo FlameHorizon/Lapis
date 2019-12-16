@@ -13,15 +13,14 @@ Option Explicit
 Implements ITestResultPrinter
 
 Private Const ClassName As String = "TestResultImmediatePrinter"
-Private pFormatter As New ImmediatePrinterFormatter
 
 
 Public Sub PrintMany(ByVal Items As TestResults)
     
-    Dim Item As Variant '<TestResult>
-    For Each Item In Items.Enumerator.Items
-        PrintSingle Item
-    Next Item
+    Dim Key As Variant '<TestResult>
+    For Each Key In Items.NewEnum
+        PrintSingle Items.Item(Key)
+    Next Key
     
 End Sub
 
@@ -29,9 +28,10 @@ End Sub
 Public Sub PrintSingle(ByVal Item As TestResult)
     
     If Item Is Nothing Then
-        Exception.ArgumentNullException "Item", ClassName & ".PrintSingle"
+        Errors.OnArgumentNull "Item", ClassName & ".PrintSingle"
     End If
-    Debug.Print pFormatter.Format(Item)
+    Dim Formatter As New ImmediatePrinterFormatter
+    Debug.Print Formatter.Format(Item)
     
 End Sub
 

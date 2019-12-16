@@ -1,4 +1,4 @@
-Attribute VB_Name = "DirectoryH"
+Attribute VB_Name = "DirectoryExt"
 Option Explicit
 '@Folder("Helper")
 
@@ -17,13 +17,13 @@ Public Sub CreateDirectory(ByVal Path As String)
     Const MethodName = "CreateDirectory"
     
     If Path = vbNullString Then
-        Exception.ArgumentException "Path", _
+        Errors.OnArgumentError "Path", _
                                     "Path can't be an empty string. " _
                                     & ModuleName & "." & MethodName
     End If
     
-    If StringH.Contains(Path, DirectorySeparatorChar) = False Then
-        Exception.ArgumentException "Path", _
+    If StringExt.Contains(Path, DirectorySeparatorChar) = False Then
+        Errors.OnArgumentError "Path", _
                                     "Path does have valid directory separator. " _
                                     & ModuleName & "." & MethodName
     End If
@@ -81,6 +81,7 @@ End Sub
 Private Function BuildFolderPath(ByVal Path1 As String, ByVal Path2 As String) As String
     BuildFolderPath = Path1 & Path2 & "\"
 End Function
+
 
 
 

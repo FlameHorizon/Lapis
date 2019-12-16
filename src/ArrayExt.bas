@@ -1,4 +1,4 @@
-Attribute VB_Name = "ArrayH"
+Attribute VB_Name = "ArrayExt"
 Option Explicit
 '@Folder("Helper")
 
@@ -40,17 +40,20 @@ End Function
 ' Copies elements from an Array starting at SourceIndex and pastes them to another
 ' Array starting at DestinationIndex. Number of elements which will be copied is
 ' is specified in Length parameter.
-Public Sub Copy(ByRef Arr() As Variant, ByVal SourceIndex As Long, ByRef DestinationArray() As Variant, _
-                ByVal DestinationIndex As Long, ByVal Length As Long)
+Public Sub Copy(ByRef Arr() As Variant, _
+                ByVal SourceIndex As Long, _
+                ByRef DestinationArray() As Variant, _
+                ByVal DestinationIndex As Long, _
+                ByVal Length As Long)
 
     Dim DestNdx As Long
     DestNdx = DestinationIndex
     
-    Dim i As Long
-    For i = SourceIndex To (Length + SourceIndex - 1)
-        DestinationArray(DestNdx) = Arr(i)
+    Dim Ndx As Long
+    For Ndx = SourceIndex To (Length + SourceIndex - 1)
+        DestinationArray(DestNdx) = Arr(Ndx)
         DestNdx = DestNdx + 1
-    Next i
+    Next Ndx
     
 End Sub
 
@@ -60,6 +63,7 @@ End Sub
 Public Function Rank(ByRef Arr() As Variant) As Long
     
     Dim Ndx As Long
+    '@Ignore VariableNotUsed
     Dim Res As Long
     On Error Resume Next
 
@@ -67,6 +71,7 @@ Public Function Rank(ByRef Arr() As Variant) As Long
         Ndx = Ndx + 1
         Res = UBound(Arr, Ndx)
     Loop Until Err.Number <> 0
+    On Error GoTo 0
     Err.Number = 0
     
     Rank = Ndx - 1
@@ -110,7 +115,7 @@ Public Function NumElements(ByRef Arr() As Variant, Optional ByVal Dimension As 
         Exit Function
     End If
     
-    NumDimensions = ArrayH.Rank(Arr)
+    NumDimensions = ArrayExt.Rank(Arr)
     If NumDimensions < Dimension Then
         NumElements = 0
         Exit Function
@@ -128,19 +133,19 @@ Public Sub Clear(ByRef Arr() As Variant, ByVal Index As Long, ByVal Length As Lo
     Const MethodName = "Clear"
     
     If Index < 0 Then
-        Exception.ArgumentOutOfRangeException "Index", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "Index", ModuleName & "." & MethodName
     End If
     
     If Index < LBound(Arr) Then
-        Exception.ArgumentOutOfRangeException "Index", ModuleName & "." & MethodName
+        Errors.OnArgumentOutOfRange "Index", ModuleName & "." & MethodName
     End If
     
-    If Index + Length > ArrayH.Length(Arr) Then
-        Exception.ArgumentOutOfRangeException vbNullString, ModuleName & "." & MethodName
+    If Index + Length > ArrayExt.Length(Arr) Then
+        Errors.OnArgumentOutOfRange vbNullString, ModuleName & "." & MethodName
     End If
     
-    If ArrayH.Rank(Arr) <> 1 Then
-        Exception.ArgumentException "Arr", _
+    If ArrayExt.Rank(Arr) <> 1 Then
+        Errors.OnArgumentError "Arr", _
                                     "Multi dimensions arrray are not supported. " & ModuleName & MethodName
     End If
     
@@ -207,22 +212,22 @@ Public Function BinarySearch(ByRef Arr() As Variant, _
     
     Const MethodName = "BinarySearch"
     
-    If ArrayH.IsInitialized(Arr) = False Then
-        Exception.ArgumentNullException "Arr", "Array is not initialized. " & ModuleName & "." & MethodName
+    If ArrayExt.IsInitialized(Arr) = False Then
+        Errors.OnArgumentNull "Arr", "Array is not initialized. " & ModuleName & "." & MethodName
     End If
     
-    Dim Lb As Long: Lb = ArrayH.GetLowerBound(Arr, 0)
+    Dim Lb As Long: Lb = ArrayExt.GetLowerBound(Arr, 0)
     
-    If Index < Lb Or ArrayH.Length(Arr) < 0 Then
-        Exception.ArgumentNullException "Arr", "Index must be a non-negative numer. " & ModuleName & "." & MethodName
+    If Index < Lb Or ArrayExt.Length(Arr) < 0 Then
+        Errors.OnArgumentNull "Arr", "Index must be a non-negative numer. " & ModuleName & "." & MethodName
     End If
     
-    If ArrayH.Length(Arr) - (Index - Lb) < Length Then
-        Exception.ArgumentException "Length", "Invalid offset length. " & ModuleName & "." & MethodName
+    If ArrayExt.Length(Arr) - (Index - Lb) < Length Then
+        Errors.OnArgumentError "Length", "Invalid offset length. " & ModuleName & "." & MethodName
     End If
     
-    If ArrayH.Rank(Arr) <> 1 Then
-        Exception.ArgumentException "Arr", "Multi dimensions array are not supported. " & ModuleName & ".BinarySearch"
+    If ArrayExt.Rank(Arr) <> 1 Then
+        Errors.OnArgumentError "Arr", "Multi dimensions array are not supported. " & ModuleName & ".BinarySearch"
     End If
     
     If Comparer Is Nothing Then
@@ -263,12 +268,12 @@ Public Function GetLowerBound(ByRef Arr() As Variant, ByVal Dimension As Long) A
 
     Const MethodName = "GetLowerBound"
 
-    If Dimension < 0 Or Dimension >= ArrayH.Rank(Arr) Then
-        Exception.ArgumentOutOfRangeException "Dimension", ModuleName & "." & MethodName
+    If Dimension < 0 Or Dimension >= ArrayExt.Rank(Arr) Then
+        Errors.OnArgumentOutOfRange "Dimension", ModuleName & "." & MethodName
     End If
     
-    If ArrayH.IsInitialized(Arr) = False Then
-        Exception.ArgumentNullException "Arr", "Array is not initalized. " & ModuleName & "." & MethodName
+    If ArrayExt.IsInitialized(Arr) = False Then
+        Errors.OnArgumentNull "Arr", "Array is not initalized. " & ModuleName & "." & MethodName
     End If
     
     GetLowerBound = LBound(Arr, Dimension + 1)
@@ -282,23 +287,23 @@ Public Function IndexOf(ByRef Arr() As Variant, ByRef Value As Variant, ByVal St
     
     Const MethodName = "IndexOf"
     
-    If ArrayH.IsInitialized(Arr) = False Then
-        Exception.ArgumentNullException "Arr", "Array is not initialized. " & ModuleName & "." & MethodName
+    If ArrayExt.IsInitialized(Arr) = False Then
+        Errors.OnArgumentNull "Arr", "Array is not initialized. " & ModuleName & "." & MethodName
     End If
     
-    If ArrayH.Rank(Arr) <> 1 Then
-        Exception.ArgumentException "Arr", "Multi dimensions array are not supported. " & ModuleName & "." & MethodName
+    If ArrayExt.Rank(Arr) <> 1 Then
+        Errors.OnArgumentError "Arr", "Multi dimensions array are not supported. " & ModuleName & "." & MethodName
     End If
     
     Dim Lb As Long
-    Lb = ArrayH.GetLowerBound(Arr, 0)
+    Lb = ArrayExt.GetLowerBound(Arr, 0)
     
-    If (StartIndex < Lb) Or (StartIndex > ArrayH.Length(Arr) + Lb) Then
-        Exception.ArgumentOutOfRangeException "StartIndex", ModuleName & "." & MethodName
+    If (StartIndex < Lb) Or (StartIndex > ArrayExt.Length(Arr) + Lb) Then
+        Errors.OnArgumentOutOfRange "StartIndex", ModuleName & "." & MethodName
     End If
     
-    If (StartIndex < Lb) Or (StartIndex > ArrayH.Length(Arr) + Lb) Then
-        Exception.ArgumentOutOfRangeException "Count", ModuleName & "." & MethodName
+    If (StartIndex < Lb) Or (StartIndex > ArrayExt.Length(Arr) + Lb) Then
+        Errors.OnArgumentOutOfRange "Count", ModuleName & "." & MethodName
     End If
     
     Dim ObjArray() As Variant
@@ -342,7 +347,7 @@ End Function
 Public Sub SetValue(ByRef Arr() As Variant, ByRef Value As Variant, ByVal Index As Long)
     
     If Rank(Arr) <> 1 Then
-        Exception.ArgumentException "Arr", "Multi dimensions array are not supported. " & ModuleName & ".SetValue"
+        Errors.OnArgumentError "Arr", "Multi dimensions array are not supported. " & ModuleName & ".SetValue"
     End If
     
     If IsObject(Value) Then
@@ -354,21 +359,6 @@ Public Sub SetValue(ByRef Arr() As Variant, ByRef Value As Variant, ByVal Index 
 End Sub
 
 
-Public Function ToArrayIList(ByRef List As IList) As Variant()
-    
-    Dim Output() As Variant
-    ReDim Output(0 To List.Count - 1)
-
-    Dim i As Long
-    For i = 0 To List.Count - 1
-        Output(i) = List.GetItem(i)
-    Next i
-
-    ToArrayIList = Output
-    
-End Function
-
-
 ' Converts any array to the Variant Array. When input array is not initalized
 ' method returns not initialized Variant Array.
 ' Throws ArgumentException when Arr is not an array.
@@ -377,7 +367,7 @@ Public Function ToVariantArray(ByRef Arr As Variant) As Variant()
     Const MethodName = "ToVariantArray"
     
     If VBA.IsArray(Arr) = False Then
-        Exception.ArgumentException "Arr", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Arr", ModuleName & "." & MethodName
     End If
 
     ' Here, we still can't use defined methods like IsInitalized because
@@ -433,6 +423,8 @@ Public Function StringArray(ParamArray Items() As Variant) As String()
     StringArray = Output
     
 End Function
+
+
 
 
 
