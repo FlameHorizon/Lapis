@@ -7,9 +7,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
-Option Explicit
 '@Exposed
 '@Folder("Lapis")
+Option Explicit
 
 Implements IComparer
 
@@ -31,7 +31,7 @@ Public Function Compare(ByRef x As Variant, ByRef y As Variant) As Long
     If VarType(x) = vbString And VarType(y) = vbString Then
         Compare = VBA.StrComp(x, y, vbTextCompare)
     Else
-        Exception.ArgumentException vbNullString, ClassName & ".Compare"
+        Errors.OnArgumentError vbNullString, ClassName & ".Compare"
     End If
 
 End Function

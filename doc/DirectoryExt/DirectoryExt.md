@@ -1,4 +1,4 @@
-# DirectoryH module
+# DirectoryExt module
 
 Represents a set of helper methods to work with directories.
 

@@ -1,4 +1,4 @@
-# StringH module
+# StringExt module
 
 Represents a collection of helper methods to work with a string type.
 

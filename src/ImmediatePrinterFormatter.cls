@@ -16,7 +16,7 @@ Private Const ClassName As String = "ImmediatePrinterFormatter"
 Public Function Format(ByVal Result As TestResult) As String
     
     If Result Is Nothing Then
-        Exception.ArgumentNullException "Result", ClassName & ".PrintSingle"
+        Errors.OnArgumentNull "Result", ClassName & ".PrintSingle"
     End If
     
     If Result.Outcome = TestOutcome.Passed Then

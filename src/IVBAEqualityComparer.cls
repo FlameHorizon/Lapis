@@ -8,8 +8,8 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '@Exposed
-Option Explicit
 '@Folder("Lapis")
+Option Explicit
 
 'Interface defines methods to support the comparison of objects for equality.
 

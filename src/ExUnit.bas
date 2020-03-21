@@ -41,7 +41,7 @@ Public Sub AreEqual(ByVal Expected As Variant, _
                     Optional ByVal Msg As String)
     
     If IsObject(Expected) Or IsObject(Actual) Then
-        Exception.ArgumentException vbNullString, _
+        Errors.OnArgumentError vbNullString, _
                                     "AreEqual supports only value type comparisons." _
                                     & ModuleName & ".NotEqual"
     End If
@@ -62,7 +62,7 @@ Public Sub AreNotEqual(ByRef Expected As Variant, _
                        Optional ByVal Msg As String)
     
     If IsObject(Expected) Or IsObject(Actual) Then
-        Exception.ArgumentException vbNullString, _
+        Errors.OnArgumentError vbNullString, _
                                     "AreNotEqual supports only value type comparisons." _
                                     & ModuleName & ".NotEqual"
     End If
@@ -70,7 +70,7 @@ Public Sub AreNotEqual(ByRef Expected As Variant, _
     If Expected <> Actual Then
         TestPass Source, Msg
     Else
-        TestFail Source, "Expected value [" & Expected & "] to not be equal but with the actual, but it is." & Msg
+        TestFail Source, "Expected value [" & Expected & "] to not be equal but with the actual, but it isn't." & Msg
     End If
     
 End Sub
@@ -178,7 +178,7 @@ Public Sub ContainsSubstring(ByVal Value As String, _
                              ByVal Source As String, _
                              Optional ByVal Msg As String)
 
-    If StringH.Contains(Value, Substring) Then
+    If StringExt.Contains(Value, Substring) Then
         TestPass Source, Msg
     Else
         TestFail Source, "Expected [ " & Value & " ] to be in [" & Substring & "], but it doesn't. " & Msg
@@ -194,10 +194,10 @@ Public Sub Contains(ByVal Expected As Variant, _
                     ByVal Source As String, _
                     Optional ByVal Msg As String)
                  
-    If CollectionH.Contains(Expected, Items, Comparer) Then
+    If CollectionExt.Contains(Expected, Items, Comparer) Then
         TestPass Source, Msg
     Else
-        TestFail Source, "Expected Value to be in collection, but it wasn't found. " & Msg
+        TestFail Source, "Expected value should be in the collection, but it wasn't found. " & Msg
     End If
                  
 End Sub
@@ -210,8 +210,8 @@ Public Sub DoesNotContains(ByVal Expected As Variant, _
                            ByVal Source As String, _
                            Optional ByVal Msg As String)
                            
-    If CollectionH.Contains(Expected, Items, Comparer) Then
-        TestFail Source, "Expected Value to not be in collection, but it was found. " & Msg
+    If CollectionExt.Contains(Expected, Items, Comparer) Then
+        TestFail Source, "Expected value should not be in the collection, but it was found. " & Msg
     Else
         TestPass Source, Msg
     End If
@@ -225,7 +225,7 @@ Public Sub IsNotNothing(ByVal Obj As Object, _
                         Optional ByVal Msg As String)
     
     If Obj Is Nothing Then
-        TestFail Source, "Expected Obj to be not nothing, but it is. " & Msg
+        TestFail Source, "Obj should be not nothing, but it is. " & Msg
     Else
         TestPass Source, Msg
     End If
@@ -239,7 +239,7 @@ Public Sub IsNothing(ByVal Obj As Object, ByVal Source As String, Optional ByVal
     If Obj Is Nothing Then
         TestPass Source, Msg
     Else
-        TestFail Source, "Expected Obj to be nothing, but it isn't. " & Msg
+        TestFail Source, "Obj should be nothing, but it isn't. " & Msg
     End If
     
 End Sub
@@ -254,7 +254,7 @@ Public Sub AreSame(ByVal Expected As Object, _
     If Expected Is Actual Then
         TestPass Source, Msg
     Else
-        TestFail Source, "Expected Value to be the same, but it isn't. " & Msg
+        TestFail Source, "Expected value should be the same, but it isn't. " & Msg
     End If
 
 End Sub
@@ -267,7 +267,7 @@ Public Sub AreNotSame(ByVal Expected As Object, _
                       Optional ByVal Msg As String)
 
     If Expected Is Actual Then
-        TestFail Source, "Expected Value to be not the same, but it is. " & Msg
+        TestFail Source, "Expected value to be not the same, but it is. " & Msg
     Else
         TestPass Source, Msg
     End If
@@ -310,9 +310,9 @@ End Function
 ' number of the error (ExpCode) will be returned instead.
 Private Function GetExceptionName(ByVal ExpCode As Long) As String
 
-    Dim Output As String
+    Dim Output As String: Output = vbNullString
     
-    If ExceptionCodeEnum.TryToString(ExpCode, Output) Then
+    If ErrorCodeEnum.TryToString(ExpCode, Output) Then
         GetExceptionName = Output
         
     ElseIf ErrorNumberEnum.TryToString(ExpCode, Output) Then
@@ -329,15 +329,22 @@ End Function
 Public Sub PrintTestResults(Optional ByVal Printer As ITestResultPrinter)
     
     If IsAdhocRun Then
-        Exception.InvalidOperationException vbNullString, ModuleName & ".PrintTestResults"
+        Errors.OnInvalidOperation vbNullString, ModuleName & ".PrintTestResults"
     End If
     
+    Dim ResultPrinter As ITestResultPrinter
     If Printer Is Nothing Then
-        Set Printer = New TestResultImmediatePrinter
+        Set ResultPrinter = New TestResultImmediatePrinter
+    Else
+        Set ResultPrinter = Printer
     End If
-    Printer.PrintMany pTestResults
+    
+    ResultPrinter.PrintMany pTestResults
     
 End Sub
+
+
+
 
 
 

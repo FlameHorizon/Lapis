@@ -1,4 +1,4 @@
-Attribute VB_Name = "DateH"
+Attribute VB_Name = "DateExt"
 Option Explicit
 '@Folder("Helper")
 

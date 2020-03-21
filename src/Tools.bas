@@ -1,6 +1,6 @@
 Attribute VB_Name = "Tools"
-Option Explicit
 '@Folder("Lapis")
+Option Explicit
 
 Private Const ModuleName As String = "Tools"
 '@Ignore EncapsulatePublicField
@@ -14,7 +14,7 @@ Public Function SelectFolder() As String
         .Title = "Select a folder"
         .Show
         If .SelectedItems.Count > 0 Then
-            SelectFolder = .SelectedItems(1)
+            SelectFolder = .SelectedItems.Item(1)
         Else
             MsgBox "Folder is not selected."
         End If
@@ -30,11 +30,11 @@ Public Function LinesCount(ByVal Stream As ADODB.Stream) As Long
     Const MethodName = "LinesCount"
     
     If Stream Is Nothing Then
-        Exception.ArgumentNullException "Stream", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Stream", ModuleName & "." & MethodName
     End If
     
     If IsStreamClosed(Stream) Then
-        Exception.InvalidOperationException "Stream", "Stream is closed. " & ModuleName & "." & MethodName
+        Errors.OnInvalidOperation "Stream", "Stream is closed. " & ModuleName & "." & MethodName
     End If
     
     Dim Ln As Long
@@ -59,11 +59,12 @@ Public Function IsStreamClosed(ByRef Stream As ADODB.Stream) As Boolean
     Const MethodName = "IsStreamClosed"
     
     If Stream Is Nothing Then
-        Exception.ArgumentNullException "Stream", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Stream", ModuleName & "." & MethodName
     End If
     
     On Error Resume Next
-    Dim i As Long: i = Stream.Position
+    '@Ignore VariableNotUsed
+    Dim Pos As Long: Pos = Stream.Position
     
     If Err.Number = 91 Then
         IsStreamClosed = True
@@ -74,7 +75,7 @@ Public Function IsStreamClosed(ByRef Stream As ADODB.Stream) As Boolean
         
     Else
         ' Other, unexpected error occured. This error has to be moved upward.
-        Exception.UnhandledException ModuleName & "." & MethodName
+        Errors.OnUnhandledError Err.Number & ", " & Err.Description & " " & ModuleName & "." & MethodName
     End If
     
 End Function

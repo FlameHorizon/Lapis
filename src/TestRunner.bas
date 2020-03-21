@@ -8,9 +8,7 @@ Public Sub Start()
     ExUnit.ShowPassingTest = False
     ExUnit.Setup
     
-    StackTests.Start
     StringHelperTests.Start
-    TreeNodeTests.Start
     TestResultsTests.Start
     ImmediatePrinterFormatterTests.Start
     ExUnitTests.Start

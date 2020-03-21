@@ -1,4 +1,4 @@
-# CollectionH module
+# CollectionExt module
 
 Represents a collection of helper methods to work with a collections.
 
@@ -6,7 +6,6 @@ Represents a collection of helper methods to work with a collections.
 
 |Name|Description|
 |-|-|
-|[ToCollectionIList (List)](./ToCollectionIList.md)| Wraps around a collection IList interface.|
 |[ToString (Collection, String)](./ToString.md)| Returns a collection of property values based on the items in the collection.|
 |[GroupBy (Collection, String)](./GroupBy.md)| Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
 |[Concat (Collection, Collection)](./Concat.md)| Joins two collections together.|

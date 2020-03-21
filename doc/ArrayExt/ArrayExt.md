@@ -1,4 +1,4 @@
-# ArrayH module
+# ArrayExt module
 
 Represents a collection of helper methods to work with an array type.
 
@@ -19,6 +19,5 @@ Represents a collection of helper methods to work with an array type.
 |[GetLowerBound (Variant(), Long)](./GetLowerBound.md)|Returns the index of the first element of the specified dimension in the array.|
 |[IndexOf (Variant, Variant, Long, Long)](./IndexOf.md)|Returns the index of the first occurrence of a given value in a range of an array.|
 |[SetValue (Variant(), Variant, Long)](./SetValue.md)|Sets a value in the given array using element and index of within range of array.|
-|[ToArrayIList (IList)](./ToArrayIList.md)|Converts an IList object into array.|
 |[ToVariantArray (Variant)](./ToVariantArray.md)|Converts an array into variant array.|
 |[StringArray (ParamArray Variant())](./StringArray.md)|Converts ParamArray into strongly typed array of strings.|

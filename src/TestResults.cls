@@ -15,16 +15,32 @@ Private Const ClassName As String = "TestResults"
 Private pItems As New Dictionary '<String, TestResult>
 
 
+Public Property Get Count()
+    Count = pItems.Count
+End Property
+
+
+Public Property Get Item(ByVal Key As Variant) As Variant
+    
+    If IsObject(pItems.Item(Key)) Then
+        Set Item = pItems.Item(Key)
+    Else
+        Item = pItems.Item(Key)
+    End If
+    
+End Property
+
+
 Public Sub Add(ByVal Item As TestResult)
     
     Const MethodName = "Add"
     
     If Item Is Nothing Then
-        Exception.ArgumentNullException "Item", GetSig(MethodName)
+        Errors.OnArgumentNull "Item", GetSig(MethodName)
     End If
     
     If Item.Source = vbNullString Then
-        Exception.ArgumentException "Item", GetSig(MethodName)
+        Errors.OnArgumentError "Item", "Name of the Source can't be empty. " & GetSig(MethodName)
     End If
     
     If pItems.Exists(Item.Source) Then
@@ -52,14 +68,13 @@ Private Function ShouldUpdateTestResult(ByVal Result As TestResult) As Boolean
 End Function
 
 
-Public Property Get Count()
-    Count = pItems.Count
+Public Sub Remove(ByVal Key As Variant)
+    pItems.Remove Key
+End Sub
+
+
+Public Property Get NewEnum() As IUnknown
+    '@Ignore SetAssignmentWithIncompatibleObjectType
+    Set NewEnum = pItems
 End Property
-
-
-Public Property Get Enumerator() As Dictionary
-    Set Enumerator = pItems
-End Property
-
-
 

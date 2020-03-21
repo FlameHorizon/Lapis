@@ -1,6 +1,6 @@
-Attribute VB_Name = "ExceptionCodeEnum"
-Option Explicit
+Attribute VB_Name = "ErrorCodeEnum"
 '@Folder("Lapis")
+Option Explicit
 
 Private Const ModuleName As String = "ExceptionCodeEnum"
 
@@ -62,7 +62,7 @@ Public Function ToString(ByVal Value As ExceptionCode) As String
             ToString = "MissingConfiguration"
         
         Case Else
-            Exception.ArgumentOutOfRangeException "Value", ModuleName & ".ToString"
+            Errors.OnArgumentOutOfRange "Value", ModuleName & ".ToString"
             
     End Select
 
@@ -72,7 +72,7 @@ End Function
 Public Function TryToString(ByVal Value As ExceptionCode, ByRef Out As String) As Boolean
     
     On Error GoTo ErrHandler
-    Out = ExceptionCodeEnum.ToString(Value)
+    Out = ErrorCodeEnum.ToString(Value)
     TryToString = True
     
     Exit Function
@@ -82,7 +82,7 @@ ErrHandler:
             TryToString = False
         
         Case Else
-            Exception.UnhandledException ModuleName & ".TryToString"
+            Errors.OnUnhandledError ModuleName & ".TryToString"
             
     End Select
     

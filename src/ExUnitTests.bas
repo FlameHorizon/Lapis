@@ -29,8 +29,8 @@ Private Sub AreEqualFailTest()
     
     Dim Actual As TestResult
     ' We have to remove this TestResult as it is only relevant inside this method.
-    Set Actual = ExUnit.TestResults.Enumerator(TestResultSig)
-    ExUnit.TestResults.Enumerator.Remove TestResultSig
+    Set Actual = ExUnit.TestResults.Item(TestResultSig)
+    ExUnit.TestResults.Remove TestResultSig
     
     ' Assert
     ExUnit.AreEqual ExpectedDescription, Actual.Description, GetSig(MethodName)
@@ -56,15 +56,15 @@ Private Sub AreNotEqualFailTest()
     Const MethodName = "AreNotEqualFailTest"
 
     ' Arrange
-    Const ExpectedDescription As String = "Expected value [1] to not be equal but with the actual, but it is."
+    Const ExpectedDescription As String = "Expected value [1] to not be equal but with the actual, but it isn't."
     
     ' Act
     ExUnit.AreNotEqual 1, 1, TestResultSig
     
     Dim Actual As TestResult
     ' We have to remove this TestResult as it is only relevant inside this method.
-    Set Actual = ExUnit.TestResults.Enumerator(TestResultSig)
-    ExUnit.TestResults.Enumerator.Remove TestResultSig
+    Set Actual = ExUnit.TestResults.Item(TestResultSig)
+    ExUnit.TestResults.Remove TestResultSig
     
     ' Assert
     ExUnit.AreEqual ExpectedDescription, Actual.Description, GetSig(MethodName)

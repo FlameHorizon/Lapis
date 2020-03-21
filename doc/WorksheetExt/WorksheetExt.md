@@ -1,4 +1,4 @@
-# WorksheetH
+# WorksheetExt
 
 Collection of methods used to speed up work with worksheets.
 

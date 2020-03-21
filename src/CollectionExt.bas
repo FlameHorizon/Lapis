@@ -1,29 +1,14 @@
-Attribute VB_Name = "CollectionH"
+Attribute VB_Name = "CollectionExt"
 Option Explicit
 '@Folder("Helper")
 
 Private Const ModuleName = "CollectionHelper"
 
 
-Public Function ToCollectionIList(ByRef List As IList) As Collection
-
-    Dim Output As New Collection
-    Dim i As Long
-    
-    For i = 0 To List.Count - 1
-        Output.Add List.GetItem(i)
-    Next i
-    
-    Set ToCollectionIList = Output
-    Set Output = Nothing
-
-End Function
-
-
 Public Function ToString(ByRef Items As Collection, ByVal PropertyName As String) As String
     
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & ".ToString"
+        Errors.OnArgumentNull "Items", ModuleName & ".ToString"
     End If
     
     Dim Item As Variant
@@ -49,11 +34,11 @@ End Function
 Public Function GroupBy(ByRef Items As Collection, ByVal PropertyName As String) As Scripting.Dictionary
 
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & ".GroupBy"
+        Errors.OnArgumentNull "Items", ModuleName & ".GroupBy"
     End If
     
     If PropertyName = vbNullString Then
-        Exception.ArgumentException "PropertyName", _
+        Errors.OnArgumentError "PropertyName", _
                                     "Value of PropertyName can't be an empty string." & _
                                     ModuleName & ".GroupBy"
     End If
@@ -69,7 +54,7 @@ Public Function GroupBy(ByRef Items As Collection, ByVal PropertyName As String)
             Output.Add Prop, New Collection
         End If
         
-        Output(Prop).Add Item
+        Output.Item(Prop).Add Item
         
     Next Item
     
@@ -82,11 +67,11 @@ End Function
 Public Function Concat(ByRef Coll1 As Collection, ByRef Coll2 As Collection) As Collection
 
     If Coll1 Is Nothing Then
-        Exception.ArgumentNullException "Coll1", ModuleName & ".Concat"
+        Errors.OnArgumentNull "Coll1", ModuleName & ".Concat"
     End If
     
     If Coll2 Is Nothing Then
-        Exception.ArgumentNullException "Coll2", ModuleName & ".Concat"
+        Errors.OnArgumentNull "Coll2", ModuleName & ".Concat"
     End If
     
     Dim Output As New Collection
@@ -109,7 +94,7 @@ End Function
 Public Function ToArray(ByRef Items As Collection) As Variant()
 
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & "ToArray"
+        Errors.OnArgumentNull "Items", ModuleName & "ToArray"
     End If
 
     If Items.Count = 0 Then
@@ -138,7 +123,7 @@ End Function
 Public Function Distinct(ByRef Items As Collection, ByVal PropertyName As String) As Collection
     
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & ".Distinct"
+        Errors.OnArgumentNull "Items", ModuleName & ".Distinct"
     End If
 
     Dim CompareList As New Dictionary
@@ -174,11 +159,11 @@ Public Function DistinctValues(ByRef Items As Collection, ByRef Comparer As IVBA
     Const MethodName = "DistinctValues"
         
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
     End If
     
     If Comparer Is Nothing Then
-        Exception.ArgumentNullException "Comparer", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
     End If
     
     Dim Output As New Collection
@@ -203,11 +188,11 @@ Public Function IndexOf(ByVal Item As Variant, ByRef Items As Collection, ByRef 
     Const MethodName = "IndexOf"
     
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
     End If
     
     If Comparer Is Nothing Then
-        Exception.ArgumentNullException "Comparer", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
     End If
     
     Dim Ndx As Long: Ndx = 1
@@ -233,11 +218,11 @@ Public Sub AddRange(ByRef Container As Collection, ByRef Items As Collection)
     Const MethodName = "AddRange"
     
     If Container Is Nothing Then
-        Exception.ArgumentNullException "Container", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Container", ModuleName & "." & MethodName
     End If
     
     If Items Is Nothing Then
-        Exception.ArgumentNullException "Items", ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
     End If
     
     If Items.Count = 0 Then

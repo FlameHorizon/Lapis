@@ -1,4 +1,4 @@
-# DateH module
+# DateExt module
 
 Represents a collection of helper method to work with a date data type.
 
