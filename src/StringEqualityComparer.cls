@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '@Folder("Lapis")
 Option Explicit
 
-Implements IVBAEqualityComparer
+Implements IEqualityComparer
 
 
 Public Function Equals(ByVal x As String, ByVal y As String) As Boolean
@@ -31,8 +31,8 @@ Public Function Equals(ByVal x As String, ByVal y As String) As Boolean
 End Function
 
 
-Private Function IVBAEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
-    IVBAEqualityComparer_Equals = Equals(x, y)
+Private Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
+    IEqualityComparer_Equals = Equals(x, y)
 End Function
 
 

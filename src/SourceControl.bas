@@ -45,9 +45,9 @@ Public Sub ExportProjectComponents(ByVal Source As VBProject, ByVal Path As Stri
 
     If Source.Protection = vbext_pp_locked Then
         Errors.OnInvalidOperation "Source.Protection", _
-                                            "The VBA project, in this workbook is protected. " & _
-                                            "Therefore, it is not possible to export the components. " & _
-                                            "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
+                                  "The VBA project, in this workbook is protected. " & _
+                                  "Therefore, it is not possible to export the components. " & _
+                                  "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
     End If
     
     With New Scripting.FileSystemObject
@@ -180,9 +180,9 @@ Public Sub ImportProjectComponents(ByVal Target As Workbook, ByVal Path As Strin
 
     If Target.VBProject.Protection = vbext_pp_locked Then
         Errors.OnInvalidOperation "Target.VBProject.Protection", _
-                                            "The VBA project, in this workbook is protected " & _
-                                            "therefor, it is not possible to import the components. " & _
-                                            "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
+                                  "The VBA project, in this workbook is protected " & _
+                                  "therefor, it is not possible to import the components. " & _
+                                  "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
     End If
 
     If Tools.Fso.FolderExists(Path) = False Then
@@ -338,8 +338,8 @@ Private Function GetComponentName(ByVal File As Scripting.File) As String
     ' If, after walking through the file
     ' Attribute VB_Name was not found, thrown an Errors.
     Errors.OnArgumentError "File", _
-                                "Attribute VB_Name was not found in the file. " _
-                                & ModuleName & "." & MethodName
+                           "Attribute VB_Name was not found in the file. " _
+                           & ModuleName & "." & MethodName
 
 End Function
 
@@ -382,8 +382,8 @@ Private Function GetComponentByName(ByVal Source As Workbook, ByVal Name As Stri
     Next Cmp
     
     Errors.OnArgumentOutOfRange "Name", _
-                                          "Couldn't find the name component name [" & Name & "] in the Source workbook. " _
-                                          & ModuleName & ".GetComponentByName"
+                                "Couldn't find the name component name [" & Name & "] in the Source workbook. " _
+                                & ModuleName & ".GetComponentByName"
 
 End Function
 

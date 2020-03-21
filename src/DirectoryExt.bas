@@ -18,14 +18,14 @@ Public Sub CreateDirectory(ByVal Path As String)
     
     If Path = vbNullString Then
         Errors.OnArgumentError "Path", _
-                                    "Path can't be an empty string. " _
-                                    & ModuleName & "." & MethodName
+                               "Path can't be an empty string. " _
+                               & ModuleName & "." & MethodName
     End If
     
     If StringExt.Contains(Path, DirectorySeparatorChar) = False Then
         Errors.OnArgumentError "Path", _
-                                    "Path does have valid directory separator. " _
-                                    & ModuleName & "." & MethodName
+                               "Path does have valid directory separator. " _
+                               & ModuleName & "." & MethodName
     End If
     
     
@@ -81,7 +81,6 @@ End Sub
 Private Function BuildFolderPath(ByVal Path1 As String, ByVal Path2 As String) As String
     BuildFolderPath = Path1 & Path2 & "\"
 End Function
-
 
 
 

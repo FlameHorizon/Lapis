@@ -39,8 +39,8 @@ Public Function GroupBy(ByRef Items As Collection, ByVal PropertyName As String)
     
     If PropertyName = vbNullString Then
         Errors.OnArgumentError "PropertyName", _
-                                    "Value of PropertyName can't be an empty string." & _
-                                    ModuleName & ".GroupBy"
+                               "Value of PropertyName can't be an empty string." & _
+                               ModuleName & ".GroupBy"
     End If
     
     Dim Output As New Dictionary
@@ -148,13 +148,13 @@ Public Function Distinct(ByRef Items As Collection, ByVal PropertyName As String
 End Function
 
 
-Public Function Contains(ByVal Item As Variant, ByRef Items As Collection, ByRef Comparer As IVBAEqualityComparer) As Boolean
+Public Function Contains(ByVal Item As Variant, ByRef Items As Collection, ByRef Comparer As IEqualityComparer) As Boolean
     Contains = IndexOf(Item, Items, Comparer) >= 0
 End Function
 
 
 ' Returns a collection which contains distinct values from the Collection.
-Public Function DistinctValues(ByRef Items As Collection, ByRef Comparer As IVBAEqualityComparer) As Collection
+Public Function DistinctValues(ByRef Items As Collection, ByRef Comparer As IEqualityComparer) As Collection
         
     Const MethodName = "DistinctValues"
         
@@ -183,7 +183,7 @@ End Function
 
 
 ' Returns an index of an item in collection.
-Public Function IndexOf(ByVal Item As Variant, ByRef Items As Collection, ByRef Comparer As IVBAEqualityComparer) As Long
+Public Function IndexOf(ByVal Item As Variant, ByRef Items As Collection, ByRef Comparer As IEqualityComparer) As Long
 
     Const MethodName = "IndexOf"
     

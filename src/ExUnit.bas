@@ -42,8 +42,8 @@ Public Sub AreEqual(ByVal Expected As Variant, _
     
     If IsObject(Expected) Or IsObject(Actual) Then
         Errors.OnArgumentError vbNullString, _
-                                    "AreEqual supports only value type comparisons." _
-                                    & ModuleName & ".NotEqual"
+                               "AreEqual supports only value type comparisons." _
+                               & ModuleName & ".NotEqual"
     End If
     
     If Expected = Actual Then
@@ -63,8 +63,8 @@ Public Sub AreNotEqual(ByRef Expected As Variant, _
     
     If IsObject(Expected) Or IsObject(Actual) Then
         Errors.OnArgumentError vbNullString, _
-                                    "AreNotEqual supports only value type comparisons." _
-                                    & ModuleName & ".NotEqual"
+                               "AreNotEqual supports only value type comparisons." _
+                               & ModuleName & ".NotEqual"
     End If
     
     If Expected <> Actual Then
@@ -190,7 +190,7 @@ End Sub
 'Verifies that a collection contains a given object, using an equality comparer.
 Public Sub Contains(ByVal Expected As Variant, _
                     ByRef Items As Collection, _
-                    ByRef Comparer As IVBAEqualityComparer, _
+                    ByRef Comparer As IEqualityComparer, _
                     ByVal Source As String, _
                     Optional ByVal Msg As String)
                  
@@ -206,7 +206,7 @@ End Sub
 'Verifies that a collection contains a given object, using an equality comparer.
 Public Sub DoesNotContains(ByVal Expected As Variant, _
                            ByRef Items As Collection, _
-                           ByRef Comparer As IVBAEqualityComparer, _
+                           ByRef Comparer As IEqualityComparer, _
                            ByVal Source As String, _
                            Optional ByVal Msg As String)
                            
@@ -342,9 +342,6 @@ Public Sub PrintTestResults(Optional ByVal Printer As ITestResultPrinter)
     ResultPrinter.PrintMany pTestResults
     
 End Sub
-
-
-
 
 
 

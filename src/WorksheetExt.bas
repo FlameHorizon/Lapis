@@ -27,7 +27,7 @@ Public Function ListObjectExistAt(ByRef Location As Worksheet, ByVal ObjectName 
     
     If ObjectName = vbNullString Then
         Errors.OnArgumentError "ObjectName", "Value can't be an empty string. " & _
-                                                 ModuleName & "." & MethodName
+                                            ModuleName & "." & MethodName
     End If
     
     On Error GoTo ErrHandler
@@ -153,8 +153,6 @@ Public Function Last(ByVal Order As SearchLastOrder, ByRef Rng As Range) As Long
     End Select
     
 End Function
-
-
 
 
 

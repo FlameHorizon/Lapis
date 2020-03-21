@@ -11,6 +11,8 @@ Attribute VB_Exposed = True
 '@Folder("Lapis")
 Option Explicit
 
+' Info: Default implementation of IComparer which can handle case insensitive string comparison.
+
 Implements IComparer
 
 Private Const ClassName As String = "Comparer"
@@ -29,7 +31,7 @@ Public Function Compare(ByRef x As Variant, ByRef y As Variant) As Long
     End If
     
     If VarType(x) = vbString And VarType(y) = vbString Then
-        Compare = VBA.StrComp(x, y, vbTextCompare)
+        Compare = VBA.StrComp(x, y, VbCompareMethod.vbTextCompare)
     Else
         Errors.OnArgumentError vbNullString, ClassName & ".Compare"
     End If
