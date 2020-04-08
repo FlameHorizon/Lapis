@@ -2,7 +2,7 @@ Attribute VB_Name = "StringExt"
 Option Explicit
 '@Folder("Helper")
 
-Private Const ModuleName As String = "StringHelper"
+Private Const ModuleName As String = "StringExtelper"
 
 
 Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
@@ -49,8 +49,8 @@ Public Function IndexOf(ByVal Str As String, _
     
     If Str = vbNullString Then
         Errors.OnArgumentError "Str", _
-                                    "Str value can't be empty string. " _
-                                    & ModuleName & "." & MethodName
+                               "Str value can't be empty string. " _
+                               & ModuleName & "." & MethodName
     End If
     
     If Start < 0 Or Start > Len(Str) Then
@@ -289,6 +289,7 @@ Public Function LastIndexOf(ByVal Str As String, _
                     Exit For
                 End If
             Next i
+            
         Case Else
             Errors.OnArgumentOutOfRange "ComparisonMethod", "Not supported string comparison. " & MethodName & "." & MethodName
             
@@ -321,4 +322,6 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
     Next i
 
 End Function
+
+
 

@@ -78,3 +78,5 @@ Public Property Get NewEnum() As IUnknown
     Set NewEnum = pItems
 End Property
 
+
+

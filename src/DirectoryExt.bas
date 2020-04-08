@@ -27,14 +27,14 @@ Public Sub CreateDirectory(ByVal Path As String)
     
     If Path = vbNullString Then
         Errors.OnArgumentError "Path", _
-                                    "Path can't be an empty string. " _
-                                    & ModuleName & "." & MethodName
+                               "Path can't be an empty string. " _
+                               & ModuleName & "." & MethodName
     End If
     
     If StringExt.Contains(Path, DirectorySeparatorChar) = False Then
         Errors.OnArgumentError "Path", _
-                                    "Path does have valid directory separator. " _
-                                    & ModuleName & "." & MethodName
+                               "Path does have valid directory separator. " _
+                               & ModuleName & "." & MethodName
     End If
     
     

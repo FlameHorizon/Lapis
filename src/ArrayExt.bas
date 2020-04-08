@@ -146,7 +146,7 @@ Public Sub Clear(ByRef Arr() As Variant, ByVal Index As Long, ByVal Length As Lo
     
     If ArrayExt.Rank(Arr) <> 1 Then
         Errors.OnArgumentError "Arr", _
-                                    "Multi dimensions arrray are not supported. " & ModuleName & MethodName
+                               "Multi dimensions arrray are not supported. " & ModuleName & MethodName
     End If
     
     Dim Ndx As Long
@@ -423,8 +423,6 @@ Public Function StringArray(ParamArray Items() As Variant) As String()
     StringArray = Output
     
 End Function
-
-
 
 
 
