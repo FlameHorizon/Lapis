@@ -99,11 +99,11 @@ Public Sub RemoveFromFolder(ByVal Path As String, Optional ByRef SearchPattern A
     Const MethodName = "RemoveFromFolder"
     
     If Path = vbNullString Then
-        Errors.OnInvalidArgument "Path", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Path", ModuleName & "." & MethodName
     End If
     
     If SearchPattern = vbNullString Then
-        Errors.OnInvalidArgument "SearchPattern", ModuleName & "." & MethodName
+        Errors.OnArgumentError "SearchPattern", ModuleName & "." & MethodName
     End If
     
     If Not Tools.Fso.FolderExists(Path) Then
@@ -137,7 +137,7 @@ Public Function GetFiles(ByVal Path As String, Optional ByVal SearchPattern As S
     Const MethodName = "GetFiles"
 
     If Path = vbNullString Then
-        Errors.OnInvalidArgument "Path", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Path", ModuleName & "." & MethodName
     End If
 
     If Not Tools.Fso.FolderExists(Path) Then
@@ -145,12 +145,12 @@ Public Function GetFiles(ByVal Path As String, Optional ByVal SearchPattern As S
     End If
 
     If SearchPattern = vbNullString Then
-        Errors.OnInvalidArgument "SearchPattern", ModuleName & "." & MethodName
+        Errors.OnArgumentError "SearchPattern", ModuleName & "." & MethodName
     End If
 
     Dim Output As New Collection
 
-    If SearchOpt = AllDirectiories Then
+    If SearchOpt = SearchOption.AllDirectories Then
         Set Output = GetFilesRecursive(Path, SearchPattern)
     Else
         Set Output = GetFilesTopDirectory(Path, SearchPattern)
@@ -288,3 +288,5 @@ Public Function IsStreamClosed(ByRef Stream As ADODB.Stream) As Boolean
     End If
     
 End Function
+
+
