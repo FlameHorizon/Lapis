@@ -104,7 +104,7 @@ Private Sub IndexOfAnyThrowsArgumentExceptionWhenAnyOfArrayIsNotInitalizedTest()
     StringExt.IndexOfAny "ab", NotInit
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -149,7 +149,7 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
     ExUnit.AreEqual "foo", StringExt.Remove("foo-bar", -1), GetSig(MethodName)
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -163,7 +163,7 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThenLengthTest(
     ExUnit.AreEqual "foo", StringExt.Remove("foo-bar", 10), GetSig(MethodName)
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -209,7 +209,7 @@ Private Sub RemoveRangeThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
     StringExt.RemoveRange "a", -1, 0
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -221,7 +221,7 @@ Private Sub RemoveRangeThrowsArgumentOutOfRangeWhenCountIsNegetiveTest()
     StringExt.RemoveRange "a", 1, -1
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -233,7 +233,7 @@ Private Sub RemoveRangeThrowsArgumentOutOfRangeWhenStartIndexPlusCountIndexIsNot
     StringExt.RemoveRange "foo-bar", 3, 10
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -308,7 +308,7 @@ Private Sub EndsWithThrowsArgumentOutOfRangeWhenStringComparisonIsDatabaseCompar
     StringExt.EndsWith "aaa", "a", VbCompareMethod.vbDatabaseCompare
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -320,7 +320,7 @@ Private Sub EndsWithThrowsArgumentExceptionWhenStrIsNullStringTest()
     StringExt.EndsWith vbNullString, vbNullString, vbBinaryCompare
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -380,7 +380,7 @@ Private Sub StartsWithThrowsArgumentOutOfRangeWhenStringComparisonIsDatabaseComp
     StringExt.StartsWith "aaa", "a", VbCompareMethod.vbDatabaseCompare
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -392,7 +392,7 @@ Private Sub StartsWithThrowsArgumentExceptionWhenStrIsNullStringTest()
     StringExt.StartsWith vbNullString, vbNullString, vbBinaryCompare
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -422,7 +422,7 @@ Private Sub InsertThrowsArgumentExceptionWhenValueIsNullStringTest()
     StringExt.Insert "a", 0, vbNullString
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -433,7 +433,7 @@ Private Sub InsertThrowsArgumentOutOfRangeWhenStartIndexIsNegativeTest()
     Const MethodName = "InsertThrowsArgumentOutOfRangeWhenStartIndexIsNegativeTest"
     StringExt.Insert "a", -1, "a"
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -447,7 +447,7 @@ Private Sub InsertThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThanStrLenTest(
     ExUnit.AreEqual "aaa", StringExt.Insert("aaabbb", 10, "aaa"), GetSig(MethodName)
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -491,7 +491,7 @@ Private Sub LastIndexOfThrowsArgumentExceptionWhenStrIsNullStringTest()
     StringExt.LastIndexOf vbNullString, "a"
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -502,7 +502,7 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexIsLesserThanZeroTes
     Const MethodName = "LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexIsLesserThanZeroTest"
     StringExt.LastIndexOf "bbbaaa", "a", -1, Len("bbbaaa"), VbCompareMethod.vbTextCompare
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -513,7 +513,7 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThanStrLen
     Const MethodName = "LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexIsGreaterThanStrLen"
     StringExt.LastIndexOf "bbbaaa", "a", Len("bbbaaa") + 1, Len("bbbaaa"), VbCompareMethod.vbTextCompare
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -524,7 +524,7 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenWhenCountIsLesserThanZeroTest
     Const MethodName = "LastIndexOfThrowsArgumentOutOfRangeWhenWhenCountIsLesserThanZeroTest"
     StringExt.LastIndexOf "bbbaaa", "a", Len("bbbaaa") - 1, -1, VbCompareMethod.vbTextCompare
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -535,7 +535,7 @@ Private Sub LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexMinusCountIsLesserT
     Const MethodName = "LastIndexOfThrowsArgumentOutOfRangeWhenStartIndexMinusCountIsLesserThanZeroTest"
     StringExt.LastIndexOf "bbbaaa", "a", Len("bbbaaa") - 1, Len("bbbaaa") + 1, VbCompareMethod.vbTextCompare
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -546,7 +546,7 @@ Private Sub LastIndexOfThrowsThrowsArgumentOutOfRangeWhenWhenComparisonMethodIsD
     Const MethodName = "LastIndexOfThrowsThrowsArgumentOutOfRangeWhenWhenComparisonMethodIsDatabaseTest"
     StringExt.LastIndexOf "bbbaaa", "a", Len("bbbaaa") - 1, Len("bbbaaa"), VbCompareMethod.vbDatabaseCompare
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
 
 End Sub
 
@@ -594,7 +594,7 @@ Private Sub LastIndexOfAnyThrowsArgumentExceptionWhenAnyOfArrayIsNotInitalizedTe
     StringExt.LastIndexOfAny "ab", NotInit
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -609,7 +609,7 @@ Private Sub LastIndexOfAnyThrowsArgumentExceptionWhenAnyOfIsEmpty()
     ExUnit.AreEqual 0, StringExt.LastIndexOfAny("ab", EmptyArr), GetSig(MethodName)
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
     
 End Sub
 

@@ -45,7 +45,7 @@ Private Sub ThrowArgumentNullExceptionWhenInitialCapacityIsNegativeTest()
     Dim Stack As New Stack: Stack.Init1 -1
     
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentOutOfRange, Err.Number, GetSig(MethodName)
     
 End Sub
 

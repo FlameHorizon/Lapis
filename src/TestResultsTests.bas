@@ -108,7 +108,7 @@ Private Sub AddThrowsArgumentNullExceptionWhenItemIsNothing()
     ' Assert
     Exit Sub
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentNull, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentNull, Err.Number, GetSig(MethodName)
     
 End Sub
 
@@ -131,7 +131,7 @@ Private Sub AddThrowsArgumentExceptionWhenItemSourceIsVbNullString()
     TestResults.Add Item
 
 ErrHandler:
-    ExUnit.IsException ExceptionCode.ArgumentException, Err.Number, GetSig(MethodName)
+    ExUnit.IsException ErrorCode.ArgumentException, Err.Number, GetSig(MethodName)
 
 End Sub
 

@@ -5,27 +5,73 @@ Option Explicit
 Private Const ModuleName = "CollectionHelper"
 
 
-Public Function ToString(ByRef Items As Collection, ByVal PropertyName As String) As String
-    
+Public Function ToString(ByVal Items As Collection, _
+                         ByVal Converter As IToString, _
+                         Optional ByVal Delimiter As String = ",") As String
+
+    Const MethodName = "ToString"
+
     If Items Is Nothing Then
-        Errors.OnArgumentNull "Items", ModuleName & ".ToString"
+        Lapis.Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
     End If
-    
-    Dim Item As Variant
-    Dim Str As String
-    
-    If Items.Count = 1 Then
-        ToString = CallByName(Items.Item(1), PropertyName, VbGet)
+
+    If Converter Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Converter", ModuleName & "." & MethodName
+    End If
+
+    If Items.Count = 0 Then
+        ToString = vbNullString
         Exit Function
     End If
     
+    Dim Output As String
+    Dim Item As Variant
     For Each Item In Items
-        Str = Str & ", " & CallByName(Item, PropertyName, VbGet)
+        On Error Resume Next
+        Output = Output & Delimiter & Converter.ToString(Item)
+        
+        If Err.Number = ErrorNumber.ObjectRequired Or Err.Number = ErrorNumber.TypeMismatch Then
+            On Error GoTo 0
+            Errors.OnInvalidOperation vbNullString, _
+                                      "Given convert was not able to convert value of collection into string. " _
+                                      & ModuleName & "." & MethodName
+                                       
+        ElseIf Err.Number = ErrorNumber.ObjectVariableOrWithBlockVariableNotSet Then
+            On Error GoTo 0
+            Errors.OnInvalidOperation vbNullString, _
+                                      "Given item, inside collection is not set. " _
+                                      & ModuleName & "." & MethodName
+        
+        ElseIf Err.Number = ErrorNumber.ObjectDoesntSupportThisPropertyOrMethod Then
+            On Error GoTo 0
+            Errors.OnArgumentOutOfRange vbNullString, _
+                                        "Given property is not a party of object. " _
+                                        & ModuleName & "." & MethodName
+            
+        End If
+        On Error GoTo 0
+        
     Next Item
     
-    Str = Replace(Str, ", ", vbNullString, 1, 1)
-    ToString = Str
+    Output = StringExt.RemoveRange(Output, 0, Len(Delimiter))
+    ToString = Output
+
+End Function
+
+
+' Returns a string which represents collection of objects based on the implementation
+' of ToString method of each object within Items collecion.
+Public Function ToStringByProperty(ByVal Items As Collection, _
+                                   ByVal PropertyName As String) As String
     
+    If Items Is Nothing Then
+        Errors.OnArgumentNull "Items", ModuleName & ".ToStriToStringByPropertyng"
+    End If
+    
+    Dim Converter As New PropertyToStringConverter
+    Converter.PropertyName = PropertyName
+    ToStringByProperty = CollectionExt.ToString(Items, Converter)
+
 End Function
 
 

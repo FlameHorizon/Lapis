@@ -461,7 +461,7 @@ Public Function TryToString(ByVal Value As ErrorNumber, ByRef Out As String) As 
     Exit Function
 ErrHandler:
     Select Case Err.Number
-        Case ExceptionCode.ArgumentOutOfRange
+        Case ErrorCode.ArgumentOutOfRange
             TryToString = False
         
         Case Else

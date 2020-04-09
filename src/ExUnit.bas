@@ -276,7 +276,7 @@ End Sub
 
 
 ' Verifies that expected error code matches actual error code.
-Public Sub IsException(ByVal Expected As ExceptionCode, _
+Public Sub IsException(ByVal Expected As ErrorCode, _
                        ByVal Actual As Long, _
                        ByVal Source As String, _
                        Optional ByVal Msg As String)
@@ -304,7 +304,7 @@ Private Function FormatExpectedAndActualExceptions(ByVal Expected As Long, _
 End Function
 
 
-' Returns name of the exception based on the ExceptionCode
+' Returns name of the exception based on the ErrorCode
 ' or VBAErrorCode enumerators.
 ' Some errors may not be defined, then
 ' number of the error (ExpCode) will be returned instead.

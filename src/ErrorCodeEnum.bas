@@ -4,7 +4,7 @@ Option Explicit
 
 Private Const ModuleName As String = "ExceptionCodeEnum"
 
-Public Enum ExceptionCode
+Public Enum ErrorCode
     
     ArgumentNull = 513
     ArgumentOutOfRange = 514
@@ -22,7 +22,7 @@ Public Enum ExceptionCode
 End Enum
 
 
-Public Function ToString(ByVal Value As ExceptionCode) As String
+Public Function ToString(ByVal Value As ErrorCode) As String
 
     Select Case Value
         Case ArgumentNull
@@ -69,7 +69,7 @@ Public Function ToString(ByVal Value As ExceptionCode) As String
 End Function
 
 
-Public Function TryToString(ByVal Value As ExceptionCode, ByRef Out As String) As Boolean
+Public Function TryToString(ByVal Value As ErrorCode, ByRef Out As String) As Boolean
     
     On Error GoTo ErrHandler
     Out = ErrorCodeEnum.ToString(Value)
@@ -78,7 +78,7 @@ Public Function TryToString(ByVal Value As ExceptionCode, ByRef Out As String) A
     Exit Function
 ErrHandler:
     Select Case Err.Number
-        Case ExceptionCode.ArgumentOutOfRange
+        Case ErrorCode.ArgumentOutOfRange
             TryToString = False
         
         Case Else

@@ -14,6 +14,7 @@ Public Sub Start()
     ImmediatePrinterFormatterTests.Start
     ExUnitTests.Start
     TreeNodeTests.Start
+    CollectionTests.Start
 
     ' By defualt, method will print test results in the Immediate window.
     ExUnit.PrintTestResults
