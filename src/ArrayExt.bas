@@ -426,3 +426,110 @@ End Function
 
 
 
+Public Sub Sort(ByRef Items() As Variant, ByVal Comparer As Lapis.IComparer)
+
+    Dim CopyOf() As Variant
+    ReDim CopyOf(0 To ArrayExt.Length(Items))
+    ArrayExt.Copy Items, 0, CopyOf, 0, ArrayExt.Length(Items)
+    MergeSort CopyOf, Items, 0, Length(Items), 0, Comparer
+
+End Sub
+
+
+Private Sub MergeSort(ByRef Src() As Variant, _
+                      ByRef Dest() As Variant, _
+                      ByVal Low As Long, _
+                      ByVal High As Long, _
+                      ByVal Off As Long, _
+                      ByVal Comparer As Lapis.IComparer)
+    
+    Const InsertsortThreshold As Long = 7
+    
+    Dim Length As Long
+    Dim DestLow As Long
+    Dim DestHigh As Long
+    Dim Mid As Long
+    Dim i As Long
+    Dim p As Long
+    Dim q As Long
+
+    Length = High - Low
+
+    ' Insertion sort on small arrays
+    If Length < InsertsortThreshold Then
+        i = Low
+        Dim j As Long
+        Do While i < High
+            j = i
+            Do While True
+                If (j <= Low) Then
+                    Exit Do
+                End If
+                If (Comparer.Compare(Dest(j - 1), Dest(j)) <= 0) Then
+                    Exit Do
+                End If
+                Swap Dest, j, j - 1
+                j = j - 1
+            Loop
+            i = i + 1
+        Loop
+        Exit Sub
+    End If
+
+    ' Recursively sort halves of dest into src
+    DestLow = Low
+    DestHigh = High
+    Low = Low + Off
+    High = High + Off
+    Mid = (Low + High) / 2
+    MergeSort Dest, Src, Low, Mid, -Off, Comparer
+    MergeSort Dest, Src, Mid, High, -Off, Comparer
+
+    ' If list is already sorted, we're done
+    If Comparer.Compare(Src(Mid - 1), Src(Mid)) <= 0 Then
+        ArrayExt.Copy Src, Low, Dest, DestLow, Length - 1
+        Exit Sub
+    End If
+
+    ' Merge sorted halves into dest
+    i = DestLow
+    p = Low
+    q = Mid
+    Do While i < DestHigh
+        If (q >= High) Then
+           Set Dest(i) = Src(p)
+           p = p + 1
+        Else
+            ' Otherwise, check if p<mid AND src(p) precedes scr(q)
+            ' See description of following idom at: https://stackoverflow.com/a/3245183/3795219
+            Select Case True
+               Case p >= Mid, Comparer.Compare(Src(p), Src(q)) > 0
+                   Set Dest(i) = Src(q)
+                   q = q + 1
+               Case Else
+                   Set Dest(i) = Src(p)
+                   p = p + 1
+            End Select
+        End If
+
+        i = i + 1
+    Loop
+
+End Sub
+
+
+Private Sub Swap(ByRef Arr() As Variant, ByVal MoveFrom As Long, ByVal MoveTo As Long)
+
+    Dim Item As Variant
+    If IsObject(Arr(MoveTo)) Then
+        Set Item = Arr(MoveTo)
+        Set Arr(MoveTo) = Arr(MoveFrom)
+        Set Arr(MoveFrom) = Item
+    Else
+        Item = Arr(MoveTo)
+        Arr(MoveTo) = Arr(MoveFrom)
+        Arr(MoveFrom) = Item
+    End If
+
+End Sub
+

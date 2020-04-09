@@ -283,4 +283,14 @@ Public Sub AddRange(ByRef Container As Collection, ByRef Items As Collection)
 End Sub
 
 
-
+' Sorts the given collection using the MergeSort algorithm.
+' O(n log(n)) time
+' O(n) space
+Public Function Sort(ByVal Items As Collection, Optional ByVal Comparer As Lapis.IComparer) As Collection
+    
+    Dim Arr1() As Variant
+    Arr1 = CollectionExt.ToArray(Items)
+    ArrayExt.Sort Arr1, Comparer
+    Set Sort = ArrayExt.ToCollection(Arr1)
+    
+End Function
