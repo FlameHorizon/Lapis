@@ -374,3 +374,44 @@ Public Function Intersect(ByVal First As Collection, _
 
 End Function
 
+
+' Returns the minimum value in a sequence of values.
+Public Function Min(ByVal Source As Collection, ByVal Comparer As IComparer) As Variant
+
+    Const MethodName = "Min"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Comparer Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    End If
+    
+    Dim Item As Variant
+    Dim Value As Variant
+    If IsObject(Source.Item(1)) Then
+        Set Value = Source.Item(1)
+        
+        For Each Item In Source
+            If (Item Is Nothing) = False And (Value Is Nothing Or Comparer.Compare(Item, Value) < 0) Then
+                Set Value = Item
+            End If
+        Next Item
+        Set Min = Value
+        
+    Else
+        Value = Source.Item(1)
+        For Each Item In Source
+            If Comparer.Compare(Item, Value) < 0 Then
+                Value = Item
+            End If
+        Next Item
+        Min = Value
+        
+    End If
+
+End Function
+
+
+

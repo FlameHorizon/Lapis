@@ -8,7 +8,7 @@ Private Const ModuleName As String = "CollectionTests"
 Public Sub Start()
 
     ToStringValueTypesTest
-    ToStringReturnArgumentNullErrorWhenSourceIsNothingTest
+    ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest
     ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest
     ToStringReturnsEmptyStringWhenSourceIsEmptyTest
     ToStringReturnsStringWithDefinedDelimeterTest
@@ -43,6 +43,13 @@ Public Sub Start()
     IntersectReturnsArgumentNullErrorIfSecondIsNothingTest
     IntersectReturnsArgumentNullErrorIfComparerIsNothingTest
     
+    MinWhenSourceContainsValueTypesTest
+    MinWhenSourceContainsReferencedTypesTest
+    MinReturnsArgumentNullErrorWhenSourceIsNothingTest
+    MinReturnsArgumentNullErrorWhenComparerIsNothingTest
+    MinReturnsLowestValueWhenNothingIsPresentTest
+    MinReturnsNothingWhenOnlyNothingIsPresentTest
+    
 End Sub
 
 
@@ -70,11 +77,11 @@ Private Function GetSig(ByVal MethodName As String) As String
 End Function
 
 
-Private Sub ToStringReturnArgumentNullErrorWhenSourceIsNothingTest()
+Private Sub ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest()
 
     On Error GoTo ErrHandler
     Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "ToStringReturnArgumentNullErrorWhenSourceIsNothingTest"
+    Const MethodName = "ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest"
 
     ' Act & Assert
     CollectionExt.ToString Nothing, New ValueTypeToStringConverter
@@ -553,7 +560,6 @@ ErrHandler:
 End Sub
 
 
-
 Private Sub IntersectReturnsArgumentNullErrorIfFirstIsNothingTest()
 
     On Error GoTo ErrHandler
@@ -607,8 +613,6 @@ Private Sub IntersectReturnsEmptyCollectionWhenFirstIsEmpty()
     On Error GoTo ErrHandler
     Const MethodName = "IntersectReturnsEmptyCollectionWhenFirstIsEmpty"
 
-    ' Arrange
-
     ' Act
     Dim Actual As Collection
     Set Actual = CollectionExt.Intersect(New Collection, CollectionExt.Make(2, 3), New LongEqualityComparer)
@@ -621,3 +625,124 @@ ErrHandler:
     Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
+
+
+Private Sub MinWhenSourceContainsValueTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MinWhenSourceContainsValueTypesTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Min(CollectionExt.Make(3, 2, 1), New LongComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 1, Actual, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MinWhenSourceContainsReferencedTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MinWhenSourceContainsReferencedTypesTest"
+
+    ' Arrange
+    Dim Source As New Collection
+    Source.Add CollectionExt.Make(1, 2)
+    Source.Add CollectionExt.Make(1)
+
+    ' Act
+    Dim Actual As Object
+    Set Actual = CollectionExt.Min(Source, New TestCollectionComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MinReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "MinReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Min Nothing, New LongComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MinReturnsArgumentNullErrorWhenComparerIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "MinReturnsArgumentNullErrorWhenComparerIsNothingTest"
+
+    ' Act
+    CollectionExt.Min New Collection, Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MinReturnsLowestValueWhenNothingIsPresentTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MinReturnsLowestValueWhenNothingIsPresentTest"
+
+    ' Arrange
+    Dim Source As Collection
+    Set Source = CollectionExt.Make(New Collection, Nothing, CollectionExt.Make(1))
+    
+    ' Act
+    Dim Actual As Object
+    Set Actual = CollectionExt.Min(Source, New TestCollectionComparer)
+
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MinReturnsNothingWhenOnlyNothingIsPresentTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MinReturnsNothingWhenOnlyNothingIsPresentTest"
+
+    ' Act
+    Dim Actual As Object
+    Set Actual = CollectionExt.Min(CollectionExt.Make(Nothing), New TestCollectionComparer)
+    
+    ' Assert
+    ExUnit.AreSame Nothing, Actual, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+
