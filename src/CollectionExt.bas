@@ -342,3 +342,35 @@ Public Function Except(ByVal First As Collection, _
 
 End Function
 
+
+' Produces the set intersection of two sequences by using the specified IEqualityComparer to compare values.
+Public Function Intersect(ByVal First As Collection, _
+                          ByVal Second As Collection, _
+                          ByVal Comparer As IEqualityComparer) As Collection
+
+    Const MethodName = "Intersect"
+    
+    If First Is Nothing Then
+        Lapis.Errors.OnArgumentNull "First", ModuleName & "." & MethodName
+    End If
+    
+    If Second Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Second", ModuleName & "." & MethodName
+    End If
+    
+    If Comparer Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim Item As Variant
+    For Each Item In First
+        If CollectionExt.Contains(Second, Item, Comparer) Then
+            Output.Add Item
+        End If
+    Next Item
+    
+    Set Intersect = Output
+
+End Function
+

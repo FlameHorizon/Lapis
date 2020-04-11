@@ -36,6 +36,13 @@ Public Sub Start()
     ExceptReturnsArgumentNullErrorIfSecondIsNothingTest
     ExceptReturnsArgumentNullErrorIfComparerIsNothingTest
     
+    IntersectTest
+    IntersectReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest
+    IntersectReturnsEmptyCollectionWhenFirstIsEmpty
+    IntersectReturnsArgumentNullErrorIfFirstIsNothingTest
+    IntersectReturnsArgumentNullErrorIfSecondIsNothingTest
+    IntersectReturnsArgumentNullErrorIfComparerIsNothingTest
+    
 End Sub
 
 
@@ -503,3 +510,114 @@ ErrHandler:
 
 End Sub
 
+
+Private Sub IntersectTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IntersectTest"
+    
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Intersect(CollectionExt.Make(1, 2, 3), _
+                                         CollectionExt.Make(2, 3), _
+                                         New LongEqualityComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 2, Actual.Item(1), GetSig(MethodName)
+    ExUnit.AreEqual 3, Actual.Item(2), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+    
+End Sub
+
+
+Private Sub IntersectReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IntersectReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Intersect(New Collection, New Collection, New LongEqualityComparer)
+
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+
+Private Sub IntersectReturnsArgumentNullErrorIfFirstIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "IntersectReturnsArgumentNullErrorIfFirstIsNothingTest"
+
+    ' Act
+    CollectionExt.Intersect Nothing, New Collection, New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IntersectReturnsArgumentNullErrorIfSecondIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "IntersectReturnsArgumentNullErrorIfSecondIsNothingTest"
+    
+    ' Act
+    CollectionExt.Intersect New Collection, Nothing, New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IntersectReturnsArgumentNullErrorIfComparerIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "IntersectReturnsArgumentNullErrorIfComparerIsNothingTest"
+
+    ' Act
+    CollectionExt.Intersect New Collection, New Collection, Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IntersectReturnsEmptyCollectionWhenFirstIsEmpty()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IntersectReturnsEmptyCollectionWhenFirstIsEmpty"
+
+    ' Arrange
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Intersect(New Collection, CollectionExt.Make(2, 3), New LongEqualityComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
