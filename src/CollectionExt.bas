@@ -1,6 +1,6 @@
 Attribute VB_Name = "CollectionExt"
-Option Explicit
 '@Folder("Helper")
+Option Explicit
 
 Private Const ModuleName = "CollectionHelper"
 
@@ -59,11 +59,11 @@ End Function
 
 
 ' Returns a string which represents collection of objects based on the implementation
-' of ToString method of each object within Source collecion.
+' of ToString method of each object within Source collection.
 Public Function ToStringByProperty(ByVal Source As Collection, ByVal PropertyName As String) As String
     
     If Source Is Nothing Then
-        Errors.OnArgumentNull "Source", ModuleName & ".ToStriToStringByPropertyng"
+        Errors.OnArgumentNull "Source", ModuleName & ".ToStringToStringByProperty"
     End If
     
     Dim Converter As New PropertyToStringConverter
@@ -317,10 +317,28 @@ Public Function Except(ByVal First As Collection, _
                        ByVal Comparer As IEqualityComparer) As Collection
     
     Const MethodName = "Except"
-    Lapis.Errors.OnNotImplemented vbNullString, "CollectionExt.Except"
+    
+    If First Is Nothing Then
+        Lapis.Errors.OnArgumentNull "First", ModuleName & "." & MethodName
+    End If
+    
+    If Second Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Second", ModuleName & "." & MethodName
+    End If
+    
+    If Comparer Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim Item As Variant
+    For Each Item In First
+        If CollectionExt.Contains(Second, Item, Comparer) = False Then
+            Output.Add Item
+        End If
+    Next Item
+    
+    Set Except = Output
 
 End Function
-
-
-
 

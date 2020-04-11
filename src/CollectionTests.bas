@@ -28,7 +28,14 @@ Public Sub Start()
     DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest
     DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest
     DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest
-        
+    
+    ExceptTest
+    ExceptReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest
+    ExceptReturnsEmptyCollectionWhenFirstIsEmptyTest
+    ExceptReturnsArgumentNullErrorIfFirstIsNothingTest
+    ExceptReturnsArgumentNullErrorIfSecondIsNothingTest
+    ExceptReturnsArgumentNullErrorIfComparerIsNothingTest
+    
 End Sub
 
 
@@ -290,7 +297,7 @@ Private Sub ToStringByPropertyReturnsArgumentOutOfRangeErrorWhenPropertyDoesNotE
 
     ' Act
     Dim Actual As String
-    Actual = CollectionExt.ToStringByProperty(CollectionExt.Make(ThisWorkbook, ThisWorkbook), "NotExistsingProperty")
+    Actual = CollectionExt.ToStringByProperty(CollectionExt.Make(ThisWorkbook, ThisWorkbook), "NotExistingProperty")
 
     ' Assert
 ErrHandler:
@@ -390,4 +397,109 @@ ErrHandler:
 
 End Sub
 
+
+Private Sub ExceptTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "ExceptTest"
+    
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Except(CollectionExt.Make(1, 2, 3), CollectionExt.Make(1, 3), New LongEqualityComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 2, Actual.Item(1), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ExceptReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "ExceptReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Except(New Collection, New Collection, New LongEqualityComparer)
+
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ExceptReturnsEmptyCollectionWhenFirstIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "ExceptReturnsEmptyCollectionWhenFirstIsEmptyTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Except(New Collection, CollectionExt.Make(1, 2, 3), New LongEqualityComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ExceptReturnsArgumentNullErrorIfFirstIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ExceptReturnsArgumentNullErrorIfFirstIsNothingTest"
+
+    ' Act
+    CollectionExt.Except Nothing, New Collection, New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ExceptReturnsArgumentNullErrorIfSecondIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ExceptReturnsArgumentNullErrorIfSecondIsNothingTest"
+    
+    ' Act
+    CollectionExt.Except New Collection, Nothing, New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ExceptReturnsArgumentNullErrorIfComparerIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ExceptReturnsArgumentNullErrorIfComparerIsNothingTest"
+
+    ' Act
+    CollectionExt.Except New Collection, New Collection, Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
 
