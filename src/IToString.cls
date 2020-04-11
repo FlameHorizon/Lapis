@@ -10,5 +10,4 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public Function ToString(ByVal Obj As Variant) As String
-
 End Function

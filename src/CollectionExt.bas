@@ -29,7 +29,6 @@ Public Function ToString(ByVal Items As Collection, _
     For Each Item In Items
         On Error Resume Next
         Output = Output & Delimiter & Converter.ToString(Item)
-        
         If Err.Number = ErrorNumber.ObjectRequired Or Err.Number = ErrorNumber.TypeMismatch Then
             On Error GoTo 0
             Errors.OnInvalidOperation vbNullString, _
@@ -47,10 +46,10 @@ Public Function ToString(ByVal Items As Collection, _
             Errors.OnArgumentOutOfRange vbNullString, _
                                         "Given property is not a party of object. " _
                                         & ModuleName & "." & MethodName
-            
+        
         End If
         On Error GoTo 0
-        
+ 
     Next Item
     
     Output = StringExt.RemoveRange(Output, 0, Len(Delimiter))
@@ -61,8 +60,7 @@ End Function
 
 ' Returns a string which represents collection of objects based on the implementation
 ' of ToString method of each object within Items collecion.
-Public Function ToStringByProperty(ByVal Items As Collection, _
-                                   ByVal PropertyName As String) As String
+Public Function ToStringByProperty(ByVal Items As Collection, ByVal PropertyName As String) As String
     
     If Items Is Nothing Then
         Errors.OnArgumentNull "Items", ModuleName & ".ToStriToStringByPropertyng"
@@ -166,31 +164,29 @@ Public Function ToArray(ByRef Items As Collection) As Variant()
 End Function
 
 
-Public Function Distinct(ByRef Items As Collection, ByVal PropertyName As String) As Collection
+' Returns distinct elements from a sequence.
+Public Function Distinct(ByVal Source As Collection, ByVal Comparer As IEqualityComparer) As Collection
+
+    Const MethodName = "Distinct"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
     
-    If Items Is Nothing Then
-        Errors.OnArgumentNull "Items", ModuleName & ".Distinct"
+    If Comparer Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Comparer", MethodName & "." & MethodName
     End If
 
-    Dim CompareList As New Dictionary
     Dim Output As New Collection
-    Dim PropValue As Variant
-    Dim Item As Object
-    
-    For Each Item In Items
-        PropValue = CallByName(Item, PropertyName, VbGet)
-        
-        If Not CompareList.Exists(PropValue) Then
-            CompareList.Add PropValue, PropValue
+    Dim Item As Variant
+    For Each Item In Source
+        If CollectionExt.Contains(Item, Output, Comparer) = False Then
             Output.Add Item
         End If
-        
     Next Item
     
     Set Distinct = Output
-    Set Output = Nothing
-    Set CompareList = Nothing
-    
+
 End Function
 
 
@@ -292,5 +288,19 @@ Public Function Sort(ByVal Items As Collection, Optional ByVal Comparer As Lapis
     Arr1 = CollectionExt.ToArray(Items)
     ArrayExt.Sort Arr1, Comparer
     Set Sort = ArrayExt.ToCollection(Arr1)
+    
+End Function
+
+
+' Helper method which allows to create collection in one line.
+Public Function Make(ParamArray Items() As Variant) As Collection
+    
+    Dim Output As New Collection
+    Dim Item As Variant
+    For Each Item In Items
+        Output.Add Item
+    Next Item
+    
+    Set Make = Output
     
 End Function

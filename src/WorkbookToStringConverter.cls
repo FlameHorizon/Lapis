@@ -11,6 +11,7 @@ Option Explicit
 
 Implements IToString
 
+
 Public Function ToString(ByVal Obj As Workbook) As String
     ToString = Obj.Name
 End Function

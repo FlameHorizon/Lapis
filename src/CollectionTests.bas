@@ -1,4 +1,5 @@
 Attribute VB_Name = "CollectionTests"
+'@Folder("Tests")
 Option Explicit
 
 Private Const ModuleName As String = "CollectionTests"
@@ -6,29 +7,35 @@ Private Const ModuleName As String = "CollectionTests"
 
 Public Sub Start()
 
-    IToStringValueTypesTest
-    IToStringReturnArgumentNullErrorWhenCollectionIsNothingTest
-    IToStringReturnsArgumentNullErrorWhenConverterIsNothingTest
-    IToStringReturnsEmptyStringWhenCollectionIsEmptyTest
-    IToStringReturnsStringWithDefinedDelimeterTest
-    IToStringReturnsStringWhenDelimterIsNullStringTest
-    IToStringReturnsStringWhenItemsAreNumbersTest
-    IToStringReturnsStringWhenItemsAreMixedValueTypesTest
-    IToStringReturnsStringWhenItemsContainsObjectsTest
-    IToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest
-    IToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest
-    IToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest
+    ToStringValueTypesTest
+    ToStringReturnArgumentNullErrorWhenCollectionIsNothingTest
+    ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest
+    ToStringReturnsEmptyStringWhenCollectionIsEmptyTest
+    ToStringReturnsStringWithDefinedDelimeterTest
+    ToStringReturnsStringWhenDelimterIsNullStringTest
+    ToStringReturnsStringWhenItemsAreNumbersTest
+    ToStringReturnsStringWhenItemsAreMixedValueTypesTest
+    ToStringReturnsStringWhenItemsContainsObjectsTest
+    ToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest
+    ToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest
+    ToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest
     
     ToStringByPropertyTest
     ToStringByPropertyReturnsArgumentOutOfRangeErrorWhenPropertyDoesNotExistsTest
+    
+    DistinctTest
+    DistinctReturnsItemWhenSingleItemGivenTest
+    DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest
+    DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest
+    DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest
         
 End Sub
 
 
-Private Sub IToStringValueTypesTest()
+Private Sub ToStringValueTypesTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringValueTypesTest"
+    Const MethodName = "ToStringValueTypesTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -54,11 +61,11 @@ Private Function GetSig(ByVal MethodName As String) As String
 End Function
 
 
-Private Sub IToStringReturnArgumentNullErrorWhenCollectionIsNothingTest()
+Private Sub ToStringReturnArgumentNullErrorWhenCollectionIsNothingTest()
 
     On Error GoTo ErrHandler
     Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "IToStringReturnArgumentNullErrorWhenCollectionIsNothingTest"
+    Const MethodName = "ToStringReturnArgumentNullErrorWhenCollectionIsNothingTest"
 
     ' Act & Assert
     CollectionExt.ToString Nothing, New ValueTypeToStringConverter
@@ -70,11 +77,11 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsArgumentNullErrorWhenConverterIsNothingTest()
+Private Sub ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest()
 
     On Error GoTo ErrHandler
     Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "IToStringReturnsArgumentNullErrorWhenConverterIsNothingTest"
+    Const MethodName = "ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest"
 
     ' Act
     CollectionExt.ToString New Collection, Nothing
@@ -86,10 +93,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsEmptyStringWhenCollectionIsEmptyTest()
+Private Sub ToStringReturnsEmptyStringWhenCollectionIsEmptyTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringReturnsEmptyStringWhenCollectionIsEmptyTest"
+    Const MethodName = "ToStringReturnsEmptyStringWhenCollectionIsEmptyTest"
     
     ' Act
     Dim Actual As String
@@ -105,10 +112,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsStringWithDefinedDelimeterTest()
+Private Sub ToStringReturnsStringWithDefinedDelimeterTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringReturnsStringWithDefinedDelimeterTest"
+    Const MethodName = "ToStringReturnsStringWithDefinedDelimeterTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -129,10 +136,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsStringWhenDelimterIsNullStringTest()
+Private Sub ToStringReturnsStringWhenDelimterIsNullStringTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringReturnsStringWhenDelimterIsNullStringTest"
+    Const MethodName = "ToStringReturnsStringWhenDelimterIsNullStringTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -154,10 +161,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsStringWhenItemsAreNumbersTest()
+Private Sub ToStringReturnsStringWhenItemsAreNumbersTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringReturnsStringWhenItemsAreNumbersTest"
+    Const MethodName = "ToStringReturnsStringWhenItemsAreNumbersTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -179,10 +186,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsStringWhenItemsAreMixedValueTypesTest()
+Private Sub ToStringReturnsStringWhenItemsAreMixedValueTypesTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringReturnsStringWhenItemsAreMixedValueTypesTest"
+    Const MethodName = "ToStringReturnsStringWhenItemsAreMixedValueTypesTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -206,10 +213,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsStringWhenItemsContainsObjectsTest()
+Private Sub ToStringReturnsStringWhenItemsContainsObjectsTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IToStringReturnsStringWhenItemsContainsObjectsTest"
+    Const MethodName = "ToStringReturnsStringWhenItemsContainsObjectsTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -230,11 +237,11 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest()
+Private Sub ToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest()
 
     On Error GoTo ErrHandler
     Const ExpectedError As Long = ErrorCode.InvalidOperation
-    Const MethodName = "IToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest"
+    Const MethodName = "ToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -251,11 +258,11 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest()
+Private Sub ToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest()
 
     On Error GoTo ErrHandler
     Const ExpectedError As Long = ErrorCode.InvalidOperation
-    Const MethodName = "IToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest"
+    Const MethodName = "ToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -272,11 +279,11 @@ ErrHandler:
 End Sub
 
 
-Private Sub IToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest()
+Private Sub ToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest()
 
     On Error GoTo ErrHandler
     Const ExpectedError As Long = ErrorCode.InvalidOperation
-    Const MethodName = "IToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest"
+    Const MethodName = "ToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest"
 
     ' Arrange
     Dim Coll As New Collection
@@ -332,6 +339,99 @@ Private Sub ToStringByPropertyReturnsArgumentOutOfRangeErrorWhenPropertyDoesNotE
     Dim Actual As String
     Actual = CollectionExt.ToStringByProperty(Coll, "NotExistsingProperty")
 
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+
+Private Sub DistinctTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "DistinctTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Distinct(CollectionExt.Make(1, 2, 3, 2), New LongEqualityComparer)
+
+    ' Assert
+    ExUnit.AreEqual 3, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
+    ExUnit.AreEqual 2, Actual.Item(2), GetSig(MethodName)
+    ExUnit.AreEqual 3, Actual.Item(3), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub DistinctReturnsItemWhenSingleItemGivenTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "DistinctReturnsItemWhenSingleItemGivenTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Distinct(CollectionExt.Make(1), New LongEqualityComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Distinct(New Collection, New LongEqualityComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest"
+    
+    ' Act
+    CollectionExt.Distinct Nothing, New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest"
+    
+    ' Act
+    CollectionExt.Distinct New Collection, Nothing
+    
     ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)

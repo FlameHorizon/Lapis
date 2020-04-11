@@ -8,7 +8,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 '@Exposed
-'@Folder("Lapis")
+'@Folder("Collection")
 Option Explicit
 
 ' Info: Default implementation of IComparer which can handle case insensitive string comparison.
