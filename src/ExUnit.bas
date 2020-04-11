@@ -194,7 +194,7 @@ Public Sub Contains(ByVal Expected As Variant, _
                     ByVal Source As String, _
                     Optional ByVal Msg As String)
                  
-    If CollectionExt.Contains(Expected, Items, Comparer) Then
+    If CollectionExt.Contains(Items, Expected, Comparer) Then
         TestPass Source, Msg
     Else
         TestFail Source, "Expected value should be in the collection, but it wasn't found. " & Msg
@@ -210,7 +210,7 @@ Public Sub DoesNotContains(ByVal Expected As Variant, _
                            ByVal Source As String, _
                            Optional ByVal Msg As String)
                            
-    If CollectionExt.Contains(Expected, Items, Comparer) Then
+    If CollectionExt.Contains(Items, Expected, Comparer) Then
         TestFail Source, "Expected value should not be in the collection, but it was found. " & Msg
     Else
         TestPass Source, Msg

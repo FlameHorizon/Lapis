@@ -59,16 +59,16 @@ End Function
 
 
 ' Returns a string which represents collection of objects based on the implementation
-' of ToString method of each object within Items collecion.
-Public Function ToStringByProperty(ByVal Items As Collection, ByVal PropertyName As String) As String
+' of ToString method of each object within Source collecion.
+Public Function ToStringByProperty(ByVal Source As Collection, ByVal PropertyName As String) As String
     
-    If Items Is Nothing Then
-        Errors.OnArgumentNull "Items", ModuleName & ".ToStriToStringByPropertyng"
+    If Source Is Nothing Then
+        Errors.OnArgumentNull "Source", ModuleName & ".ToStriToStringByPropertyng"
     End If
     
     Dim Converter As New PropertyToStringConverter
     Converter.PropertyName = PropertyName
-    ToStringByProperty = CollectionExt.ToString(Items, Converter)
+    ToStringByProperty = CollectionExt.ToString(Source, Converter)
 
 End Function
 
@@ -108,24 +108,24 @@ Public Function GroupBy(ByRef Items As Collection, ByVal PropertyName As String)
 End Function
 
 
-Public Function Concat(ByRef Coll1 As Collection, ByRef Coll2 As Collection) As Collection
+Public Function Concat(ByVal First As Collection, ByVal Second As Collection) As Collection
 
-    If Coll1 Is Nothing Then
-        Errors.OnArgumentNull "Coll1", ModuleName & ".Concat"
+    If First Is Nothing Then
+        Errors.OnArgumentNull "First", ModuleName & ".Concat"
     End If
     
-    If Coll2 Is Nothing Then
-        Errors.OnArgumentNull "Coll2", ModuleName & ".Concat"
+    If Second Is Nothing Then
+        Errors.OnArgumentNull "Second", ModuleName & ".Concat"
     End If
     
     Dim Output As New Collection
     Dim Item As Variant
     
-    For Each Item In Coll1
+    For Each Item In First
         Output.Add Item
     Next Item
     
-    For Each Item In Coll2
+    For Each Item In Second
         Output.Add Item
     Next Item
     
@@ -180,7 +180,7 @@ Public Function Distinct(ByVal Source As Collection, ByVal Comparer As IEquality
     Dim Output As New Collection
     Dim Item As Variant
     For Each Item In Source
-        If CollectionExt.Contains(Item, Output, Comparer) = False Then
+        If CollectionExt.Contains(Output, Item, Comparer) = False Then
             Output.Add Item
         End If
     Next Item
@@ -190,8 +190,11 @@ Public Function Distinct(ByVal Source As Collection, ByVal Comparer As IEquality
 End Function
 
 
-Public Function Contains(ByVal Item As Variant, ByRef Items As Collection, ByRef Comparer As IEqualityComparer) As Boolean
-    Contains = IndexOf(Item, Items, Comparer) >= 0
+' Determines whether a sequence contains a specified element by using a specified IEqualityComparer.
+Public Function Contains(ByVal Source As Collection, _
+                         ByVal Value As Variant, _
+                         ByVal Comparer As IEqualityComparer) As Boolean
+    Contains = IndexOf(Source, Value, Comparer) >= 0
 End Function
 
 
@@ -212,7 +215,7 @@ Public Function DistinctValues(ByRef Items As Collection, ByRef Comparer As IEqu
     Dim Item As Variant
     
     For Each Item In Items
-        If Not Contains(Item, Output, Comparer) Then
+        If Not Contains(Output, Item, Comparer) Then
             Output.Add Item
         End If
         
@@ -224,13 +227,15 @@ Public Function DistinctValues(ByRef Items As Collection, ByRef Comparer As IEqu
 End Function
 
 
-' Returns an index of an item in collection.
-Public Function IndexOf(ByVal Item As Variant, ByRef Items As Collection, ByRef Comparer As IEqualityComparer) As Long
+' Returns an index of an Value in collection.
+Public Function IndexOf(ByVal Source As Collection, _
+                        ByVal Value As Variant, _
+                        ByVal Comparer As IEqualityComparer) As Long
 
     Const MethodName = "IndexOf"
     
-    If Items Is Nothing Then
-        Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
+    If Source Is Nothing Then
+        Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
     If Comparer Is Nothing Then
@@ -238,15 +243,15 @@ Public Function IndexOf(ByVal Item As Variant, ByRef Items As Collection, ByRef 
     End If
     
     Dim Ndx As Long: Ndx = 1
-    Dim Element As Variant
+    Dim Item As Variant
     
-    For Each Element In Items
-        If Comparer.Equals(Element, Item) Then
+    For Each Item In Source
+        If Comparer.Equals(Item, Value) Then
             IndexOf = Ndx
             Exit Function
         End If
         Ndx = Ndx + 1
-    Next Element
+    Next Item
     
     IndexOf = -1
 
@@ -304,3 +309,18 @@ Public Function Make(ParamArray Items() As Variant) As Collection
     Set Make = Output
     
 End Function
+
+
+' Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.
+Public Function Except(ByVal First As Collection, _
+                       ByVal Second As Collection, _
+                       ByVal Comparer As IEqualityComparer) As Collection
+    
+    Const MethodName = "Except"
+    Lapis.Errors.OnNotImplemented vbNullString, "CollectionExt.Except"
+
+End Function
+
+
+
+
