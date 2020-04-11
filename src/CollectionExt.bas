@@ -5,28 +5,28 @@ Option Explicit
 Private Const ModuleName = "CollectionHelper"
 
 
-Public Function ToString(ByVal Items As Collection, _
+Public Function ToString(ByVal Source As Collection, _
                          ByVal Converter As IToString, _
                          Optional ByVal Delimiter As String = ",") As String
 
     Const MethodName = "ToString"
 
-    If Items Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
 
     If Converter Is Nothing Then
         Lapis.Errors.OnArgumentNull "Converter", ModuleName & "." & MethodName
     End If
 
-    If Items.Count = 0 Then
+    If Source.Count = 0 Then
         ToString = vbNullString
         Exit Function
     End If
     
     Dim Output As String
     Dim Item As Variant
-    For Each Item In Items
+    For Each Item In Source
         On Error Resume Next
         Output = Output & Delimiter & Converter.ToString(Item)
         If Err.Number = ErrorNumber.ObjectRequired Or Err.Number = ErrorNumber.TypeMismatch Then
