@@ -515,3 +515,37 @@ Public Function Reverse(ByVal Source As Collection) As Collection
     Set Reverse = Output
 
 End Function
+
+
+Public Function Sum(ByVal Source As Collection, ByVal Selector As Lapis.IConverter) As Variant
+
+    Const MethodName = "Sum"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Selector Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
+    End If
+
+    Dim Item As Variant
+    Dim Output As Variant: Output = 0
+    For Each Item In Source
+        If IsObject(Item) Then
+            If Item Is Nothing Then
+                GoTo NextItem
+            End If
+        End If
+        
+        Output = Output + Selector.Convert(Item)
+        
+NextItem:
+    Next Item
+    
+    Sum = Output
+
+End Function
+
+
+

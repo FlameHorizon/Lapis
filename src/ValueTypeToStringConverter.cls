@@ -11,8 +11,6 @@ Option Explicit
 
 Implements IToString
 
-Private Const ClassName As String = "ValueTypeToStringConverter"
-
 
 Public Function ToString(ByVal Obj As Variant) As String
     ToString = VBA.CStr(Obj)

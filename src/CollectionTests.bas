@@ -71,6 +71,13 @@ Public Sub Start()
     ReverseReturnsArgumentNullErrorWhenSourceIsNothingTest
     ReverseReturnsEmptyCollectionWhenSourceIsEmptyTest
     
+    SumReturnsValueWhenSourceContainsIntegersTest
+    SumReturnsValueWhenSourceContainsReferencedTypesTest
+    SumReturnsValueWhenSourceIsEmptyTest
+    SumReturnsValueWhenSourceContainsIntegersAndNothingTest
+    SumReturnsArgumentNullErrorWhenSourceIsNothingTest
+    SumReturnsArgumentNullErrorWhenSelectorIsNothingTest
+    
 End Sub
 
 
@@ -1087,5 +1094,118 @@ Private Sub ReverseReturnsEmptyCollectionWhenSourceIsEmptyTest()
     Exit Sub
 ErrHandler:
     Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SumReturnsValueWhenSourceContainsIntegersTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SumReturnsValueWhenSourceContainsIntegersTest"
+    
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Sum(CollectionExt.Make(1, 2, 3), New ValueTypeToNumericConverter)
+
+    ' Assert
+    ExUnit.AreEqual 6, Actual, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SumReturnsValueWhenSourceContainsReferencedTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SumReturnsValueWhenSourceContainsReferencedTypesTest"
+
+    ' Arrange
+    Dim Selector As New PropertyToNumericConverter
+    Selector.PropertyName = "Count"
+    Selector.CallType = VbCallType.VbMethod ' Collection.Count is not a property, it is a method.
+    
+    ' Act
+    Dim Source As Collection
+    Set Source = CollectionExt.Make(CollectionExt.Make(1), CollectionExt.Make(1))
+
+    ' Assert
+    ExUnit.AreEqual 2, CollectionExt.Sum(Source, Selector), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SumReturnsValueWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SumReturnsValueWhenSourceIsEmptyTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Sum(CollectionExt.Make(Nothing), New ValueTypeToNumericConverter)
+
+    ' Assert
+    ExUnit.AreEqual 0, Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SumReturnsValueWhenSourceContainsIntegersAndNothingTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SumReturnsValueWhenSourceContainsIntegersAndNothingTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Sum(CollectionExt.Make(1, Nothing, 2), New ValueTypeToNumericConverter)
+
+    ' Assert
+    ExUnit.AreEqual 3, Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SumReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SumReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Sum Nothing, New ValueTypeToNumericConverter
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SumReturnsArgumentNullErrorWhenSelectorIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SumReturnsArgumentNullErrorWhenSelectorIsNothingTest"
+
+    ' Act
+    CollectionExt.Sum New Collection, Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
