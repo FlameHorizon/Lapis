@@ -517,6 +517,7 @@ Public Function Reverse(ByVal Source As Collection) As Collection
 End Function
 
 
+' Computes the sum of a sequence of numeric values.
 Public Function Sum(ByVal Source As Collection, ByVal Selector As Lapis.IConverter) As Variant
 
     Const MethodName = "Sum"
@@ -532,10 +533,8 @@ Public Function Sum(ByVal Source As Collection, ByVal Selector As Lapis.IConvert
     Dim Item As Variant
     Dim Output As Variant: Output = 0
     For Each Item In Source
-        If IsObject(Item) Then
-            If Item Is Nothing Then
-                GoTo NextItem
-            End If
+        If IsNothing(Item) Then
+            GoTo NextItem
         End If
         
         Output = Output + Selector.Convert(Item)
@@ -548,4 +547,53 @@ NextItem:
 End Function
 
 
+' Computes the average of a sequence of numeric values.
+Public Function Average(ByVal Source As Collection, ByVal Selector As Lapis.IConverter) As Variant
 
+    Const MethodName = "Average"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Selector Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
+    End If
+
+    If Source.Count = 0 Then
+        Average = 0
+        Exit Function
+    End If
+    
+    ' Do not take into account Nothing values when calculating average.
+    Dim NothingCount As Long
+    Dim Item As Variant
+    For Each Item In Source
+        If IsNothing(Item) Then
+            NothingCount = NothingCount + 1
+        End If
+    Next Item
+    
+    ' Case where the entire source contains only Nothing values.
+    If Source.Count - NothingCount = 0 Then
+        Average = 0
+        Exit Function
+    End If
+    
+    Dim Sum As Variant
+    Sum = CollectionExt.Sum(Source, Selector)
+    Average = Sum / (Source.Count - NothingCount)
+    
+End Function
+
+
+Private Function IsNothing(ByVal Item As Variant) As Boolean
+
+    If IsObject(Item) = False Then
+        IsNothing = False
+        Exit Function
+    End If
+    
+    IsNothing = (Item Is Nothing)
+
+End Function

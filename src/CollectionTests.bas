@@ -78,6 +78,14 @@ Public Sub Start()
     SumReturnsArgumentNullErrorWhenSourceIsNothingTest
     SumReturnsArgumentNullErrorWhenSelectorIsNothingTest
     
+    AverageReturnsValueWhenSourceContainsIntegersTest
+    AverageReturnsValueWhenSourceContainsReferencedTypesTest
+    AverageReturnsArgumentNullErrorWhenSourceIsEmptyTest
+    AverageReturnsArgumentNullErrorWhenSelectorIsEmptyTest
+    AverageReturnsValueWhenSourceIsEmptyTest
+    AverageReturnsValueWhenSourceContainsIntegersAndNothingTest
+    AverageReturnsValueWhenSourceContainsOnlyNothingTest
+    
 End Sub
 
 
@@ -1207,5 +1215,148 @@ Private Sub SumReturnsArgumentNullErrorWhenSelectorIsNothingTest()
     ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsValueWhenSourceContainsIntegersTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "AverageReturnsValueWhenSourceContainsIntegersTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Average(CollectionExt.Make(1, 2, 3), New ValueTypeToNumericConverter)
+    
+    ' Assert
+    ExUnit.AreEqual 2, Actual, GetSig(MethodName)
+    
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsArgumentNullErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "AverageReturnsArgumentNullErrorWhenSourceIsEmptyTest"
+
+    ' Act
+    CollectionExt.Average Nothing, New ValueTypeToNumericConverter
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsArgumentNullErrorWhenSelectorIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "AverageReturnsArgumentNullErrorWhenSelectorIsEmptyTest"
+
+    ' Act
+    CollectionExt.Average New Collection, Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsValueWhenSourceContainsReferencedTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "AverageReturnsValueWhenSourceContainsReferencedTypesTest"
+
+    ' Arrange
+    Dim Source As New Collection
+    Source.Add CollectionExt.Make(1)
+    Source.Add CollectionExt.Make(1, 2)
+    
+    Dim Selector As New PropertyToNumericConverter
+    Selector.PropertyName = "Count"
+    Selector.CallType = VbCallType.VbMethod ' Collection.Count is not a property, it is a method.
+    
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Average(Source, Selector)
+    
+    ' Assert
+    ExUnit.AreEqual Round(1.5, 2), Round(Actual, 2), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsValueWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "AverageReturnsValueWhenSourceIsEmptyTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Average(New Collection, New ValueTypeToNumericConverter)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsValueWhenSourceContainsIntegersAndNothingTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "AverageReturnsValueWhenSourceContainsIntegersAndNothingTest"
+
+    ' Arrange
+    Dim Source As New Collection
+    Source.Add 1
+    Source.Add Nothing
+    Source.Add 2
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Average(Source, New ValueTypeToNumericConverter)
+    
+    ' Assert
+    ExUnit.AreEqual Round(1.5, 2), Round(Actual, 2), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub AverageReturnsValueWhenSourceContainsOnlyNothingTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "AverageReturnsValueWhenSourceContainsOnlyNothingTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Average(CollectionExt.Make(Nothing, Nothing), New ValueTypeToNumericConverter)
+
+    ' Assert
+    ExUnit.AreEqual 0, Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
