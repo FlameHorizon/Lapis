@@ -495,3 +495,23 @@ Public Function Repeat(ByVal Element As Variant, ByVal Count As Long) As Collect
     Set Repeat = Output
     
 End Function
+
+
+' Inverts the order of the elements in a sequence.
+Public Function Reverse(ByVal Source As Collection) As Collection
+
+    Const MethodName = "Reverse"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim i As Long
+    For i = Source.Count To 1 Step -1
+        Output.Add Source.Item(i)
+    Next i
+    
+    Set Reverse = Output
+
+End Function

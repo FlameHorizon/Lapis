@@ -67,6 +67,10 @@ Public Sub Start()
     RepeatReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest
     RepeatReturnsEmptyCollectionWhenCountIsZeroTest
     
+    ReverseTest
+    ReverseReturnsArgumentNullErrorWhenSourceIsNothingTest
+    ReverseReturnsEmptyCollectionWhenSourceIsEmptyTest
+    
 End Sub
 
 
@@ -1023,6 +1027,63 @@ Private Sub RepeatReturnsEmptyCollectionWhenCountIsZeroTest()
     ' Assert
     ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
 
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ReverseTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "ReverseTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Reverse(CollectionExt.Make(1, 2, 3))
+    
+    ' Assert
+    ExUnit.AreEqual 3, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 3, Actual.Item(1), GetSig(MethodName)
+    ExUnit.AreEqual 2, Actual.Item(2), GetSig(MethodName)
+    ExUnit.AreEqual 1, Actual.Item(3), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ReverseReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ReverseReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Reverse Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ReverseReturnsEmptyCollectionWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "ReverseReturnsEmptyCollectionWhenSourceIsEmptyTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Reverse(New Collection)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+    
     Exit Sub
 ErrHandler:
     Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
