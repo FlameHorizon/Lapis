@@ -5,14 +5,14 @@ Option Explicit
 Private Const ModuleName As String = "ArrayHelper"
 
 
-' Item paramter has to be a simple type.
+' Item parameter has to be a simple type.
 ' Arr has to have only one dimension.
 Public Function Exists(ByVal Item As Variant, ByRef Arr As Variant) As Boolean
     Exists = (UBound(Filter(Arr, Item)) > -1)
 End Function
 
 
-' Retruns true if array was initalized.
+' Returns true if array was initialized.
 ' In VB, for whatever reason, Not myArray returns the SafeArray pointer.
 ' For uninitialized arrays, this returns -1.
 ' Not (XOR) this to XOR it with -1, thus returning zero.
@@ -146,7 +146,7 @@ Public Sub Clear(ByRef Arr() As Variant, ByVal Index As Long, ByVal Length As Lo
     
     If ArrayExt.Rank(Arr) <> 1 Then
         Errors.OnArgumentError "Arr", _
-                               "Multi dimensions arrray are not supported. " & ModuleName & MethodName
+                               "Multi dimensions array are not supported. " & ModuleName & MethodName
     End If
     
     Dim Ndx As Long
@@ -194,7 +194,7 @@ End Sub
 ' algorithm. Elements of the array are compared to the search value using
 ' the given IComparer interface. If comparer is null,
 ' elements of the array are compared to the search value using the
-' IComparable interface, defualt string comparer is used to compare
+' IComparable interface, default string comparer is used to compare
 ' all elements. This method assumes that the array is already sorted;
 ' if this is not the case, the result will be incorrect.
 '
@@ -219,7 +219,7 @@ Public Function BinarySearch(ByRef Arr() As Variant, _
     Dim Lb As Long: Lb = ArrayExt.GetLowerBound(Arr, 0)
     
     If Index < Lb Or ArrayExt.Length(Arr) < 0 Then
-        Errors.OnArgumentNull "Arr", "Index must be a non-negative numer. " & ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Arr", "Index must be a non-negative number. " & ModuleName & "." & MethodName
     End If
     
     If ArrayExt.Length(Arr) - (Index - Lb) < Length Then
@@ -273,7 +273,7 @@ Public Function GetLowerBound(ByRef Arr() As Variant, ByVal Dimension As Long) A
     End If
     
     If ArrayExt.IsInitialized(Arr) = False Then
-        Errors.OnArgumentNull "Arr", "Array is not initalized. " & ModuleName & "." & MethodName
+        Errors.OnArgumentNull "Arr", "Array is not initialized. " & ModuleName & "." & MethodName
     End If
     
     GetLowerBound = LBound(Arr, Dimension + 1)
@@ -282,7 +282,7 @@ End Function
 
 
 ' Returns the index of the first occurrence of a given value in a range of
-' an array. The array is searched fowards, start from the index StartIndex value up to Count element.
+' an array. The array is searched forwards, start from the index StartIndex value up to Count element.
 Public Function IndexOf(ByRef Arr() As Variant, ByRef Value As Variant, ByVal StartIndex As Long, ByVal Count As Long) As Long
     
     Const MethodName = "IndexOf"
@@ -359,7 +359,7 @@ Public Sub SetValue(ByRef Arr() As Variant, ByRef Value As Variant, ByVal Index 
 End Sub
 
 
-' Converts any array to the Variant Array. When input array is not initalized
+' Converts any array to the Variant Array. When input array is not initialized
 ' method returns not initialized Variant Array.
 ' Throws ArgumentException when Arr is not an array.
 Public Function ToVariantArray(ByRef Arr As Variant) As Variant()
@@ -370,9 +370,9 @@ Public Function ToVariantArray(ByRef Arr As Variant) As Variant()
         Errors.OnArgumentError "Arr", ModuleName & "." & MethodName
     End If
 
-    ' Here, we still can't use defined methods like IsInitalized because
-    ' Arr is still a Variant type, as oposed to the Array of Variant elements.
-    ' We have to check manually if Array is initiliazed.
+    ' Here, we still can't use defined methods like IsInitialized because
+    ' Arr is still a Variant type, as opposed to the Array of Variant elements.
+    ' We have to check manually if Array is initialized.
     
     '@Ignore AssignmentNotUsed
     Dim Low As Long: Low = -1
@@ -382,10 +382,10 @@ Public Function ToVariantArray(ByRef Arr As Variant) As Variant()
     On Error Resume Next
     Low = LBound(Arr)
     High = UBound(Arr)
-    On Error GoTo 0 ' Cancel "Ignore erorrs"
+    On Error GoTo 0 ' Cancel "Ignore errors"
     
     ' At this point we know, that Arr is an array, but it is not initialized.
-    ' Return not initalized array back.
+    ' Return not initialized array back.
     If Low = -1 Or High = -1 Then
         Dim NotInit() As Variant
         ToVariantArray = NotInit
@@ -423,7 +423,6 @@ Public Function StringArray(ParamArray Items() As Variant) As String()
     StringArray = Output
     
 End Function
-
 
 
 Public Sub Sort(ByRef Items() As Variant, ByVal Comparer As Lapis.IComparer)
@@ -532,4 +531,6 @@ Private Sub Swap(ByRef Arr() As Variant, ByVal MoveFrom As Long, ByVal MoveTo As
     End If
 
 End Sub
+
+
 

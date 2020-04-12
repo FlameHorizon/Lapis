@@ -50,6 +50,18 @@ Public Sub Start()
     MinReturnsLowestValueWhenNothingIsPresentTest
     MinReturnsNothingWhenOnlyNothingIsPresentTest
     
+    MaxWhenSourceContainsValueTypesTest
+    MaxWhenSourceContainsReferencedTypesTest
+    MaxReturnsArgumentNullErrorWhenSourceIsNothingTest
+    MaxReturnsArgumentNullErrorWhenComparerIsNothingTest
+    MaxReturnsHighestValueWhenNothingIsPresentTest
+    MaxReturnsNothingWhenOnlyNothingIsPresentTest
+    
+    RangeTest
+    RangeReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest
+    RangeReturnsArgumentOutOfRangeWhenStartAndCountExceedsLimitTest
+    RangeReturnsCollectionWithNoItemsWhenCountIsZeroTest
+    
 End Sub
 
 
@@ -737,6 +749,198 @@ Private Sub MinReturnsNothingWhenOnlyNothingIsPresentTest()
     
     ' Assert
     ExUnit.AreSame Nothing, Actual, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MaxWhenSourceContainsValueTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MaxWhenSourceContainsValueTypesTest"
+
+    ' Act
+    Dim Actual As Variant
+    Actual = CollectionExt.Max(CollectionExt.Make(3, 2, 1), New LongComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 3, Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MaxWhenSourceContainsReferencedTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MaxWhenSourceContainsReferencedTypesTest"
+
+    ' Arrange
+    Dim Source As New Collection
+    Source.Add CollectionExt.Make(1, 2)
+    Source.Add CollectionExt.Make(1)
+
+    ' Act
+    Dim Actual As Object
+    Set Actual = CollectionExt.Max(Source, New TestCollectionComparer)
+    
+    ' Assert
+    ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
+    ExUnit.AreEqual 2, Actual.Item(2), GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MaxReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "MaxReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Min Nothing, New LongComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MaxReturnsArgumentNullErrorWhenComparerIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "MaxReturnsArgumentNullErrorWhenComparerIsNothingTest"
+
+    ' Act
+    CollectionExt.Min New Collection, Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MaxReturnsHighestValueWhenNothingIsPresentTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MaxReturnsHighestValueWhenNothingIsPresentTest"
+
+    ' Arrange
+    Dim Source As Collection
+    Set Source = CollectionExt.Make(New Collection, Nothing, CollectionExt.Make(1))
+    
+    ' Act
+    Dim Actual As Object
+    Set Actual = CollectionExt.Max(Source, New TestCollectionComparer)
+
+    ' Assert
+    ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub MaxReturnsNothingWhenOnlyNothingIsPresentTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "MaxReturnsNothingWhenOnlyNothingIsPresentTest"
+
+    ' Act
+    Dim Actual As Object
+    Set Actual = CollectionExt.Max(CollectionExt.Make(Nothing), New TestCollectionComparer)
+    
+    ' Assert
+    ExUnit.AreSame Nothing, Actual, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RangeTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "RangeTest"
+    
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Range(0, 3)
+    
+    ' Assert
+    ExUnit.AreEqual 3, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 0, Actual.Item(1), GetSig(MethodName)
+    ExUnit.AreEqual 1, Actual.Item(2), GetSig(MethodName)
+    ExUnit.AreEqual 2, Actual.Item(3), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RangeReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "RangeReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest"
+
+    ' Act
+    CollectionExt.Range 0, -2
+        
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RangeReturnsArgumentOutOfRangeWhenStartAndCountExceedsLimitTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "RangeReturnsArgumentOutOfRangeWhenStartAndCountExceedsLimitTest"
+
+    ' Act
+    CollectionExt.Range System.LongMaxValue - 1, 2
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RangeReturnsCollectionWithNoItemsWhenCountIsZeroTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "RangeReturnsCollectionWithNoItemsWhenCountIsZeroTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Range(1, 0)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
     
     Exit Sub
 ErrHandler:

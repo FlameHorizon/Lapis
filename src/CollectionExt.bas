@@ -287,7 +287,7 @@ End Sub
 ' Sorts the given collection using the MergeSort algorithm.
 ' O(n log(n)) time
 ' O(n) space
-Public Function Sort(ByVal Items As Collection, Optional ByVal Comparer As Lapis.IComparer) As Collection
+Public Function Sort(ByVal Items As Collection, ByVal Comparer As Lapis.IComparer) As Collection
     
     Dim Arr1() As Variant
     Arr1 = CollectionExt.ToArray(Items)
@@ -411,6 +411,71 @@ Public Function Min(ByVal Source As Collection, ByVal Comparer As IComparer) As 
         
     End If
 
+End Function
+
+
+' Returns the minimum value in a sequence of values.
+Public Function Max(ByVal Source As Collection, ByVal Comparer As IComparer) As Variant
+
+    Const MethodName = "Max"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Comparer Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    End If
+    
+    Dim Item As Variant
+    Dim Value As Variant
+    If IsObject(Source.Item(1)) Then
+        Set Value = Source.Item(1)
+        
+        For Each Item In Source
+            If (Item Is Nothing) = False And (Value Is Nothing Or Comparer.Compare(Item, Value) > 0) Then
+                Set Value = Item
+            End If
+        Next Item
+        Set Max = Value
+        
+    Else
+        Value = Source.Item(1)
+        For Each Item In Source
+            If Comparer.Compare(Item, Value) > 0 Then
+                Value = Item
+            End If
+        Next Item
+        Max = Value
+        
+    End If
+
+End Function
+
+
+' Generates a sequence of integral numbers within a specified range.
+Public Function Range(ByVal Start As Long, ByVal Count As Long) As Collection
+    
+    Const MethodName = "Range"
+    
+    If Count < 0 Then
+        Errors.OnArgumentOutOfRange "Count", ModuleName & "." & MethodName
+    End If
+    
+    ' When I'm trying to add two long numbers I get Overflow error.
+    ' It's because when adding two Long data types, the result is also Long.
+    If CDec(Start) + CDec(Count) > System.LongMaxValue Then
+        Errors.OnArgumentOutOfRange vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim i As Long
+    For i = Start To Start + Count - 1
+        Output.Add i
+    Next i
+    
+    Set Range = Output
+    
 End Function
 
 
