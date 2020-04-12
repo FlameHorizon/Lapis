@@ -597,3 +597,27 @@ Private Function IsNothing(ByVal Item As Variant) As Boolean
     IsNothing = (Item Is Nothing)
 
 End Function
+
+' Returns a specified number of contiguous elements from the start of a sequence.
+Public Function Take(ByVal Source As Collection, ByVal Count As Long) As Collection
+
+    Const MethodName = "Take"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Set Take = New Collection
+        Exit Function
+    End If
+
+    Dim Output As New Collection
+    Dim i As Long
+    For i = 1 To Count
+        Output.Add Source.Item(i)
+    Next i
+    
+    Set Take = Output
+    
+End Function
