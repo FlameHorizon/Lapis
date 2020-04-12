@@ -479,4 +479,19 @@ Public Function Range(ByVal Start As Long, ByVal Count As Long) As Collection
 End Function
 
 
-
+' Generates a sequence that contains one repeated value.
+Public Function Repeat(ByVal Element As Variant, ByVal Count As Long) As Collection
+    
+    If Count < 0 Then
+        Lapis.Errors.OnArgumentOutOfRange "Count", ModuleName & ".Repeat"
+    End If
+    
+    Dim Output As New Collection
+    Dim i As Long
+    For i = 1 To Count
+        Output.Add Element
+    Next i
+    
+    Set Repeat = Output
+    
+End Function

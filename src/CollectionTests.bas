@@ -60,7 +60,12 @@ Public Sub Start()
     RangeTest
     RangeReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest
     RangeReturnsArgumentOutOfRangeWhenStartAndCountExceedsLimitTest
-    RangeReturnsCollectionWithNoItemsWhenCountIsZeroTest
+    RangeReturnsEmptyCollectionWhenCountIsZeroTest
+    
+    RepeatValueTypesTest
+    RepeatReferencedTypesTest
+    RepeatReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest
+    RepeatReturnsEmptyCollectionWhenCountIsZeroTest
     
 End Sub
 
@@ -930,10 +935,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub RangeReturnsCollectionWithNoItemsWhenCountIsZeroTest()
+Private Sub RangeReturnsEmptyCollectionWhenCountIsZeroTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "RangeReturnsCollectionWithNoItemsWhenCountIsZeroTest"
+    Const MethodName = "RangeReturnsEmptyCollectionWhenCountIsZeroTest"
 
     ' Act
     Dim Actual As Collection
@@ -949,4 +954,77 @@ ErrHandler:
 End Sub
 
 
+Private Sub RepeatValueTypesTest()
 
+    On Error GoTo ErrHandler
+    Const MethodName = "RepeatValueTypesTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Repeat("a", 3)
+    
+    ' Assert
+    ExUnit.AreEqual 3, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual "a", Actual.Item(1), GetSig(MethodName)
+    ExUnit.AreEqual "a", Actual.Item(2), GetSig(MethodName)
+    ExUnit.AreEqual "a", Actual.Item(3), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RepeatReferencedTypesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "RepeatReferencedTypesTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Repeat(ThisWorkbook, 2)
+    
+    ' Assert
+    ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RepeatReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "RepeatReturnsArgumentOutOfRangeErrorWhenCountIsLessThanZeroTest"
+
+    ' Act
+    CollectionExt.Repeat "a", -1
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub RepeatReturnsEmptyCollectionWhenCountIsZeroTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "RepeatReturnsEmptyCollectionWhenCountIsZeroTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Repeat("a", 0)
+    
+    ' Assert
+    ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
