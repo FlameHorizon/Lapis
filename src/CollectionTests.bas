@@ -125,10 +125,10 @@ Private Sub ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest()
     Const ExpectedError As Long = ErrorCode.ArgumentNull
     Const MethodName = "ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest"
 
-    ' Act & Assert
+    ' Act
     CollectionExt.ToString Nothing, New ValueTypeToStringConverter
     
-
+    ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
@@ -234,12 +234,12 @@ Private Sub ToStringReturnsStringWhenItemsAreMixedValueTypesTest()
     Const MethodName = "ToStringReturnsStringWhenItemsAreMixedValueTypesTest"
 
     ' Arrange
-    Dim Coll As Collection
-    Set Coll = CollectionExt.Make("a", 1, 2.34, #2/2/2020#, &H5CC)
+    Dim Source As Collection
+    Set Source = CollectionExt.Make("a", 1, 2.34, #2/2/2020#, &H5CC)
     
     ' Act
     Dim Actual As String
-    Actual = CollectionExt.ToString(Coll, New ValueTypeToStringConverter)
+    Actual = CollectionExt.ToString(Source, New ValueTypeToStringConverter)
 
     ' Assert
     ExUnit.AreEqual "a,1,2.34,2/2/2020,1484", Actual, GetSig(MethodName)
@@ -326,14 +326,9 @@ Private Sub ToStringByPropertyTest()
     On Error GoTo ErrHandler
     Const MethodName = "ToStringByPropertyTest"
 
-    ' Arrange
-    Dim Coll As New Collection
-    Coll.Add ThisWorkbook
-    Coll.Add ThisWorkbook
-
     ' Act
     Dim Actual As String
-    Actual = CollectionExt.ToStringByProperty(Coll, "Name")
+    Actual = CollectionExt.ToStringByProperty(CollectionExt.Make(ThisWorkbook, ThisWorkbook), "Name")
 
     ' Assert
     ExUnit.AreEqual "Lapis.xlam,Lapis.xlam", Actual, GetSig(MethodName)
@@ -1460,3 +1455,5 @@ ErrHandler:
     Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
+
+
