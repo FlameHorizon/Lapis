@@ -99,7 +99,8 @@ Public Sub Start()
     AllReturnsTrueWhenSourceIsEmptyTest
     AllReturnsFalseWhenSourceSatisfyConditionAndHasNothingTest
     
-    SomeReturnsValueWhenPredicateIsNothingTest
+    SomeReturnsTrueWhenPredicateIsNothingAndSourceIsNotEmptyTest
+    SomeReturnsFalseWhenPredicateIsNothingAndSourceIsEmptyTest
     SomeReturnsTrueWhenAtleastOneItemSatisfyConditionTest
     SomeReturnsFalseWhenNoItemSatisfyConditionTest
     SomeReturnsFalseWhenSourceIsEmptyTest
@@ -116,6 +117,7 @@ Public Sub Start()
     SequenceEqualReturnsArgumentNullErrorWhenFirstIsNothingTest
     SequenceEqualReturnsArgumentNullErrorWhenSecondIsNothingTest
     SequenceEqualReturnsArgumentNullErrorWhenComparerIsNothingTest
+    
     
 End Sub
 
@@ -1614,17 +1616,28 @@ ErrHandler:
 End Sub
 
 
-Private Sub SomeReturnsValueWhenPredicateIsNothingTest()
+Private Sub SomeReturnsTrueWhenPredicateIsNothingAndSourceIsNotEmptyTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "SomeReturnsValueWhenPredicateIsNothingTest"
+    Const MethodName = "SomeReturnsTrueWhenPredicateIsNothingAndSourceIsNotEmptyTest"
 
-    ' Act
-    Dim Actual As Boolean
-    Actual = CollectionExt.Some(CollectionExt.Make(1, 2, 3))
+    ' Act & Assert
+    ExUnit.IsTrue CollectionExt.Some(CollectionExt.Make(1, 2, 3)), GetSig(MethodName)
 
-    ' Assert
-    ExUnit.IsTrue Actual, GetSig(MethodName)
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SomeReturnsFalseWhenPredicateIsNothingAndSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SomeReturnsFalseWhenPredicateIsNothingAndSourceIsEmptyTest"
+
+    ' Act & Assert
+    ExUnit.IsFalse CollectionExt.Some(New Collection), GetSig(MethodName)
 
     Exit Sub
 ErrHandler:

@@ -681,6 +681,7 @@ Public Function Skip(ByVal Source As Collection, ByVal Count As Long) As Collect
 End Function
 
 
+' Determines whether two sequences are equal according to an equality comparer.
 Public Function SequenceEqual(ByVal First As Collection, _
                               ByVal Second As Collection, _
                               ByVal Comparer As IEqualityComparer) As Boolean
