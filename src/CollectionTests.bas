@@ -110,6 +110,13 @@ Public Sub Start()
     SkipReturnsEntireSourceWhenCountIsZeroOrNegativeTest
     SkinReturnsEmptyCollectionWhenCountIsGreaterThanNumberOfItemsInSourceTest
     
+    SequenceEqualReturnsTrueWhenFirstAndSecondContainsEqualElementsTest
+    SequenceEqualReturnsFalseWhenFirstAndSecondContainsNotEqualElementsTest
+    SequenceEqualRetrunsFalseWhenFirstAndSecondAreDiffrentSizesTest
+    SequenceEqualReturnsArgumentNullErrorWhenFirstIsNothingTest
+    SequenceEqualReturnsArgumentNullErrorWhenSecondIsNothingTest
+    SequenceEqualReturnsArgumentNullErrorWhenComparerIsNothingTest
+    
 End Sub
 
 
@@ -1781,6 +1788,120 @@ Private Sub SkinReturnsEmptyCollectionWhenCountIsGreaterThanNumberOfItemsInSourc
     Exit Sub
 ErrHandler:
     Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SequenceEqualReturnsTrueWhenFirstAndSecondContainsEqualElementsTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SequenceEqualReturnsTrueWhenFirstAndSecondContainsEqualElementsTest"
+
+    ' Arrange
+    Dim First As Collection
+    Set First = CollectionExt.Make(1, 2, 3)
+    
+    Dim Second As Collection
+    Set Second = CollectionExt.Make(1, 2, 3)
+
+    ' Act & Assert
+    ExUnit.IsTrue CollectionExt.SequenceEqual(First, Second, New LongEqualityComparer), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SequenceEqualReturnsFalseWhenFirstAndSecondContainsNotEqualElementsTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SequenceEqualReturnsFalseWhenFirstAndSecondContainsNotEqualElementsTest"
+
+    ' Arrange
+    Dim First As Collection
+    Set First = CollectionExt.Make(1, 2, 3)
+    
+    Dim Second As Collection
+    Set Second = CollectionExt.Make(1, 2, 4)
+
+    ' Act & Assert
+    ExUnit.IsFalse CollectionExt.SequenceEqual(First, Second, New LongEqualityComparer), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SequenceEqualRetrunsFalseWhenFirstAndSecondAreDiffrentSizesTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SequenceEqualRetrunsFalseWhenFirstAndSecondAreDiffrentSizesTest"
+
+    ' Arrange
+    Dim First As Collection
+    Set First = CollectionExt.Make(1, 2, 3)
+    
+    Dim Second As Collection
+    Set Second = CollectionExt.Make(1, 2)
+
+    ' Act & Assert
+    ExUnit.IsFalse CollectionExt.SequenceEqual(First, Second, New LongEqualityComparer), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SequenceEqualReturnsArgumentNullErrorWhenFirstIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SequenceEqualReturnsArgumentNullErrorWhenFirstIsNothingTest"
+
+    ' Act
+    CollectionExt.SequenceEqual Nothing, CollectionExt.Make(1, 2), New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SequenceEqualReturnsArgumentNullErrorWhenSecondIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SequenceEqualReturnsArgumentNullErrorWhenSecondIsNothingTest"
+
+    ' Act
+    CollectionExt.SequenceEqual CollectionExt.Make(1, 2), Nothing, New LongEqualityComparer
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SequenceEqualReturnsArgumentNullErrorWhenComparerIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SequenceEqualReturnsArgumentNullErrorWhenComparerIsNothingTest"
+
+    ' Act
+    CollectionExt.SequenceEqual CollectionExt.Make(1, 2), CollectionExt.Make(1, 2), Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
 

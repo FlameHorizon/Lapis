@@ -681,4 +681,40 @@ Public Function Skip(ByVal Source As Collection, ByVal Count As Long) As Collect
 End Function
 
 
+Public Function SequenceEqual(ByVal First As Collection, _
+                              ByVal Second As Collection, _
+                              ByVal Comparer As IEqualityComparer) As Boolean
+    
+    Const MethodName = "SequenceEqual"
+    
+    If First Is Nothing Then
+        Lapis.Errors.OnArgumentNull "First", ModuleName & "." & MethodName
+    End If
+    
+    If Second Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Second", ModuleName & "." & MethodName
+    End If
+    
+    If Comparer Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    End If
+
+    If First.Count <> Second.Count Then
+        SequenceEqual = False
+        Exit Function
+    End If
+    
+    Dim i As Long
+    For i = 1 To First.Count
+        If Comparer.Equals(First.Item(i), Second.Item(i)) = False Then
+            SequenceEqual = False
+            Exit Function
+        End If
+    Next i
+    
+    SequenceEqual = True
+    
+End Function
+
+
 
