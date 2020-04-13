@@ -44,3 +44,4 @@ Private Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Lo
     IComparer_Compare = Compare(x, y)
 End Function
 
+

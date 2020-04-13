@@ -10,5 +10,8 @@ Attribute VB_Exposed = False
 '@Folder("Lapis")
 Option Explicit
 
+
 Public Function ToString(ByVal Obj As Variant) As String
 End Function
+
+

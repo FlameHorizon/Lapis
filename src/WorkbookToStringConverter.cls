@@ -20,3 +20,5 @@ End Function
 Private Function IToString_ToString(ByVal Obj As Variant) As String
     IToString_ToString = ToString(Obj)
 End Function
+
+

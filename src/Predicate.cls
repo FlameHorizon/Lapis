@@ -10,7 +10,8 @@ Attribute VB_Exposed = False
 '@Folder("Lapis")
 Option Explicit
 
-Private Const ClassName As String = "ClassName"
+
+Private Const ClassName As String = "Predicate"
 
 Private pOperator As ComparisonOperator
 Private pComparisonValue As Variant
@@ -23,9 +24,27 @@ Public Function Eval(ByVal Item As Variant) As Boolean
         Set pComparer = ComparerStatic.Default
     End If
     
+    Dim Result As Long
+    Result = pComparer.Compare(Item, pComparisonValue)
+    
     Select Case pOperator
         Case ComparisonOperator.EqualTo
-            Eval = (pComparer.Compare(pComparisonValue, Item) = 0)
+            Eval = Result = 0
+        
+        Case ComparisonOperator.GreaterThan
+            Eval = Result = 1
+        
+        Case ComparisonOperator.LessThan
+            Eval = Result = -1
+        
+        Case ComparisonOperator.GreaterThanOrEqualTo
+            Eval = Result = 0 Or Result = 1
+        
+        Case ComparisonOperator.LessThanOrEqualTo
+            Eval = Result = -1 Or Result = 0
+        
+        Case ComparisonOperator.NotEqualTo
+            Eval = Result = -1 Or Result = 1
         
         Case Else
             Errors.OnArgumentOutOfRange "Operator", ClassName & ".Eval"
@@ -63,3 +82,5 @@ End Property
 Public Property Let Comparer(ByVal Value As IComparer)
     Set pComparer = Value
 End Property
+
+

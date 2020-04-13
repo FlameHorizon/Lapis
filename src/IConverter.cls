@@ -10,5 +10,8 @@ Attribute VB_Exposed = False
 '@Folder("Lapis")
 Option Explicit
 
+
 Public Function Convert(ByVal Item As Variant) As Variant
 End Function
+
+

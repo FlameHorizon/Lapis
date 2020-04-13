@@ -12,3 +12,5 @@ Public Enum ComparisonOperator
     GreaterThan
     
 End Enum
+
+

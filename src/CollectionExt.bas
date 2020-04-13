@@ -636,3 +636,6 @@ Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As
     All = True
 
 End Function
+
+
+

@@ -290,3 +290,4 @@ Public Function IsStreamClosed(ByRef Stream As ADODB.Stream) As Boolean
 End Function
 
 
+
