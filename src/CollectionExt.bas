@@ -638,4 +638,26 @@ Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As
 End Function
 
 
+' Determines whether any element of a sequence exists or satisfies a condition.
+Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Boolean
 
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & ".Some"
+    End If
+
+    If Predicate Is Nothing Then
+        Some = Source.Count <> 0
+        Exit Function
+    End If
+    
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) = True Then
+            Some = True
+            Exit Function
+        End If
+    Next Item
+    
+    Some = False
+
+End Function

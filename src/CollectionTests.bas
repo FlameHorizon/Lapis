@@ -99,6 +99,12 @@ Public Sub Start()
     AllReturnsTrueWhenSourceIsEmptyTest
     AllReturnsFalseWhenSourceSatisfyConditionAndHasNothingTest
     
+    SomeReturnsValueWhenPredicateIsNothingTest
+    SomeReturnsTrueWhenAtleastOneItemSatisfyConditionTest
+    SomeReturnsFalseWhenNoItemSatisfyConditionTest
+    SomeReturnsFalseWhenSourceIsEmptyTest
+    SomeReturnsArgumentNullErrorWhenSourceIsNothingTest
+    
 End Sub
 
 
@@ -1596,4 +1602,108 @@ ErrHandler:
 End Sub
 
 
+Private Sub SomeReturnsValueWhenPredicateIsNothingTest()
 
+    On Error GoTo ErrHandler
+    Const MethodName = "SomeReturnsValueWhenPredicateIsNothingTest"
+
+    ' Act
+    Dim Actual As Boolean
+    Actual = CollectionExt.Some(CollectionExt.Make(1, 2, 3))
+
+    ' Assert
+    ExUnit.IsTrue Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SomeReturnsTrueWhenAtleastOneItemSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SomeReturnsTrueWhenAtleastOneItemSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    Predicate.Comparer = New LongComparer
+    Predicate.ComparisonValue = 2
+    Predicate.Operator = ComparisonOperator.EqualTo
+
+    ' Act
+    Dim Actual As Boolean
+    Actual = CollectionExt.Some(CollectionExt.Make(1, 2, 3), Predicate)
+
+    ' Assert
+    ExUnit.IsTrue Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SomeReturnsFalseWhenNoItemSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SomeReturnsFalseWhenNoItemSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    Predicate.Comparer = New LongComparer
+    Predicate.ComparisonValue = 0
+    Predicate.Operator = ComparisonOperator.EqualTo
+
+    ' Act
+    Dim Actual As Boolean
+    Actual = CollectionExt.Some(CollectionExt.Make(1, 2, 3), Predicate)
+
+    ' Assert
+    ExUnit.IsFalse Actual, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SomeReturnsFalseWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SomeReturnsFalseWhenSourceIsEmptyTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    Predicate.Comparer = New LongComparer
+    Predicate.ComparisonValue = 0
+    Predicate.Operator = ComparisonOperator.EqualTo
+
+    ' Act & Assert
+    ExUnit.IsFalse CollectionExt.Some(New Collection), GetSig(MethodName)
+    ExUnit.IsFalse CollectionExt.Some(New Collection, Predicate), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SomeReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SomeReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Some Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
