@@ -718,4 +718,35 @@ Public Function SequenceEqual(ByVal First As Collection, _
 End Function
 
 
+Public Function First(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Variant
+    
+    Const MethodName = "First"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", ModuleName & "." & MethodName
+    End If
+    
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) Then
+            If IsObject(Item) Then
+                Set First = Item
+            Else
+                First = Item
+            End If
+            
+            Exit Function
+        End If
+    Next Item
+    
+    Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
 
+End Function

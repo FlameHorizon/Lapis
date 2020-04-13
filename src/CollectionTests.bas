@@ -118,6 +118,11 @@ Public Sub Start()
     SequenceEqualReturnsArgumentNullErrorWhenSecondIsNothingTest
     SequenceEqualReturnsArgumentNullErrorWhenComparerIsNothingTest
     
+    FirstReturnsValueWhenSourceDoesSatisfyConditionTest
+    FirstReturnsArgumentNullErrorWhenSourceIsNothingTest
+    FirstReturnsArgumentNullErrorWhenPredicateIsNothingTest
+    FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
+    FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest
     
 End Sub
 
@@ -1919,4 +1924,111 @@ ErrHandler:
 End Sub
 
 
+Private Sub FirstReturnsValueWhenSourceDoesSatisfyConditionTest()
 
+    On Error GoTo ErrHandler
+    Const MethodName = "FirstReturnsValueWhenSourceDoesSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 3
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act & Assert
+    ExUnit.AreEqual 3, CollectionExt.First(CollectionExt.Make(1, 2, 3), Predicate), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "FirstReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 3
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.First Nothing, Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsArgumentNullErrorWhenPredicateIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "FirstReturnsArgumentNullErrorWhenPredicateIsNothingTest"
+
+    ' Act
+    CollectionExt.First CollectionExt.Make(1, 2, 3), Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 5
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.First CollectionExt.Make(1, 2, 3), Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 3
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.First New Collection, Predicate
+
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
