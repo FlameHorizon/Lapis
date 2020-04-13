@@ -14,7 +14,7 @@ Implements IEqualityComparer
 
 
 Public Function Equals(ByVal x As String, ByVal y As String) As Boolean
-
+    
     If (x = vbNullString And y = vbNullString) Then
         Equals = True
         

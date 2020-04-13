@@ -533,7 +533,7 @@ Public Function Sum(ByVal Source As Collection, ByVal Selector As Lapis.IConvert
     Dim Item As Variant
     Dim Output As Variant: Output = 0
     For Each Item In Source
-        If IsNothing(Item) Then
+        If System.IsNothing(Item) Then
             GoTo NextItem
         End If
         
@@ -569,7 +569,7 @@ Public Function Average(ByVal Source As Collection, ByVal Selector As Lapis.ICon
     Dim NothingCount As Long
     Dim Item As Variant
     For Each Item In Source
-        If IsNothing(Item) Then
+        If System.IsNothing(Item) Then
             NothingCount = NothingCount + 1
         End If
     Next Item
@@ -586,17 +586,6 @@ Public Function Average(ByVal Source As Collection, ByVal Selector As Lapis.ICon
     
 End Function
 
-
-Private Function IsNothing(ByVal Item As Variant) As Boolean
-
-    If IsObject(Item) = False Then
-        IsNothing = False
-        Exit Function
-    End If
-    
-    IsNothing = (Item Is Nothing)
-
-End Function
 
 ' Returns a specified number of contiguous elements from the start of a sequence.
 Public Function Take(ByVal Source As Collection, ByVal Count As Long) As Collection
@@ -620,4 +609,30 @@ Public Function Take(ByVal Source As Collection, ByVal Count As Long) As Collect
     
     Set Take = Output
     
+End Function
+
+
+' Determines whether all elements of a sequence satisfy a condition.
+Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As Boolean
+
+    Const MethodName = "All"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
+    End If
+    
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) = False Then
+            All = False
+            Exit Function
+        End If
+    Next Item
+    
+    All = True
+
 End Function
