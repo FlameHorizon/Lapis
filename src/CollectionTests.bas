@@ -105,6 +105,11 @@ Public Sub Start()
     SomeReturnsFalseWhenSourceIsEmptyTest
     SomeReturnsArgumentNullErrorWhenSourceIsNothingTest
     
+    SkipTest
+    SkipReturnsArgumentNullErrorWhenSourceIsNothingTest
+    SkipReturnsEntireSourceWhenCountIsZeroOrNegativeTest
+    SkinReturnsEmptyCollectionWhenCountIsGreaterThanNumberOfItemsInSourceTest
+    
 End Sub
 
 
@@ -1707,3 +1712,77 @@ ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
+
+
+Private Sub SkipTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SkipTest"
+    
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Skip(CollectionExt.Make(1, 2, 3), 2)
+
+    ' Assert
+    ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 3, Actual.Item(1), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SkipReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SkipReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Skip Nothing, 1
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SkipReturnsEntireSourceWhenCountIsZeroOrNegativeTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SkipReturnsEntireSourceWhenCountIsZeroOrNegativeTest"
+    
+    ' Arrange
+    Dim Source As Collection
+    Set Source = CollectionExt.Make(1, 2, 3)
+    
+    ' Act & Assert
+    ExUnit.AreEqual 3, CollectionExt.Skip(Source, 0).Count, GetSig(MethodName)
+    ExUnit.AreEqual 3, CollectionExt.Skip(Source, -1).Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SkinReturnsEmptyCollectionWhenCountIsGreaterThanNumberOfItemsInSourceTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SkinReturnsEmptyCollectionWhenCountIsGreaterThanNumberOfItemsInSourceTest"
+    
+    ' Act & Assert
+    ExUnit.AreEqual 0, CollectionExt.Skip(CollectionExt.Make(1, 2, 3), 5).Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+

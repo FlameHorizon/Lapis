@@ -661,3 +661,24 @@ Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As Pre
     Some = False
 
 End Function
+
+
+' Bypasses a specified number of elements in a sequence and then returns the remaining elements.
+Public Function Skip(ByVal Source As Collection, ByVal Count As Long) As Collection
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & ".Skip"
+    End If
+    
+    Dim Output As New Collection
+    Dim i As Long
+    For i = Application.Max(Count + 1, 1) To Source.Count
+        Output.Add Source.Item(i)
+    Next i
+    
+    Set Skip = Output
+
+End Function
+
+
+
