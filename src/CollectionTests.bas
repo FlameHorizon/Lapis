@@ -130,6 +130,13 @@ Public Sub Start()
     LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
     LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest
     
+    SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest
+    SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest
+    SelectOneReturnsArgumentNullErrorWhenPredicateIsNothingTest
+    SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
+    SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest
+    SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest
+    
 End Sub
 
 
@@ -2146,6 +2153,140 @@ Private Sub LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
 
     ' Assert
 
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 2
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act & Assert
+    ExUnit.AreEqual 2, CollectionExt.SelectOne(CollectionExt.Make(1, 2, 3), Predicate), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 3
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.SelectOne Nothing, Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsArgumentNullErrorWhenPredicateIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SelectOneReturnsArgumentNullErrorWhenPredicateIsNothingTest"
+
+    ' Act
+    CollectionExt.SelectOne CollectionExt.Make(1, 2, 3), Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 5
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.SelectOne CollectionExt.Make(1, 2, 3), Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 3
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.SelectOne New Collection, Predicate
+
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 2
+        .Operator = ComparisonOperator.GreaterThanOrEqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    ExUnit.AreEqual 3, CollectionExt.SelectOne(CollectionExt.Make(1, 2, 3), Predicate), GetSig(MethodName)
+    
+    ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 

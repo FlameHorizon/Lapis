@@ -788,3 +788,39 @@ Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
     End If
     
 End Sub
+
+
+' Returns the only element of a sequence that satisfies a specified condition,
+' and throws an exception if more than one such element exists.
+Public Function SelectOne(ByVal Source As Collection, ByVal Predicate As Predicate) As Variant
+
+    Const MethodName = "SelectOne"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Predicate", MethodName & "." & MethodName
+    End If
+
+    Dim Output As Variant
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) Then
+            If Output <> vbEmpty Then
+                Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+            Else
+                Assing Item, Output
+            End If
+        End If
+    Next Item
+    
+    ' No item matches the predicate or source is empty.
+    If Output = vbEmpty Then
+        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Assing Output, SelectOne
+
+End Function
