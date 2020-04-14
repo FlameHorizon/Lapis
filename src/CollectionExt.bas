@@ -824,3 +824,29 @@ Public Function SelectOne(ByVal Source As Collection, ByVal Predicate As Predica
     Assing Output, SelectOne
 
 End Function
+
+
+' Returns a number that represents how many elements in the specified sequence satisfy a condition.
+Public Function Count(ByVal Source As Collection, ByVal Predicate As Predicate) As Long
+
+    Const MethodName = "SelectOne"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Predicate", MethodName & "." & MethodName
+    End If
+
+    Dim Output As Long
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) Then
+            Output = Output + 1
+        End If
+    Next Item
+    
+    Count = Output
+
+End Function

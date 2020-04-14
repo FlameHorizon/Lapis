@@ -137,6 +137,10 @@ Public Sub Start()
     SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest
     SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest
     
+    CountTest
+    CountReturnsArgumentNullErrorWhenSourceIsNothingTest
+    CountReturnsArgumentNullErrorWhenPredicateIsNothingTest
+    
 End Sub
 
 
@@ -2291,3 +2295,67 @@ ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
+
+
+Private Sub CountTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "CountTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 2
+        .Operator = ComparisonOperator.GreaterThanOrEqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act & Assert
+    ExUnit.AreEqual 2, CollectionExt.Count(CollectionExt.Make(1, 2, 3), Predicate), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub CountReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "CountReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 3
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.Count Nothing, Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub CountReturnsArgumentNullErrorWhenPredicateIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "CountReturnsArgumentNullErrorWhenPredicateIsNothingTest"
+
+    ' Act
+    CollectionExt.Count CollectionExt.Make(1, 2, 3), Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
