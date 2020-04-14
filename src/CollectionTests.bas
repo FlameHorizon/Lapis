@@ -124,6 +124,12 @@ Public Sub Start()
     FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
     FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest
     
+    LastReturnsValueWhenSourceDoesSatisfyConditionTest
+    LastReturnsArgumentNullErrorWhenSourceIsNothingTest
+    LastReturnsArgumentNullErrorWhenPredicateIsNothingTest
+    LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
+    LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest
+    
 End Sub
 
 
@@ -2027,6 +2033,118 @@ Private Sub FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
 
     ' Act
     CollectionExt.First New Collection, Predicate
+
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsValueWhenSourceDoesSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "LastReturnsValueWhenSourceDoesSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 1
+        .Operator = ComparisonOperator.GreaterThan
+        .Comparer = New LongComparer
+    End With
+
+    ' Act & Assert
+    ExUnit.AreEqual 3, CollectionExt.Last(CollectionExt.Make(1, 2, 3), Predicate), GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "LastReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 1
+        .Operator = ComparisonOperator.GreaterThan
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.Last Nothing, Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsArgumentNullErrorWhenPredicateIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "LastReturnsArgumentNullErrorWhenPredicateIsNothingTest"
+    
+    ' Act
+    CollectionExt.Last CollectionExt.Make(1, 2, 3), Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 5
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.Last CollectionExt.Make(1, 2, 3), Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest"
+
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 5
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    CollectionExt.Last New Collection, Predicate
+
+    ' Assert
 
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)

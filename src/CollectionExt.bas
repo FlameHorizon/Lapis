@@ -718,6 +718,7 @@ Public Function SequenceEqual(ByVal First As Collection, _
 End Function
 
 
+' Returns the first element in a sequence that satisfies a specified condition.
 Public Function First(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Variant
     
     Const MethodName = "First"
@@ -737,12 +738,7 @@ Public Function First(ByVal Source As Collection, Optional ByVal Predicate As Pr
     Dim Item As Variant
     For Each Item In Source
         If Predicate.Eval(Item) Then
-            If IsObject(Item) Then
-                Set First = Item
-            Else
-                First = Item
-            End If
-            
+            Assing Item, First
             Exit Function
         End If
     Next Item
@@ -750,3 +746,45 @@ Public Function First(ByVal Source As Collection, Optional ByVal Predicate As Pr
     Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
 
 End Function
+
+
+' Returns the last element of a sequence that satisfies a specified condition.
+Public Function Last(ByVal Source As Collection, ByVal Predicate As Predicate) As Variant
+
+    Const MethodName = "Last"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
+    End If
+
+    Dim Output As Variant
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) Then
+            Assing Item, Output
+        End If
+    Next Item
+    
+    ' No item matches the predicate or source is empty.
+    If Output = vbEmpty Then
+        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Assing Output, Last
+    
+End Function
+
+
+Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
+    
+    If IsObject(Source) Then
+        Set Destination = Source
+    Else
+        Destination = Source
+    End If
+    
+End Sub
