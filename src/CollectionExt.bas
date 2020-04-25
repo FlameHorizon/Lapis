@@ -852,4 +852,26 @@ Public Function Count(ByVal Source As Collection, ByVal Predicate As Predicate) 
 End Function
 
 
+Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) As Collection
 
+    Const MethodName = "Where"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Eval(Item) Then
+            Output.Add Item
+        End If
+    Next Item
+
+    Set Where = Output
+
+End Function

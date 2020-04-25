@@ -141,6 +141,10 @@ Public Sub Start()
     CountReturnsArgumentNullErrorWhenSourceIsNothingTest
     CountReturnsArgumentNullErrorWhenPredicateIsNothingTest
     
+    WhereTest
+    WhereReturnsArgumentNullErrorWhenSourceIsNothingTest
+    WhereReturnsArgumentNullErrorWhenPredicateIsNothingTest
+    
 End Sub
 
 
@@ -2360,4 +2364,60 @@ ErrHandler:
 End Sub
 
 
+Private Sub WhereTest()
 
+    On Error GoTo ErrHandler
+    Const MethodName = "WhereTest"
+    
+    ' Arrange
+    Dim Predicate As New Predicate
+    With Predicate
+        .ComparisonValue = 2
+        .Operator = ComparisonOperator.EqualTo
+        .Comparer = New LongComparer
+    End With
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Where(CollectionExt.Make(1, 2, 3), Predicate)
+    
+    ' Assert
+    ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub WhereReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "WhereReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt.Where Nothing, New Predicate
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub WhereReturnsArgumentNullErrorWhenPredicateIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "WhereReturnsArgumentNullErrorWhenPredicateIsNothingTest"
+
+    ' Act
+    CollectionExt.Where New Collection, Nothing
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
