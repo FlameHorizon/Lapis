@@ -1517,7 +1517,6 @@ Private Sub AllReturnsFalseWhenSourceDoesNotSatisfyConditionTest()
 
     ' Arrange
     Dim Predicate As New Predicate
-    Predicate.Operator = ComparisonOperator.EqualTo
     Predicate.ComparisonValue = 1
     Predicate.Comparer = New LongComparer
     
@@ -1599,7 +1598,6 @@ Private Sub AllReturnsTrueWhenSourceIsEmptyTest()
 
     ' Arrange
     Dim Predicate As New Predicate
-    Predicate.Operator = ComparisonOperator.EqualTo
     Predicate.ComparisonValue = 1
     Predicate.Comparer = New LongComparer
     
@@ -1624,7 +1622,6 @@ Private Sub AllReturnsFalseWhenSourceSatisfyConditionAndHasNothingTest()
 
     ' Arrange
     Dim Predicate As New Predicate
-    Predicate.Operator = ComparisonOperator.EqualTo
     Predicate.ComparisonValue = 1
     Predicate.Comparer = New LongComparer
     
@@ -1681,7 +1678,6 @@ Private Sub SomeReturnsTrueWhenAtleastOneItemSatisfyConditionTest()
     Dim Predicate As New Predicate
     Predicate.Comparer = New LongComparer
     Predicate.ComparisonValue = 2
-    Predicate.Operator = ComparisonOperator.EqualTo
 
     ' Act
     Dim Actual As Boolean
@@ -1706,7 +1702,6 @@ Private Sub SomeReturnsFalseWhenNoItemSatisfyConditionTest()
     Dim Predicate As New Predicate
     Predicate.Comparer = New LongComparer
     Predicate.ComparisonValue = 0
-    Predicate.Operator = ComparisonOperator.EqualTo
 
     ' Act
     Dim Actual As Boolean
@@ -1731,7 +1726,6 @@ Private Sub SomeReturnsFalseWhenSourceIsEmptyTest()
     Dim Predicate As New Predicate
     Predicate.Comparer = New LongComparer
     Predicate.ComparisonValue = 0
-    Predicate.Operator = ComparisonOperator.EqualTo
 
     ' Act & Assert
     ExUnit.IsFalse CollectionExt.Some(New Collection), GetSig(MethodName)
@@ -1954,7 +1948,6 @@ Private Sub FirstReturnsValueWhenSourceDoesSatisfyConditionTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 3
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -1978,7 +1971,6 @@ Private Sub FirstReturnsArgumentNullErrorWhenSourceIsNothingTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 3
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2018,7 +2010,6 @@ Private Sub FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTe
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 5
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2042,7 +2033,6 @@ Private Sub FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 3
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2128,7 +2118,6 @@ Private Sub LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTes
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 5
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2152,7 +2141,6 @@ Private Sub LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 5
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2176,7 +2164,6 @@ Private Sub SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 2
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2200,7 +2187,6 @@ Private Sub SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 3
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2240,7 +2226,6 @@ Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditi
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 5
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2264,7 +2249,6 @@ Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 3
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2334,7 +2318,6 @@ Private Sub CountReturnsArgumentNullErrorWhenSourceIsNothingTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 3
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 
@@ -2373,7 +2356,6 @@ Private Sub WhereTest()
     Dim Predicate As New Predicate
     With Predicate
         .ComparisonValue = 2
-        .Operator = ComparisonOperator.EqualTo
         .Comparer = New LongComparer
     End With
 

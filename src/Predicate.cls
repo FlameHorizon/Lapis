@@ -18,6 +18,11 @@ Private pComparisonValue As Variant
 Private pComparer As IComparer
 
 
+Private Sub Class_Initialize()
+    pOperator = ComparisonOperator.EqualTo
+End Sub
+
+
 Public Function Eval(ByVal Item As Variant) As Boolean
     
     If pComparer Is Nothing Then
