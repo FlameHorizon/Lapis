@@ -231,7 +231,7 @@ Public Function BinarySearch(ByRef Arr() As Variant, _
     End If
     
     If Comparer Is Nothing Then
-        Set Comparer = StringComparer.OrdinalIgnoreCase
+        Set Comparer = StringComparers.OrdinalIgnoreCase
     End If
     
     Dim Low As Long: Low = Index

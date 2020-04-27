@@ -10,8 +10,10 @@ Public Sub Start()
     LongComparerReturnsOneWhenNumberIsComparedToNothingTest
     
     ' Default comparers
-    DefaultReturnsLongComparerWhenNumberWithoutDecimalTest
+    DefaultReturnsLongLongComparerWhenNumberWithoutDecimalTest
     DefaultReturnsStringComparerWhenValueIsStringTest
+    DefaultReturnsDecimalComaprerWhenValueWithDecimalTest
+    DefaultReturnsNothingWhenTypeIsNotHandledTest
 
 End Sub
 
@@ -43,16 +45,17 @@ Private Function GetSig(ByVal MethodName As String) As String
 End Function
 
 
-Private Sub DefaultReturnsLongComparerWhenNumberWithoutDecimalTest()
+Private Sub DefaultReturnsLongLongComparerWhenNumberWithoutDecimalTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "DefaultReturnsLongComparerWhenNumberWithoutDecimalTest"
+    Const MethodName = "DefaultReturnsLongLongComparerWhenNumberWithoutDecimalTest"
  
     ' Act & Assert
-    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CBool(1)) Is LongComparer, GetSig(MethodName)
-    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CByte(1)) Is LongComparer, GetSig(MethodName)
-    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CInt(1)) Is LongComparer, GetSig(MethodName)
-    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CLng(1)) Is LongComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CBool(1)) Is LongLongComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CByte(1)) Is LongLongComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CInt(1)) Is LongLongComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CLng(1)) Is LongLongComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CLngLng(1)) Is LongLongComparer, GetSig(MethodName)
 
     Exit Sub
 ErrHandler:
@@ -68,6 +71,40 @@ Private Sub DefaultReturnsStringComparerWhenValueIsStringTest()
     
     ' Act & Assert
     Lapis.ExUnit.IsTrue TypeOf Comparers.Default("1") Is OrdinalIgnoreCaseStringComparer, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub DefaultReturnsDecimalComaprerWhenValueWithDecimalTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "DefaultReturnsDecimalComaprerWhenValueWithDecimalTest"
+    
+    ' Act & Assert
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CSng(1)) Is DecimalComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CDbl(1)) Is DecimalComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CCur(1)) Is DecimalComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CDec(1)) Is DecimalComparer, GetSig(MethodName)
+    Lapis.ExUnit.IsTrue TypeOf Comparers.Default(CDate(1)) Is DecimalComparer, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub DefaultReturnsNothingWhenTypeIsNotHandledTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "DefaultReturnsNothingWhenTypeIsNotHandledTest"
+    
+    ' Act & Assert
+    Lapis.ExUnit.IsNothing Comparers.Default(Array()), GetSig(MethodName)
 
     Exit Sub
 ErrHandler:

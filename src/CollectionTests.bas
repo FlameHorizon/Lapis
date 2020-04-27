@@ -27,7 +27,7 @@ Public Sub Start()
     DistinctReturnsItemWhenSingleItemGivenTest
     DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest
     DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest
-    DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest
+    DistinctReturnsValueWhenItemsImplementsComparableTest
     
     ExceptTest
     ExceptReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest
@@ -486,20 +486,43 @@ ErrHandler:
 End Sub
 
 
-Private Sub DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest()
+Private Sub DistinctReturnsValueWhenItemsImplementsComparableTest()
 
     On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "DistinctReturnsArgumentNullErrorWhenComparerIsNothingTest"
+    Const MethodName = "DistinctReturnsValueWhenItemsImplementsComparableTest"
+    
+    ' Arrange
+    Dim Items As New Collection
+    Items.Add MakeStone(10, 40)
+    Items.Add MakeStone(20, 40)
+    Items.Add MakeStone(20, 40)
     
     ' Act
-    CollectionExt.Distinct New Collection, Nothing
-    
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Distinct(Items)
+
     ' Assert
+    ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
+    ExUnit.AreEqual 10, Actual.Item(1).Weight, GetSig(MethodName)
+    ExUnit.AreEqual 20, Actual.Item(2).Weight, GetSig(MethodName)
+
+    Exit Sub
 ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
+
+
+Private Function MakeStone(ByVal Weight As Single, ByVal Age As Single) As TestStone
+    
+    Dim Output As New TestStone
+    With Output
+        .Weight = Weight
+        .Age = Age
+    End With
+    Set MakeStone = Output
+    
+End Function
 
 
 Private Sub ExceptTest()

@@ -1,5 +1,5 @@
-Attribute VB_Name = "StringComparer"
-'@Folder("Lapis")
+Attribute VB_Name = "StringComparers"
+'@Folder("Collection")
 Option Explicit
 
 ' Collection of static method which supplements Comaprer class.

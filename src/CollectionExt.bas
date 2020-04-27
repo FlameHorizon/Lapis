@@ -165,16 +165,12 @@ End Function
 
 
 ' Returns distinct elements from a sequence.
-Public Function Distinct(ByVal Source As Collection, ByVal Comparer As IEqualityComparer) As Collection
+Public Function Distinct(ByVal Source As Collection, Optional ByVal Comparer As IEqualityComparer) As Collection
 
     Const MethodName = "Distinct"
 
     If Source Is Nothing Then
         Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-    
-    If Comparer Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Comparer", MethodName & "." & MethodName
     End If
 
     Dim Output As New Collection
@@ -193,7 +189,7 @@ End Function
 ' Determines whether a sequence contains a specified element by using a specified IEqualityComparer.
 Public Function Contains(ByVal Source As Collection, _
                          ByVal Value As Variant, _
-                         ByVal Comparer As IEqualityComparer) As Boolean
+                         Optional ByVal Comparer As IEqualityComparer) As Boolean
     Contains = IndexOf(Source, Value, Comparer) >= 0
 End Function
 
@@ -230,7 +226,7 @@ End Function
 ' Returns an index of an Value in collection.
 Public Function IndexOf(ByVal Source As Collection, _
                         ByVal Value As Variant, _
-                        ByVal Comparer As IEqualityComparer) As Long
+                        Optional ByVal Comparer As IEqualityComparer) As Long
 
     Const MethodName = "IndexOf"
     
@@ -238,23 +234,60 @@ Public Function IndexOf(ByVal Source As Collection, _
         Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
-    If Comparer Is Nothing Then
-        Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    If TypeOf Value Is IComparable Then
+        IndexOf = IndexOfUsingComparable(Source, Value)
+        Exit Function
     End If
     
+    ' If comparer was not defined, try to find default comparer based on the
+    ' data type of value.
+    If System.IsNothing(Comparer) Then
+        Set Comparer = EqualityComparers.Default(Value)
+    End If
+    
+    ' If comparer is still not found, throw the error.
+    If System.IsNothing(Comparer) Then
+        ' Error
+    Else
+        IndexOf = IndexOfUsingEqualityComparer(Source, Value, Comparer)
+    End If
+        
+End Function
+
+
+Private Function IndexOfUsingComparable(ByVal Source As Collection, ByVal Value As IComparable) As Long
+
     Dim Ndx As Long: Ndx = 1
     Dim Item As Variant
-    
     For Each Item In Source
-        If Comparer.Equals(Item, Value) Then
-            IndexOf = Ndx
+        If Value.CompareTo(Item) = 0 Then
+            IndexOfUsingComparable = Ndx
             Exit Function
         End If
         Ndx = Ndx + 1
     Next Item
     
-    IndexOf = -1
+    IndexOfUsingComparable = -1
 
+End Function
+
+
+Private Function IndexOfUsingEqualityComparer(ByVal Source As Collection, _
+                                              ByVal Value As Variant, _
+                                              ByVal Comparer As IEqualityComparer) As Long
+                                             
+    Dim Ndx As Long: Ndx = 1
+    Dim Item As Variant
+    For Each Item In Source
+        If Comparer.Equals(Item, Value) Then
+            IndexOfUsingEqualityComparer = Ndx
+            Exit Function
+        End If
+        Ndx = Ndx + 1
+    Next Item
+    
+    IndexOfUsingEqualityComparer = -1
+                                             
 End Function
 
 
