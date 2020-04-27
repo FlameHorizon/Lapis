@@ -1,4 +1,4 @@
-Attribute VB_Name = "ComparerStatic"
+Attribute VB_Name = "StringComparer"
 '@Folder("Lapis")
 Option Explicit
 
@@ -6,8 +6,8 @@ Option Explicit
 
 
 ' Returns a Defualt comparer which in this case is string comparer.
-Public Property Get Default() As Comparer
-    Set Default = New Comparer
+Public Property Get OrdinalIgnoreCase() As OrdinalIgnoreCaseStringComparer
+    Set OrdinalIgnoreCase = New OrdinalIgnoreCaseStringComparer
 End Property
 
 

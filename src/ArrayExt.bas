@@ -231,7 +231,7 @@ Public Function BinarySearch(ByRef Arr() As Variant, _
     End If
     
     If Comparer Is Nothing Then
-        Set Comparer = ComparerStatic.Default
+        Set Comparer = StringComparer.OrdinalIgnoreCase
     End If
     
     Dim Low As Long: Low = Index
@@ -531,6 +531,8 @@ Private Sub Swap(ByRef Arr() As Variant, ByVal MoveFrom As Long, ByVal MoveTo As
     End If
 
 End Sub
+
+
 
 
 

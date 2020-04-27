@@ -26,7 +26,7 @@ End Sub
 Public Function Eval(ByVal Item As Variant) As Boolean
     
     If pComparer Is Nothing Then
-        Set pComparer = ComparerStatic.Default
+        Set pComparer = StringComparer.OrdinalIgnoreCase
     End If
     
     Dim Result As Long
