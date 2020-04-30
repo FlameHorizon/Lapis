@@ -12,7 +12,6 @@ Public Function Default(ByVal Value As Variant) As IEqualityComparer
             Set Default = StringEqualityComparers.OrdinalIgnoreCase
         
         Case VbVarType.vbLong, VbVarType.vbInteger, VbVarType.vbByte, VbVarType.vbBoolean, VbVarType.vbLongLong
-            ' TODO: Add equality comparers for both classes.
             Set Default = New LongLongEqualityComparer
         
         Case VbVarType.vbSingle, VbVarType.vbDouble, VbVarType.vbCurrency, VbVarType.vbDecimal, VbVarType.vbDate

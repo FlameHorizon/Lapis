@@ -27,21 +27,18 @@ Public Sub Start()
     DistinctReturnsItemWhenSingleItemGivenTest
     DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest
     DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest
-    DistinctReturnsValueWhenItemsImplementsComparableTest
     
     ExceptTest
     ExceptReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest
     ExceptReturnsEmptyCollectionWhenFirstIsEmptyTest
     ExceptReturnsArgumentNullErrorIfFirstIsNothingTest
     ExceptReturnsArgumentNullErrorIfSecondIsNothingTest
-    ExceptReturnsArgumentNullErrorIfComparerIsNothingTest
     
     IntersectTest
     IntersectReturnsEmptyCollectionWhenFirstAndSecondAreEmptyTest
     IntersectReturnsEmptyCollectionWhenFirstIsEmpty
     IntersectReturnsArgumentNullErrorIfFirstIsNothingTest
     IntersectReturnsArgumentNullErrorIfSecondIsNothingTest
-    IntersectReturnsArgumentNullErrorIfComparerIsNothingTest
     
     MinWhenSourceContainsValueTypesTest
     MinWhenSourceContainsReferencedTypesTest
@@ -144,6 +141,11 @@ Public Sub Start()
     WhereTest
     WhereReturnsArgumentNullErrorWhenSourceIsNothingTest
     WhereReturnsArgumentNullErrorWhenPredicateIsNothingTest
+    
+    IndexOfTest
+    IndexOfReturnsValueWhenItemNotExistsInSourceTest
+    IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest
+    IndexOfReturnsValueWhenItemImplementsIComparableTest
     
 End Sub
 
@@ -417,7 +419,7 @@ Private Sub DistinctTest()
 
     ' Act
     Dim Actual As Collection
-    Set Actual = CollectionExt.Distinct(CollectionExt.Make(1, 2, 3, 2), New LongEqualityComparer)
+    Set Actual = CollectionExt.Distinct(CollectionExt.Make(1, 2, 3, 2))
 
     ' Assert
     ExUnit.AreEqual 3, Actual.Count, GetSig(MethodName)
@@ -439,7 +441,7 @@ Private Sub DistinctReturnsItemWhenSingleItemGivenTest()
 
     ' Act
     Dim Actual As Collection
-    Set Actual = CollectionExt.Distinct(CollectionExt.Make(1), New LongEqualityComparer)
+    Set Actual = CollectionExt.Distinct(CollectionExt.Make(1))
     
     ' Assert
     ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
@@ -458,7 +460,7 @@ Private Sub DistinctReturnsEmptyCollectionWhenSourceIsEmptyTest()
 
     ' Act
     Dim Actual As Collection
-    Set Actual = CollectionExt.Distinct(New Collection, New LongEqualityComparer)
+    Set Actual = CollectionExt.Distinct(New Collection)
     
     ' Assert
     ExUnit.AreEqual 0, Actual.Count, GetSig(MethodName)
@@ -477,38 +479,11 @@ Private Sub DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest()
     Const MethodName = "DistinctReturnsArgumentNullErrorWhenSourceIsNothingTest"
     
     ' Act
-    CollectionExt.Distinct Nothing, New LongEqualityComparer
+    CollectionExt.Distinct Nothing
     
     ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub DistinctReturnsValueWhenItemsImplementsComparableTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "DistinctReturnsValueWhenItemsImplementsComparableTest"
-    
-    ' Arrange
-    Dim Items As New Collection
-    Items.Add MakeStone(10, 40)
-    Items.Add MakeStone(20, 40)
-    Items.Add MakeStone(20, 40)
-    
-    ' Act
-    Dim Actual As Collection
-    Set Actual = CollectionExt.Distinct(Items)
-
-    ' Assert
-    ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
-    ExUnit.AreEqual 10, Actual.Item(1).Weight, GetSig(MethodName)
-    ExUnit.AreEqual 20, Actual.Item(2).Weight, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
 
@@ -532,7 +507,7 @@ Private Sub ExceptTest()
     
     ' Act
     Dim Actual As Collection
-    Set Actual = CollectionExt.Except(CollectionExt.Make(1, 2, 3), CollectionExt.Make(1, 3), New LongEqualityComparer)
+    Set Actual = CollectionExt.Except(CollectionExt.Make(1, 2, 3), CollectionExt.Make(1, 3))
     
     ' Assert
     ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
@@ -615,22 +590,6 @@ ErrHandler:
 End Sub
 
 
-Private Sub ExceptReturnsArgumentNullErrorIfComparerIsNothingTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "ExceptReturnsArgumentNullErrorIfComparerIsNothingTest"
-
-    ' Act
-    CollectionExt.Except New Collection, New Collection, Nothing
-    
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
 Private Sub IntersectTest()
 
     On Error GoTo ErrHandler
@@ -639,8 +598,7 @@ Private Sub IntersectTest()
     ' Act
     Dim Actual As Collection
     Set Actual = CollectionExt.Intersect(CollectionExt.Make(1, 2, 3), _
-                                         CollectionExt.Make(2, 3), _
-                                         New LongEqualityComparer)
+                                         CollectionExt.Make(2, 3))
     
     ' Assert
     ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
@@ -697,22 +655,6 @@ Private Sub IntersectReturnsArgumentNullErrorIfSecondIsNothingTest()
     
     ' Act
     CollectionExt.Intersect New Collection, Nothing, New LongEqualityComparer
-    
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub IntersectReturnsArgumentNullErrorIfComparerIsNothingTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "IntersectReturnsArgumentNullErrorIfComparerIsNothingTest"
-
-    ' Act
-    CollectionExt.Intersect New Collection, New Collection, Nothing
     
     ' Assert
 ErrHandler:
@@ -2424,5 +2366,87 @@ Private Sub WhereReturnsArgumentNullErrorWhenPredicateIsNothingTest()
     ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IndexOfTest"
+
+    ' Act & Assert
+    Lapis.ExUnit.AreEqual 2, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), 2), GetSig(MethodName)
+    Lapis.ExUnit.AreEqual 1, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), 1), GetSig(MethodName)
+    Lapis.ExUnit.AreEqual 4, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), 4), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfReturnsValueWhenItemNotExistsInSourceTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IndexOfReturnsValueWhenItemNotExistsInSourceTest"
+
+    ' Act & Assert
+    Lapis.ExUnit.AreEqual -1, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), 10), GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfReturnsValueWhenItemNotDifferentTypeThanSourceTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IndexOfReturnsValueWhenItemNotDifferentTypeThanSourceTest"
+    
+    ' Act & Assert
+    Lapis.ExUnit.AreEqual -1, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), "a"), GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentException
+    Const MethodName = "IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest"
+
+    ' Act
+    CollectionExt.IndexOf CollectionExt.Make(1, 2, 3, 4), ThisWorkbook
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfReturnsValueWhenItemImplementsIComparableTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IndexOfReturnsValueWhenItemImplementsIComparableTest"
+
+    ' Act
+    Dim Actual As Long
+    Actual = CollectionExt.IndexOf(CollectionExt.Make(MakeStone(1, 2), MakeStone(2, 3)), MakeStone(1, 2))
+    
+    ' Assert
+    Lapis.ExUnit.AreEqual 1, Actual, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub

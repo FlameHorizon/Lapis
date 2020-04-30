@@ -247,7 +247,8 @@ Public Function IndexOf(ByVal Source As Collection, _
     
     ' If comparer is still not found, throw the error.
     If System.IsNothing(Comparer) Then
-        ' Error
+        Lapis.Errors.OnArgumentError "Comparer", _
+                                     "Default comparer wasn't found for Value argument. " & ModuleName & "." & MethodName
     Else
         IndexOf = IndexOfUsingEqualityComparer(Source, Value, Comparer)
     End If
@@ -347,7 +348,7 @@ End Function
 ' Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.
 Public Function Except(ByVal First As Collection, _
                        ByVal Second As Collection, _
-                       ByVal Comparer As IEqualityComparer) As Collection
+                       Optional ByVal Comparer As IEqualityComparer) As Collection
     
     Const MethodName = "Except"
     
@@ -357,10 +358,6 @@ Public Function Except(ByVal First As Collection, _
     
     If Second Is Nothing Then
         Lapis.Errors.OnArgumentNull "Second", ModuleName & "." & MethodName
-    End If
-    
-    If Comparer Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
     End If
     
     Dim Output As New Collection
@@ -379,7 +376,7 @@ End Function
 ' Produces the set intersection of two sequences by using the specified IEqualityComparer to compare values.
 Public Function Intersect(ByVal First As Collection, _
                           ByVal Second As Collection, _
-                          ByVal Comparer As IEqualityComparer) As Collection
+                          Optional ByVal Comparer As IEqualityComparer) As Collection
 
     Const MethodName = "Intersect"
     
@@ -389,10 +386,6 @@ Public Function Intersect(ByVal First As Collection, _
     
     If Second Is Nothing Then
         Lapis.Errors.OnArgumentNull "Second", ModuleName & "." & MethodName
-    End If
-    
-    If Comparer Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
     End If
     
     Dim Output As New Collection
