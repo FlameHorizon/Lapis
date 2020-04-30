@@ -11,6 +11,7 @@ Option Explicit
 
 Implements IEqualityComparer
 
+
 ' Determines whether the specified objects are equal.
 Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
 
@@ -22,3 +23,5 @@ End Function
 Private Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
     IEqualityComparer_Equals = Me.Equals(x, y)
 End Function
+
+

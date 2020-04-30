@@ -12,6 +12,7 @@ Option Explicit
 
 Implements IComparer
 
+
 Public Function Compare(ByRef x As Variant, ByRef y As Variant) As Long
     Compare = IIf(x < y, -1, IIf(x = y, 0, 1))
 End Function
@@ -20,4 +21,5 @@ End Function
 Private Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long
     IComparer_Compare = Me.Compare(x, y)
 End Function
+
 

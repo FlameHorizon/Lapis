@@ -9,3 +9,5 @@ Option Explicit
 Public Property Get OrdinalIgnoreCase() As OrdinalIgnoreCaseStringEquality
     Set OrdinalIgnoreCase = New OrdinalIgnoreCaseStringEquality
 End Property
+
+

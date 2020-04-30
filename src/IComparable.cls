@@ -10,5 +10,8 @@ Attribute VB_Exposed = False
 '@Folder("Collection")
 Option Explicit
 
+
 Public Function CompareTo(ByRef x As Variant) As Long
 End Function
+
+

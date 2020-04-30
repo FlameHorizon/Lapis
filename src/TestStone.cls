@@ -46,3 +46,5 @@ End Function
 Private Function IComparable_CompareTo(ByRef x As Variant) As Long
     IComparable_CompareTo = Me.CompareTo(x)
 End Function
+
+

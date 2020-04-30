@@ -2,6 +2,7 @@ Attribute VB_Name = "Comparers"
 '@Folder("Collection")
 Option Explicit
 
+
 Public Function Default(ByVal Value As Variant) As IComparer
     
     Dim VarT As VbVarType
@@ -23,4 +24,5 @@ Public Function Default(ByVal Value As Variant) As IComparer
     End Select
     
 End Function
+
 

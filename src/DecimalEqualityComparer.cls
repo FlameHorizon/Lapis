@@ -30,4 +30,3 @@ Private Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant
 End Function
 
 
-
