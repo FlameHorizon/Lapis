@@ -1,6 +1,5 @@
 Attribute VB_Name = "Errors"
 '@Folder("Lapis")
-Option Private Module
 Option Explicit
 
 
