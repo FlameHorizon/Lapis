@@ -1,0 +1,556 @@
+{
+    "CollectionExt": "The CollectionExt module contains methods that enables users to use collection in a more robust way.",
+    "CollectionExt.IndexOf (Collection, Variant, IEqualityComparer)": {
+        "short-description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
+        "description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
+        "parameters": {
+            "Source": "Collection which will be scanned.",
+            "Value": "The item to locate in the Collection.",
+            "Comparer": "Just a comparer"
+        },
+        "returns": [
+            "Long",
+            "The index of value if found in the collection; otherwise, 0."
+        ]
+    },
+    "CollectionExt.ToString (Collection, IToString, String)": {
+        "short-description": "Returns a collection of property values based on the items in the collection.",
+        "description": "Returns a collection of property values based on the items in the collection.",
+        "parameters": {
+            "Source": "",
+            "Converter": "",
+            "Delimiter": ""
+        },
+        "returns": [
+            "String",
+            ""
+        ]
+    },
+    "CollectionExt.GroupBy (Collection, String)": {
+        "short-description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
+        "description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
+        "parameters": {
+            "Items": "",
+            "PropertyName": ""
+        },
+        "returns": [
+            "Scripting.Dictionary",
+            ""
+        ]
+    },
+    "CollectionExt.Concat (Collection, Collection)": {
+        "short-description": "Joins two collections together.",
+        "description": "Joins two collections together.",
+        "parameters": {
+            "First": "",
+            "Second": ""
+        },
+        "returns": [
+            "Collection",
+            ""
+        ]
+    },
+    "CollectionExt.ToArray (Collection)": {
+        "short-description": "Converts collection to an array.",
+        "description": "Converts collection to an array.",
+        "parameters": {
+            "Items": ""
+        },
+        "returns": [
+            "Variant()",
+            ""
+        ]
+    },
+    "CollectionExt.Distinct (Collection, IEqualityComparer)": {
+        "short-description": "Returns a collection of items which unique property value.",
+        "description": "Returns a collection of items which unique property value.",
+        "parameters": {
+            "Source": "",
+            "Comparer": ""
+        },
+        "returns": [
+            "Collection",
+            ""
+        ]
+    },
+    "CollectionExt.Contains (Collection, Variant, IEqualityComparer)": {
+        "short-description": "Checks if item exists in the collection using custom comparer.",
+        "description": "Checks if item exists in the collection using custom comparer.",
+        "parameters": {
+            "Source": "",
+            "Value": "",
+            "Comparer": ""
+        },
+        "returns": [
+            "Boolean",
+            ""
+        ]
+    },
+    "CollectionExt.AddRange (Collection, Collection)": {
+        "short-description": "Adds a collection of items to the container.",
+        "description": "Adds a collection of items to the container.",
+        "parameters": {
+            "Container": "",
+            "Items": ""
+        }
+    },
+    "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
+        "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
+        "description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "Value": "The string to seek.",
+            "StartIndex": "The search starting position. If value is not provided, the default value will be 0. That means, search will start from the beginning of `Str`.",
+            "Count": "The number of character positions to examine. If value is not provided, the default value will be `Len(Str) - StartIndex`.",
+            "ComparisonMethod": "One of the enumeration values that specifies the rules for the search."
+        },
+        "returns": [
+            "Long",
+            "The zero-based index position of the value parameter from the start of the current instance if that string is found, or -1 if it is not. If value is Empty, the return value is startIndex."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "When `Str` is empty string."
+            ],
+            [
+                "OnArgumentOutOfRangeException",
+                "`StartIndex` or `count` is smaller than 0."
+            ],
+            [
+                "OnArgumentOutOfRangeException",
+                "`Len(Str) - Count` is smaller than `StartIndex`"
+            ],
+            [
+                "OnArgumentOutOfRangeException",
+                "`ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`."
+            ]
+        ],
+        "example": "The following example finds the first occurrence of either letter a in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\")\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"A\", , , vbCompareMethod.vbBinaryCompare)\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, , vbCompareMethod.vbTextCompare)\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, , vbCompareMethod.vbBinaryCompare)\n\nEnd Sub\n\n' The example displays the following output:\n' Case insensitive search: 0\n' Case sensitive search: 2\n' Case insensitive search with specified StartIndex: 2\n' Case sensitive search with specified StartIndex: 4\n```",
+        "remarks": "Index numbering starts from 0 (zero). The startIndex parameter can range from 0 to the length of the string instance."
+    },
+    "StringExt": "Represents a collection of helper methods to work with a string type.",
+    "StringExt.Concat (ParamArray Variant)": {
+        "short-description": "Concatenates the members of a constructed Variant ParamArray of type String.",
+        "description": "Concatenates the elements of a specified String array.",
+        "parameters": {
+            "Items": "An array of strings."
+        },
+        "returns": [
+            "String",
+            "The concatenated elements of `values`."
+        ],
+        "example": "The following example takes three strings and joins them into one.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print StringExt.Concat(\"'01\", \"-\", \"114'\")\nEnd Sub\n\n' The example displays the following output:\n' '01-114'\n```"
+    },
+    "StringExt.Contains (String, String)": {
+        "short-description": "Returns a value indicating whether a specified substring occurs within this string.",
+        "description": "Returns a value indicating whether a specified substring occurs within this string.",
+        "parameters": {
+            "Str": "A source string which will examined.",
+            "Value": "The string to seek."
+        },
+        "returns": [
+            "Boolean",
+            "Indicates of `Value` substring exists in the `Str`"
+        ],
+        "example": "The following example finds the first occurrence of either letter a in the string.\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Debug.Print \"Does A11-003b contains letter B? \" & StringExt.Contains(\"A11-003b\", \"B\")\n    Debug.Print \"Does A11-003b contains letter B?\" & StringExt.Contains(\"A11-003b\", \"a\")\n\nEnd Sub\n\n' The example displays the following output:\n' Does A11-003b contains letter B? True\n' Does A11-003b contains letter z? False\n```",
+        "remarks": "This method performs an ordinal (case-sensitive and culture-insensitive) comparison. The search begins at the first character position of this string and continues through the last character position."
+    },
+    "StringExt.EndsWith (String, String, VbCompareMethod)": {
+        "short-description": "Determines whether the end of this string instance matches the specified string when compared using the specified comparison option.",
+        "description": "Determines whether the end of this string instance matches the specified string when compared using the specified comparison option.",
+        "parameters": {
+            "Str": "A source string which will examined.",
+            "Value": "The string to compare.",
+            "StringComparison": "One of the enumeration values that specifies the rules for the search."
+        },
+        "returns": [
+            "Boolean",
+            "`true` if value matches the end of this instance; otherwise, false."
+        ],
+        "example": "The following example indicates whether each string in an array ends with a period (\".\").\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Arr(2) As String\n    Arr(0) = \"This is a string.\"\n    Arr(1) = \"Hello!\"\n    Arr(2) = \"Nothing\"\n\n    Dim Item As Variant\n    For Each Item In Arr\n        Dim EndsWithPeriod As Boolean\n        EndsWithPeriod = StringExt.EndsWith(Item, \".\", VbCompareMethod.vbTextCompare)\n        Debug.Print Item & \" ends with a period \" & EndsWithPeriod\n    Next Item\n\nEnd Sub\n\n' The example displays the following output:\n' This is a string. ends with a period True\n' Hello! ends with a period False\n' Nothing ends with a period False\n```",
+        "errors": [
+            [
+                "OnArgumentError",
+                "When `Str` is empty string."
+            ],
+            [
+                "OnArgumentError",
+                "`ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`."
+            ]
+        ],
+        "remarks": "This method compares value to the substring at the end of this instance that is the same length as value, and returns an indication whether they are equal. To be equal, value must be a reference to this same instance or match the end of this instance.\n\nThis method performs a word (case-sensitive and culture-sensitive) comparison."
+    },
+    "StringExt.IndexOfAny (String, String)": {
+        "short-description": "Reports the zero-based index of the first occurrence in this instance of any character in a specified array of characters.",
+        "description": "Reports the zero-based index of the first occurrence in this instance of any character in a specified array of characters.",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "AnyOf()": "Array of strings containing one or more characters to seek."
+        },
+        "returns": [
+            "Long",
+            "The zero-based index position of the first occurrence in this instance where any character in `AnyOf` was found, -1 if no character in `AnyOf` was found."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "`AnyOf` is not initialized."
+            ]
+        ],
+        "example": "The following example finds the first occurrence of either 1 or 2 in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print StringExt.IndexOfAny(\"Any 1 number is not 2.\", ArrayH.StringArray(\"1\", \"2\"))\nEnd Sub\n\n' The example displays the following output:\n' 4\n```",
+        "remarks": "The search is case-insensitive. If value of `Str` parameter is empty, method returns -1."
+    },
+    "StringExt.Insert (String, Long, String)": {
+        "short-description": "Returns a new string in which a specified string is inserted at a specified index position in this instance.",
+        "description": "Returns a new string in which a specified string is inserted at a specified index position in this instance.",
+        "parameters": {
+            "Str": "The string to which value will be inserted.",
+            "StartIndex": "The zero-based index position of the insertion.",
+            "Value": "The string to insert"
+        },
+        "returns": [
+            "String",
+            "A new string that is equivalent to this instance, but with value inserted at position StartIndex."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "When `Str` is empty string."
+            ],
+            [
+                "ArgumentOutOfRangeException",
+                "`StartIndex` is negative or greater than the length of this instance."
+            ]
+        ],
+        "example": "The following example inserts a space character in the fourth character position (the character at index 3) of a string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Original As String: Original = \"aaabbb\"\n    Debug.Print \"The original string \" & Original\n    \n    Dim Modified As String: Modified = StringExt.Insert(Original, 3, \" \")\n    Debug.Print \"The modified string: \" & Modified\n\nEnd Sub\n\n' The example displays the following output:\n' The original string: aaabbb\n' The modified string: aaa bbb\n```",
+        "remarks": "If `StartIndex` is equal to the length of this instance, value is appended to the end of this instance."
+    },
+    "StringExt.LastIndexOf (String, String, Long, Long, VbCompareMethod)": {
+        "short-description": "Returns the zero-based index of the last occurrence of the specified string in the current string.",
+        "description": "Returns the zero-based index of the last occurrence of the specified string in the current string.",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "Value": "The string to seek.",
+            "StartIndex": "The search starting position. The search proceeds from startIndex toward the beginning of this instance.",
+            "Count": "The number of character positions to examine. If value is not provided, the default value will be `Len(Str) - StartIndex`.",
+            "ComparisonMethod": "One of the enumeration values that specifies the rules for the search."
+        },
+        "returns": [
+            "Long",
+            "The zero-based index position of the value parameter from the start of the current instance if that string is found, or -1 if it is not. If value is `vbEmptyString`, the return value is `StartIndex`."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "When `Str` is empty string."
+            ],
+            [
+                "OnArgumentError",
+                "`Value` is empty string."
+            ],
+            [
+                "ArgumentOutOfRangeException",
+                "`StartIndex` or `Count` is smaller than 0."
+            ],
+            [
+                "ArgumentOutOfRangeException",
+                "`StartIndex` is greater than the length of `Str`"
+            ],
+            [
+                "ArgumentOutOfRangeException",
+                "`Len(Str) - Count` is smaller than `StartIndex`"
+            ],
+            [
+                "ArgumentOutOfRangeException",
+                "`ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`."
+            ]
+        ],
+        "example": "The following example demonstrates how last index of letter a can be found.\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Debug.Print \"Case insensitive search: \" & StringExt.LastIndexOf(\"aaAAaa\", \"a\")\n    Debug.Print \"Case sensitive search: \" & StringExt.LastIndexOf(\"aaAAaa\", \"A\", , , VbCompareMethod.vbBinaryCompare)\n    Debug.Print \"Case insensitive search: \" & StringExt.LastIndexOf(\"aaAAaa\", \"a\", 5, , VbCompareMethod.vbTextCompare)\n    Debug.Print \"Case sensitive search: \" & StringExt.LastIndexOf(\"aaAAaa\", \"A\", 5, , VbCompareMethod.vbBinaryCompare)\n\nEnd Sub\n\n' The example displays the following output:\n' Case insensitive search: 0\n' Case sensitive search: 2\n' Case insensitive search with specified StartIndex: 2\n' Case sensitive search with specified StartIndex: 4\n```",
+        "remarks": "Index numbering starts from zero. That is, the first character in the string is at index zero and the last is at Length - 1."
+    },
+    "StringExt.LastIndexOfAny (String, String)": {
+        "short-description": "Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a array.",
+        "description": "Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a array.",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "AnyOf()": "Array of strings containing one or more characters to seek."
+        },
+        "returns": [
+            "Long",
+            "The zero-based index position of the last occurrence in this instance where any character in `AnyOf` was found, -1 if no character in `AnyOf` was found."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "When `Str` is empty string."
+            ],
+            [
+                "OnArgumentError",
+                "`AnyOf` is not initialized."
+            ]
+        ],
+        "example": "The following example finds the first occurrence of either 1 or 2 in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print StringExt.LastIndexOfAny(\"Any 1 number is not 2. but it's every 1.\", ArrayH.StringArray(\"1\", \"2\"))\nEnd Sub\n\n' The example displays the following output:\n' 38\n```",
+        "remarks": "The search is case-insensitive. If value of `Str` parameter is empty, method returns -1."
+    },
+    "StringExt.Remove (String, Long)": {
+        "short-description": "Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.",
+        "description": "Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "StartIndex": "The zero-based position to begin deleting characters."
+        },
+        "returns": [
+            "String",
+            "A new string that is equivalent to this string except for the removed characters."
+        ],
+        "errors": [
+            [
+                "OnArgumentOutOfRange",
+                "`StartIndex` is smaller than 0."
+            ],
+            [
+                "OnArgumentOutOfRange",
+                "`StartIndex` is greater than the length of `Str`"
+            ]
+        ],
+        "example": "The following example demonstrates the Remove method. The next-to-last case removes all text starting from the specified index through the end of the string. The last case removes three characters starting from the specified index.\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Str as String: Str = \"abc---def\"\n    Debug.Print \"1) \" & Str\n    Debug.Print \"2) \" & StringExt.Remove(Str, 3)\n\nEnd Sub\n\n' The example displays the following output:\n' 1) abc---def\n' 2) abc\n```"
+    },
+    "StringExt.RemoveRange (String, Long, Long)": {
+        "short-description": "Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.",
+        "description": "Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "StartIndex": "The zero-based position to begin deleting characters.",
+            "Count" : "The number of characters to delete."
+        },
+        "returns": [
+            "String",
+            "A new string that is equivalent to this string except for the removed characters."
+        ],
+        "errors": [
+            [
+                "OnArgumentOutOfRange",
+                "`StartIndex` or `Count` is smaller than 0."
+            ],
+            [
+                "OnArgumentOutOfRange",
+                "`StartIndex` plus `Count` is greater than the length of `Str`"
+            ]
+        ],
+        "example": "The following example demonstrates the RemoveRange method. The next-to-last case RemoveRanges all text starting from the specified index through the end of the string. The last case RemoveRanges three characters starting from the specified index.\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Str As String: Str = \"abc---def\"\n    Debug.Print \"1) \" & Str\n    Debug.Print \"2) \" & StringExt.RemoveRange(Str, 3, 3)\n\nEnd Sub\n\n' The example displays the following output:\n' 1) abc---def\n' 2) abcdef\n```"
+    },
+    "StringExt.StartsWith (String, String, VbCompareMethod)": {
+        "short-description": "Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.",
+        "description": "Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.",
+        "parameters": {
+            "Str": "A source string which will be examined.",
+            "Value": "The string to compare.",
+            "StringComparison" : "One of the enumeration values that specifies the rules for the search."
+        },
+        "returns": [
+            "Boolean",
+            "`true` if this instance begins with `value`; otherwise, `false`."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "When `Str` is empty string."
+            ],
+            [
+                "OnArgumentOutOfRange",
+                "`ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`."
+            ]
+        ],
+        "example": "The following example finds the first occurrence of either letter a in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Debug.Print \"Case insensitive search: \" & StringExt.StartsWith(\"The House of the Seven Gables\", \"the\", VbCompareMethod.vbBinaryCompare)\n    Debug.Print \"Case sensitive search: \" & StringExt.StartsWith(\"The House of the Seven Gables\", \"the\", VbCompareMethod.vbTextCompare)\n\nEnd Sub\n\n' Case insensitive search: False\n' Case sensitive search: True\n```",
+        "remarks": "The StartsWith method compares the value parameter to the substring at the beginning of this string and returns a value that indicates whether they are equal."
+    },
+    "ArrayExt": "Represents a collection of helper methods to work with an array type.",
+    "ArrayExt.Exists (Variant, Variant)": {
+        "short-description": "Checks if given elements exists in the array.",
+        "description": "",
+        "parameters": {
+            "Item": "",
+            "Arr": ""
+        },
+        "returns": [
+            "Boolean",
+            ""
+        ]
+    },
+    "ArrayExt.IsInitialized (Variant)": {
+        "short-description": "Indicates if array is initialized.",
+        "description": "",
+        "parameters": {
+            "Arr()": ""
+        },
+        "returns": [
+            "Boolean",
+            ""
+        ]
+    },
+    "ArrayExt.ToCollection (Variant)": {
+        "short-description": "Converts array into a collection.",
+        "description": "",
+        "parameters": {
+            "Arr()": ""
+        },
+        "returns": [
+            "Collection",
+            ""
+        ]
+    },
+    "ArrayExt.Copy (Variant, Long, Variant, Long, Long)": {
+        "short-description": "Copies elements from an Array starting at SourceIndex and pastes them to another Array starting at DestinationIndex. Number of elements which will be copied is specified in Length parameter.",
+        "description": "Copies elements from an Array starting at SourceIndex and pastes them to another Array starting at DestinationIndex. Number of elements which will be copied is specified in Length parameter.",
+        "parameters": {
+            "Arr()": "",
+            "SourceIndex": "",
+            "DestinationArray()": "",
+            "DestinationIndex": "",
+            "Length": ""
+        }
+    },
+    "ArrayExt.Rank (Variant)": {
+        "short-description": "Returns the number of dimensions of an array.",
+        "description": "",
+        "parameters": {
+            "Arr()": ""
+        },
+        "returns": [
+            "Long",
+            ""
+        ]
+    },
+    "ArrayExt.Length (Variant)": {
+        "short-description": "Returns the number of elements in single dimension of array.",
+        "description": "",
+        "parameters": {
+            "Arr()": ""
+        },
+        "returns": [
+            "Long",
+            ""
+        ]
+    },
+    "ArrayExt.NumElements (Variant, Long)": {
+        "short-description": "Returns the number of elements in the specified dimension (Dimension) of the array in Arr. If you omit Dimension, the first dimension is used.",
+        "description": "",
+        "parameters": {
+            "Arr()": "",
+            "Dimension": ""
+        },
+        "returns": [
+            "Long",
+            ""
+        ]
+    },
+    "ArrayExt.Clear (Variant, Long, Long)": {
+        "short-description": "Clears an range of items in Array starting at Index.",
+        "description": "",
+        "parameters": {
+            "Arr()": "",
+            "Index": "",
+            "Length": ""
+        }
+    },
+    "ArrayExt.ToString (Variant)": {
+        "short-description": "Returns a String which contains every element in an Array recursively.",
+        "description": "",
+        "parameters": {
+            "Arr()": ""
+        },
+        "returns": [
+            "String",
+            ""
+        ]
+    },
+    "ArrayExt.BinarySearch (Variant, Long, Long, Variant, IComparer)": {
+        "short-description": "Searches a section of an array for a given element using a binary search algorithm.",
+        "description": "",
+        "parameters": {
+            "Arr()": "",
+            "Index": "",
+            "Length": "",
+            "Value": "",
+            "Comparer": ""
+        },
+        "returns": [
+            "Long",
+            ""
+        ]
+    },
+    "ArrayExt.GetLowerBound (Variant, Long)": {
+        "short-description": "Returns the index of the first element of the specified dimension in the array.",
+        "description": "",
+        "parameters": {
+            "Arr()": "",
+            "Dimension": ""
+        },
+        "returns": [
+            "Long",
+            ""
+        ]
+    },
+    "ArrayExt.IndexOf (Variant, Variant, Long, Long)": {
+        "short-description": "Returns the index of the first occurrence of a given value in a range of an array.",
+        "description": "",
+        "parameters": {
+            "Arr()": "",
+            "Value": "",
+            "StartIndex": "",
+            "Count": ""
+        },
+        "returns": [
+            "Long",
+            ""
+        ]
+    },
+    "ArrayExt.SetValue (Variant, Variant, Long)": {
+        "short-description": "Sets a value in the given array using element and index of within range of array.",
+        "description": "",
+        "parameters": {
+            "Arr()": "",
+            "Value": "",
+            "Index": ""
+        }
+    },
+    "ArrayExt.ToVariantArray (Variant) As Variant()": {
+        "short-description": "Converts an array into variant array.",
+        "description": "",
+        "parameters": {
+            "Arr": "",
+            "Value": "",
+            "Index": ""
+        },
+        "returns": [
+            "Variant()",
+            ""
+        ]
+    },
+    "ArrayExt.StringArray (ParamArray Variant)": {
+        "short-description": "Returns a array of strings based on the given input",
+        "description": "Returns a array of strings based on the given input",
+        "parameters": {
+            "Items": "Items which will be included in array."
+        },
+        "returns": [
+            "String()",
+            "Newly created array where each element is a string."
+        ],
+        "example": "Example to be added."
+    },
+    "ArrayExt.Sort (Variant, Lapis.IComparer)": {
+        "short-description": "Sort the array using MergeSort",
+        "description": "Sort the array using MergeSort",
+        "parameters": {
+            "Items()": "",
+            "Comparer": ""
+        },
+        "example": "Example to be added."
+    },
+    "DateExt": "Represents a collection of helper methods to work with a date data type.",
+    "DirectoryExt": "Represents a set of helper methods to work with directories.",
+    "WorksheetExt": "Collection of methods used to speed up work with worksheets.",
+    "Errors": "Predeclared (static) class which a custom errors to better express indent of a code."
+}
