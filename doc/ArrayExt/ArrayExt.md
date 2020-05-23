@@ -19,6 +19,6 @@ Represents a collection of helper methods to work with an array type.
 |[GetLowerBound (Variant, Long)](./GetLowerBound.md)|Returns the index of the first element of the specified dimension in the array.|
 |[IndexOf (Variant, Variant, Long, Long)](./IndexOf.md)|Returns the index of the first occurrence of a given value in a range of an array.|
 |[SetValue (Variant, Variant, Long)](./SetValue.md)|Sets a value in the given array using element and index of within range of array.|
-|[ToVariantArray (Variant) As Variant()](./ToVariantArray.md)|Converts an array into variant array.|
-|[StringArray (Variant) As String()](./StringArray.md)||
+|[ToVariantArray (Variant)](./ToVariantArray.md)||
+|[StringArray (ParamArray Variant)](./StringArray.md)|Returns a array of strings based on the given input|
 |[Sort (Variant, Lapis.IComparer)](./Sort.md)|Sort the array using MergeSort|

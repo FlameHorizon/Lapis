@@ -10,14 +10,14 @@ The CollectionExt module contains methods that enables users to use collection i
 |[ToStringByProperty (Collection, String)](./ToStringByProperty.md)||
 |[GroupBy (Collection, String)](./GroupBy.md)|Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
 |[Concat (Collection, Collection)](./Concat.md)|Joins two collections together.|
-|[ToArray (Collection) As Variant()](./ToArray.md)||
+|[ToArray (Collection)](./ToArray.md)|Converts collection to an array.|
 |[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns a collection of items which unique property value.|
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Checks if item exists in the collection using custom comparer.|
 |[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)||
 |[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection|
 |[AddRange (Collection, Collection)](./AddRange.md)|Adds a collection of items to the container.|
 |[Sort (Collection, Lapis.IComparer)](./Sort.md)||
-|[Make (Variant)](./Make.md)||
+|[Make (ParamArray Variant)](./Make.md)||
 |[Except (Collection, Collection, IEqualityComparer)](./Except.md)||
 |[Intersect (Collection, Collection, IEqualityComparer)](./Intersect.md)||
 |[Min (Collection, IComparer)](./Min.md)||

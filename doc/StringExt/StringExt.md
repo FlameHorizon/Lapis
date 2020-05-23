@@ -11,7 +11,7 @@ Represents a collection of helper methods to work with a string type.
 |[Contains (String, String)](./Contains.md)|Returns a value indicating whether a specified substring occurs within this string.|
 |[Remove (String, Long)](./Remove.md)|Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.|
 |[RemoveRange (String, Long, Long)](./RemoveRange.md)|Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.|
-|[Concat (Variant)](./Concat.md)||
+|[Concat (ParamArray Variant)](./Concat.md)|Concatenates the members of a constructed Variant ParamArray of type String.|
 |[StartsWith (String, String, VbCompareMethod)](./StartsWith.md)|Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.|
 |[EndsWith (String, String, VbCompareMethod)](./EndsWith.md)|Determines whether the end of this string instance matches the specified string when compared using the specified comparison option.|
 |[Insert (String, Long, String)](./Insert.md)|Returns a new string in which a specified string is inserted at a specified index position in this instance.|
