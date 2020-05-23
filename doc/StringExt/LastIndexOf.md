@@ -1,9 +1,9 @@
-# LastIndexOf
+# StringExt.LastIndexOf Method
 
 Returns the zero-based index of the last occurrence of the specified string in the current string.
 
 ```vb
-Public Function LastLastIndexOf(ByVal Str As String, ByVal Value As String, ByVal StartIndex As Long, ByVal Count As Long, ByVal ComparisonMethod As VbCompareMethod) As Long
+Public Function LastIndexOf(ByVal Str As String, ByVal Value As String, Optional ByVal StartIndex As Long = System.LongMinValue, Optional ByVal Count As Long = System.LongMinValue, Optional ByVal ComparisonMethod As VbCompareMethod = VbCompareMethod.vbTextCompare) As Long
 ```
 
 ### Parameters
@@ -26,11 +26,11 @@ One of the enumeration values that specifies the rules for the search.
 ### Returns
 
 `Long` <br>
-The zero-based index position of the value parameter from the start of the current instance if that string is found, or -1 if it is not. If value is `vbEmptyString`, the return value is `startIndex`.
+The zero-based index position of the value parameter from the start of the current instance if that string is found, or -1 if it is not. If value is `vbEmptyString`, the return value is `StartIndex`.
 
-### Exceptions
+### Errors
 
-`ArgumentException` <br>
+`OnArgumentError` <br>
 When `Str` is empty string.
 
 -or-
@@ -38,7 +38,7 @@ When `Str` is empty string.
 `Value` is empty string.
 
 `ArgumentOutOfRangeException` <br>
-`StartIndex` or `Count` is smaller than 0 
+`StartIndex` or `Count` is smaller than 0.
 
 -or-
 
@@ -60,10 +60,10 @@ The following example demonstrates how last index of letter a can be found.
 Option Explicit
 Public Sub Start()
 
-    Debug.Print "Case insensitive search: " & StringH.LastIndexOf("aaAAaa", "a")
-    Debug.Print "Case sensitive search: " & StringH.LastIndexOf("aaAAaa", "A", , , VbCompareMethod.vbBinaryCompare)
-    Debug.Print "Case insensitive search: " & StringH.LastIndexOf("aaAAaa", "a", 5, , VbCompareMethod.vbTextCompare)
-    Debug.Print "Case sensitive search: " & StringH.LastIndexOf("aaAAaa", "A", 5, , VbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case insensitive search: " & StringExt.LastIndexOf("aaAAaa", "a")
+    Debug.Print "Case sensitive search: " & StringExt.LastIndexOf("aaAAaa", "A", , , VbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case insensitive search: " & StringExt.LastIndexOf("aaAAaa", "a", 5, , VbCompareMethod.vbTextCompare)
+    Debug.Print "Case sensitive search: " & StringExt.LastIndexOf("aaAAaa", "A", 5, , VbCompareMethod.vbBinaryCompare)
 
 End Sub
 
@@ -76,4 +76,4 @@ End Sub
 
 ### Remarks
 
-ndex numbering starts from zero. That is, the first character in the string is at index zero and the last is at Length - 1.
+Index numbering starts from zero. That is, the first character in the string is at index zero and the last is at Length - 1.

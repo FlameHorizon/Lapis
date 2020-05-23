@@ -1,4 +1,4 @@
-# RemoveRange
+# StringExt.RemoveRange Method
 
 Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.
 
@@ -22,10 +22,10 @@ The number of characters to delete.
 `String` <br>
 A new string that is equivalent to this string except for the removed characters.
 
-### Exceptions
+### Errors
 
-`ArgumentOutOfRangeException` <br>
-`StartIndex` or `Count` is smaller than 0 
+`OnArgumentOutOfRange` <br>
+`StartIndex` or `Count` is smaller than 0.
 
 -or-
 
@@ -41,7 +41,7 @@ Public Sub Start()
 
     Dim Str As String: Str = "abc---def"
     Debug.Print "1) " & Str
-    Debug.Print "2) " & StringH.RemoveRange(Str, 3, 3)
+    Debug.Print "2) " & StringExt.RemoveRange(Str, 3, 3)
 
 End Sub
 
@@ -49,3 +49,4 @@ End Sub
 ' 1) abc---def
 ' 2) abcdef
 ```
+

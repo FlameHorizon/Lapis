@@ -1,4 +1,4 @@
-# IndexOf
+# StringExt.IndexOf Method
 
 Returns the zero-based index of the first occurrence of the specified string in the current string
 
@@ -28,17 +28,13 @@ One of the enumeration values that specifies the rules for the search.
 `Long` <br>
 The zero-based index position of the value parameter from the start of the current instance if that string is found, or -1 if it is not. If value is Empty, the return value is startIndex.
 
-### Exceptions
+### Errors
 
-`ArgumentException` <br>
+`OnArgumentError` <br>
 When `Str` is empty string.
 
-`ArgumentOutOfRangeException` <br>
-`StartIndex` or `count` is smaller than 0 
-
--or-
-
-`StartIndex` is greater than the length of `Str`
+`OnArgumentOutOfRangeException` <br>
+`StartIndex` or `count` is smaller than 0.
 
 -or-
 
@@ -55,11 +51,10 @@ The following example finds the first occurrence of either letter a in the strin
 ```vb
 Option Explicit
 Public Sub Start()
-
-    Debug.Print "Case insensitive search: " & StringH.IndexOf("aaAAaa", "a")
-    Debug.Print "Case sensitive search: " & StringH.IndexOf("aaAAaa", "A", , , vbCompareMethod.vbBinaryCompare)
-    Debug.Print "Case insensitive search: " & StringH.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbTextCompare)
-    Debug.Print "Case sensitive search: " & StringH.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case insensitive search: " & StringExt.IndexOf("aaAAaa", "a")
+    Debug.Print "Case sensitive search: " & StringExt.IndexOf("aaAAaa", "A", , , vbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case insensitive search: " & StringExt.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbTextCompare)
+    Debug.Print "Case sensitive search: " & StringExt.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbBinaryCompare)
 
 End Sub
 

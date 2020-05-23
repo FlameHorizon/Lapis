@@ -2,15 +2,13 @@
 
 Represents a set of helper methods to work with directories.
 
-## Constants
+# Methods
 
 |Name|Description|
 |-|-|
-|DirectorySeparatorChar As String = "\\"|-|
-
-## Methods
-
-|Name|Description|
-|-|-|
-|[CreateDirectory(String)](./CreateDirectory.md)|-|
-|[RemoveAllFilesFromFolder(String)](./RemoveAllFilesFromFolder.md)|-|
+|[CreateDirectory (String)](./CreateDirectory.md)||
+|[RemoveAllFilesFromFolder (String)](./RemoveAllFilesFromFolder.md)||
+|[RemoveFromFolder (String, String, SearchOption)](./RemoveFromFolder.md)||
+|[GetFiles (String, String, SearchOption)](./GetFiles.md)||
+|[LinesCount (ADODB.Stream)](./LinesCount.md)||
+|[IsStreamClosed (ADODB.Stream)](./IsStreamClosed.md)||

@@ -1,4 +1,4 @@
-# Contains
+# StringExt.Contains Method
 
 Returns a value indicating whether a specified substring occurs within this string.
 
@@ -9,7 +9,7 @@ Public Function Contains(ByVal Str As String, ByVal Value As String) As Boolean
 ### Parameters
 
 **Str** `String` <br>
-A source string which will be examined.
+A source string which will examined.
 
 **Value** `String` <br>
 The string to seek.
@@ -17,18 +17,17 @@ The string to seek.
 ### Returns
 
 `Boolean` <br>
-Indicates of `Value` substring exists in the `Str`.
+Indicates of `Value` substring exists in the `Str`
 
 ## Examples
 
 The following example finds the first occurrence of either letter a in the string.
-
 ```vb
 Option Explicit
 Public Sub Start()
 
-    Debug.Print "Does A11-003b contains letter B? " & StringH.Contains("A11-003b", "B")
-    Debug.Print "Does A11-003b contains letter B?" & StringH.Contains("A11-003b", "a")
+    Debug.Print "Does A11-003b contains letter B? " & StringExt.Contains("A11-003b", "B")
+    Debug.Print "Does A11-003b contains letter B?" & StringExt.Contains("A11-003b", "a")
 
 End Sub
 

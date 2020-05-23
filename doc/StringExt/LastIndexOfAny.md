@@ -1,4 +1,4 @@
-# IndexOf
+# StringExt.LastIndexOfAny Method
 
 Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a array.
 
@@ -11,7 +11,7 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
 **Str** `String` <br>
 A source string which will be examined.
 
-**AnyOf** `String()` <br>
+**AnyOf()** `String` <br>
 Array of strings containing one or more characters to seek.
 
 ### Returns
@@ -19,12 +19,13 @@ Array of strings containing one or more characters to seek.
 `Long` <br>
 The zero-based index position of the last occurrence in this instance where any character in `AnyOf` was found, -1 if no character in `AnyOf` was found.
 
-### Exceptions
+### Errors
 
-`ArgumentException` <br>
+`OnArgumentError` <br>
 When `Str` is empty string.
 
-`ArgumentException` <br>
+-or-
+
 `AnyOf` is not initialized.
 
 ## Examples
@@ -34,7 +35,7 @@ The following example finds the first occurrence of either 1 or 2 in the string.
 ```vb
 Option Explicit
 Public Sub Start()
-    Debug.Print StringH.LastIndexOfAny("Any 1 number is not 2. but it's every 1.", ArrayH.StringArray("1", "2"))
+    Debug.Print StringExt.LastIndexOfAny("Any 1 number is not 2. but it's every 1.", ArrayH.StringArray("1", "2"))
 End Sub
 
 ' The example displays the following output:

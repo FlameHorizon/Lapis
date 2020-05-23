@@ -1,11 +1,11 @@
 # DateExt module
 
-Represents a collection of helper method to work with a date data type.
+Represents a collection of helper methods to work with a date data type.
 
-## Methods
+# Methods
 
 |Name|Description|
 |-|-|
-|[FirstDayOfMonth(Date)](./FirstDayOfMonth.md)|-|
-|[LastDayOfMonth(Date)](./LastDayOfMonth.md)|-|
-|[DaysInMonth(Date)](./DaysInMonth.md)|-|
+|[FirstDayOfMonth (Date)](./FirstDayOfMonth.md)||
+|[LastDayOfMonth (Date)](./LastDayOfMonth.md)||
+|[DaysInMonth (Date)](./DaysInMonth.md)||

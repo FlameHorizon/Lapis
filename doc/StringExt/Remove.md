@@ -1,4 +1,4 @@
-# Remove
+# StringExt.Remove Method
 
 Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.
 
@@ -19,10 +19,10 @@ The zero-based position to begin deleting characters.
 `String` <br>
 A new string that is equivalent to this string except for the removed characters.
 
-### Exceptions
+### Errors
 
-`ArgumentOutOfRangeException` <br>
-`StartIndex` is smaller than 0 
+`OnArgumentOutOfRange` <br>
+`StartIndex` is smaller than 0.
 
 -or-
 
@@ -37,8 +37,8 @@ Option Explicit
 Public Sub Start()
 
     Dim Str as String: Str = "abc---def"
-    Debug.Print "1) " & str
-    Debug.Print "2) " & StringH.Remove(Str, 3)
+    Debug.Print "1) " & Str
+    Debug.Print "2) " & StringExt.Remove(Str, 3)
 
 End Sub
 
@@ -46,3 +46,4 @@ End Sub
 ' 1) abc---def
 ' 2) abc
 ```
+

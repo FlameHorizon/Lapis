@@ -1,4 +1,4 @@
-# Insert
+# StringExt.Insert Method
 
 Returns a new string in which a specified string is inserted at a specified index position in this instance.
 
@@ -20,11 +20,11 @@ The string to insert
 ### Returns
 
 `String` <br>
-A new string that is equivalent to this instance, but with value inserted at position startIndex.
+A new string that is equivalent to this instance, but with value inserted at position StartIndex.
 
-### Exceptions
+### Errors
 
-`ArgumentException` <br>
+`OnArgumentError` <br>
 When `Str` is empty string.
 
 `ArgumentOutOfRangeException` <br>
@@ -41,7 +41,7 @@ Public Sub Start()
     Dim Original As String: Original = "aaabbb"
     Debug.Print "The original string " & Original
     
-    Dim Modified As String: Modified = StringH.Insert(Original, 3, " ")
+    Dim Modified As String: Modified = StringExt.Insert(Original, 3, " ")
     Debug.Print "The modified string: " & Modified
 
 End Sub
@@ -53,4 +53,4 @@ End Sub
 
 ### Remarks
 
-If `startIndex` is equal to the length of this instance, value is appended to the end of this instance.
+If `StartIndex` is equal to the length of this instance, value is appended to the end of this instance.

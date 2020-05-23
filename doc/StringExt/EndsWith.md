@@ -1,6 +1,6 @@
-# EndsWith
+# StringExt.EndsWith Method
 
-Determines whether the end of this string instance matches a specified string.
+Determines whether the end of this string instance matches the specified string when compared using the specified comparison option.
 
 ```vb
 Public Function EndsWith(ByVal Str As String, ByVal Value As String, ByVal StringComparison As VbCompareMethod) As Boolean
@@ -9,22 +9,22 @@ Public Function EndsWith(ByVal Str As String, ByVal Value As String, ByVal Strin
 ### Parameters
 
 **Str** `String` <br>
-A source string which will be examined.
+A source string which will examined.
 
 **Value** `String` <br>
-The string to seek.
+The string to compare.
 
-**ComparisonMethod** `VbCompareMethod` <br>
+**StringComparison** `VbCompareMethod` <br>
 One of the enumeration values that specifies the rules for the search.
 
 ### Returns
 
-`Long` <br>
-`true` if value matches the end of this instance; otherwise, `false`.
+`Boolean` <br>
+`true` if value matches the end of this instance; otherwise, false.
 
-### Exceptions
+### Errors
 
-`ArgumentException` <br>
+`OnArgumentError` <br>
 When `Str` is empty string.
 
 -or-
@@ -47,7 +47,7 @@ Public Sub Start()
     Dim Item As Variant
     For Each Item In Arr
         Dim EndsWithPeriod As Boolean
-        EndsWithPeriod = StringH.EndsWith(Item, ".", VbCompareMethod.vbTextCompare)
+        EndsWithPeriod = StringExt.EndsWith(Item, ".", VbCompareMethod.vbTextCompare)
         Debug.Print Item & " ends with a period " & EndsWithPeriod
     Next Item
 

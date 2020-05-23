@@ -1,4 +1,4 @@
-# StartsWith
+# StringExt.StartsWith Method
 
 Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.
 
@@ -12,9 +12,9 @@ Public Function StartsWith(ByVal Str As String, ByVal Value As String, ByVal Str
 A source string which will be examined.
 
 **Value** `String` <br>
-The string to compare
+The string to compare.
 
-**ComparisonMethod** `VbCompareMethod` <br>
+**StringComparison** `VbCompareMethod` <br>
 One of the enumeration values that specifies the rules for the search.
 
 ### Returns
@@ -22,12 +22,12 @@ One of the enumeration values that specifies the rules for the search.
 `Boolean` <br>
 `true` if this instance begins with `value`; otherwise, `false`.
 
-### Exceptions
+### Errors
 
-`ArgumentException` <br>
+`OnArgumentError` <br>
 When `Str` is empty string.
 
-`ArgumentOutOfRangeException` <br>
+`OnArgumentOutOfRange` <br>
 `ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`.
 
 ## Examples
@@ -38,8 +38,8 @@ The following example finds the first occurrence of either letter a in the strin
 Option Explicit
 Public Sub Start()
 
-    Debug.Print "Case insensitive search: " & StringH.StartsWith("The House of the Seven Gables", "the", VbCompareMethod.vbBinaryCompare)
-    Debug.Print "Case sensitive search: " & StringH.StartsWith("The House of the Seven Gables", "the", VbCompareMethod.vbTextCompare)
+    Debug.Print "Case insensitive search: " & StringExt.StartsWith("The House of the Seven Gables", "the", VbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case sensitive search: " & StringExt.StartsWith("The House of the Seven Gables", "the", VbCompareMethod.vbTextCompare)
 
 End Sub
 
