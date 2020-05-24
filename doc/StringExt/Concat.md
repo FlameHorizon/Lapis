@@ -9,12 +9,12 @@ Public Function Concat(ParamArray Items() As Variant) As String
 ### Parameters
 
 **Items** `ParamArray Variant` <br>
-An array of strings.
+An array of strings to join.
 
 ### Returns
 
 `String` <br>
-The concatenated elements of `values`.
+The concatenated elements of `Items`.
 
 ## Examples
 

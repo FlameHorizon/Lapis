@@ -13,13 +13,13 @@ The CollectionExt module contains methods that enables users to use collection i
 |[ToArray (Collection)](./ToArray.md)|Converts collection to an array.|
 |[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns a collection of items which unique property value.|
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Checks if item exists in the collection using custom comparer.|
-|[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)||
+|[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)|Returns a collection which contains distinct values from the Collection.|
 |[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection|
 |[AddRange (Collection, Collection)](./AddRange.md)|Adds a collection of items to the container.|
-|[Sort (Collection, Lapis.IComparer)](./Sort.md)||
-|[Make (ParamArray Variant)](./Make.md)||
-|[Except (Collection, Collection, IEqualityComparer)](./Except.md)||
-|[Intersect (Collection, Collection, IEqualityComparer)](./Intersect.md)||
+|[Sort (Collection, Lapis.IComparer)](./Sort.md)|Sorts given collection using merge sort according to defined comparer.|
+|[Make (ParamArray Variant)](./Make.md)|Creates a new collection based on to list of arguments.|
+|[Except (Collection, Collection, IEqualityComparer)](./Except.md)|Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.|
+|[Intersect (Collection, Collection, IEqualityComparer)](./Intersect.md)|Produces the set intersection of two sequences by using the specified IEqualityComparer to compare values.|
 |[Min (Collection, IComparer)](./Min.md)||
 |[Max (Collection, IComparer)](./Max.md)||
 |[Range (Long, Long)](./Range.md)||

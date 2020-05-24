@@ -17,7 +17,7 @@ The string to seek.
 ### Returns
 
 `Boolean` <br>
-Indicates of `Value` substring exists in the `Str`
+`true` if the `value` parameter occurs within this string, or if `Value` is the empty string (""); otherwise, `false`.
 
 ## Examples
 

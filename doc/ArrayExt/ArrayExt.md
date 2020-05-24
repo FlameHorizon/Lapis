@@ -6,7 +6,7 @@ Represents a collection of helper methods to work with an array type.
 
 |Name|Description|
 |-|-|
-|[Exists (Variant, Variant)](./Exists.md)|Checks if given elements exists in the array.|
+|[Exists (Variant, Variant)](./Exists.md)|Checks if given element exists in the array.|
 |[IsInitialized (Variant)](./IsInitialized.md)|Indicates if array is initialized.|
 |[ToCollection (Variant)](./ToCollection.md)|Converts array into a collection.|
 |[Copy (Variant, Long, Variant, Long, Long)](./Copy.md)|Copies elements from an Array starting at SourceIndex and pastes them to another Array starting at DestinationIndex. Number of elements which will be copied is specified in Length parameter.|

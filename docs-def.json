@@ -1,18 +1,5 @@
 {
     "CollectionExt": "The CollectionExt module contains methods that enables users to use collection in a more robust way.",
-    "CollectionExt.IndexOf (Collection, Variant, IEqualityComparer)": {
-        "short-description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
-        "description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
-        "parameters": {
-            "Source": "Collection which will be scanned.",
-            "Value": "The item to locate in the Collection.",
-            "Comparer": "Just a comparer"
-        },
-        "returns": [
-            "Long",
-            "The index of value if found in the collection; otherwise, 0."
-        ]
-    },
     "CollectionExt.ToString (Collection, IToString, String)": {
         "short-description": "Returns a collection of property values based on the items in the collection.",
         "description": "Returns a collection of property values based on the items in the collection.",
@@ -86,6 +73,31 @@
             ""
         ]
     },
+    "CollectionExt.DistinctValues (Collection, IEqualityComparer)": {
+        "short-description": "Returns a collection which contains distinct values from the Collection.",
+        "description": "Returns a collection which contains distinct values from the Collection.",
+        "parameters": {
+            "Items": "",
+            "Comparer": ""
+        },
+        "returns": [
+            "Collection",
+            "Collection of distinct items."
+        ]
+    },
+    "CollectionExt.IndexOf (Collection, Variant, IEqualityComparer)": {
+        "short-description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
+        "description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
+        "parameters": {
+            "Source": "Collection which will be scanned.",
+            "Value": "The item to locate in the Collection.",
+            "Comparer": "Just a comparer"
+        },
+        "returns": [
+            "Long",
+            "The index of value if found in the collection; otherwise, 0."
+        ]
+    },
     "CollectionExt.AddRange (Collection, Collection)": {
         "short-description": "Adds a collection of items to the container.",
         "description": "Adds a collection of items to the container.",
@@ -94,6 +106,79 @@
             "Items": ""
         }
     },
+    "CollectionExt.Sort (Collection, Lapis.IComparer)": {
+        "short-description": "Sorts given collection using merge sort according to defined comparer.",
+        "description": "Sorts given collection using merge sort according to defined comparer.",
+        "parameters": {
+            "Items": "Items which will be sorted.",
+            "Comparer": "Comparer which defined how items will be sorted."
+        },
+        "returns": [
+            "Collection",
+            "Sorted sequence of items."
+        ]
+    },
+    "CollectionExt.Make (ParamArray Variant)": {
+        "short-description": "Creates a new collection based on to list of arguments.",
+        "description": "Creates a new collection based on to list of arguments.",
+        "parameters": {
+            "Items": "Array of items which new collection will contain."
+        },
+        "returns": [
+            "Collection",
+            "New instance of a collection which contains given items"
+        ],
+        "example": "The following example takes three strings and puts them into one collection.\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Cars As Collection\n    Set Cars = CollectionExt.Make(\"Toyota\", \"Porsche\", \"Fiat\")\n\n    Dim Item As Variant\n    For Each Item In Cars\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n' The example displays the following output:\n' Toyota\n' Porsche\n' Fiat \n\n```"
+    },
+    "CollectionExt.Except (Collection, Collection, IEqualityComparer)": {
+        "short-description": "Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.",
+        "description": "Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.",
+        "parameters": {
+            "First": "A collection whose elements that are not also in `Second` will be returned.",
+            "Second": "A collection whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.",
+            "Comparer": "A comparer to compare items. Parameter can be omitted if item implements `IComparable` interface or item is value type."
+        },
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`First` is nothing"
+            ],
+            [
+                "OnArgumentNull",
+                "`Second` is nothing"
+            ]
+        ],
+        "returns": [
+            "Collection",
+            "A sequence that contains the set difference of the elements of two sequences."
+        ],
+        "example": "If you want to compare sequence of objects of some custom data type, you have to implement the IEqualityComparer interface in a helper class. The following code example shows how to implement this interface in a custom data type and provided Equals methods. The following example shows how to implement and equality comparer that can be used in the Except method.\n\n```vb\n' Product class\nOption Explicit\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\n' A custom comparer for the Product class\nOption Explicit\nImplements Lapis.IEqualityComparer\n\nPublic Function Equals(ByVal x As Product, ByVal y As Product) As Boolean\n\n    If x Is y Then\n        Equals = True\n    \n    ElseIf x Is Nothing Or y Is Nothing Then\n        Equals = False\n    \n    Else\n        Equals = (x.Code = y.Code And x.Name = y.Name)\n    \n    End If\n\nEnd Function\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\nPublic Sub Start()\n    \n    Dim Fruits1 As Collection\n    Set Fruits1 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"orange\", 4), _\n                                     MakeProduct(\"lemon\", 12))\n    \n    Dim Fruits2 As Collection\n    Set Fruits2 = CollectionExt.Make(MakeProduct(\"apple\", 9))\n    \n    ' Get all the elements from the first collection\n    ' except for the elements from the second collection.\n    \n    Dim Except As Collection\n    Set Except = CollectionExt.Except(Fruits1, Fruits2, New ProductComparer)\n    \n    Dim Item As Product\n    For Each Item In Except\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n    \nEnd Sub\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n\n' This code produces the following output:\n' orange 4\n' lemon 12\n```"
+    },
+    "CollectionExt.Intersect (Collection, Collection, IEqualityComparer)": {
+        "short-description": "Produces the set intersection of two sequences by using the specified IEqualityComparer to compare values.",
+        "description": "Produces the set intersection of two sequences by using the specified IEqualityComparer to compare values.",
+        "parameters": {
+            "First": "A collection whose distinct elements that also appear in `Second` will be returned.",
+            "Second": "A collection whose distinct elements that also appear in the `First` sequence will be returned.",
+            "Comparer": "A comparer to compare items. Parameter can be omitted if item implements `IComparable` interface or item is value type."
+        },
+        "returns": [
+            "Collection",
+            "A sequence that contains the elements that from the intersection of two sequences"
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`First` is `Nothing`."
+            ],
+            [
+                "OnArgumentNull",
+                "`Second` is `Nothing`."
+            ]
+        ],
+        "example": "If you want to compare sequence of objects of some custom data type, you have to implement the IEqualityComparer interface in a helper class. The following code example shows how to implement this interface in a custom data type and provided Equals methods. The following example shows how to implement and equality comparer that can be used in the `Intersect` method.\n\n```vb\n' Product class\nOption Explicit\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\n' A custom comparer for the Product class\nOption Explicit\nImplements Lapis.IEqualityComparer\n\nPublic Function Equals(ByVal x As Product, ByVal y As Product) As Boolean\n\n    If x Is y Then\n        Equals = True\n    \n    ElseIf x Is Nothing Or y Is Nothing Then\n        Equals = False\n    \n    Else\n        Equals = (x.Code = y.Code And x.Name = y.Name)\n    \n    End If\n\nEnd Function\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\nAfter you implement this comparer, you can use sequences of Product objects in the `Intersect` method, as shown in the following example:\n\n```vb\n' Main module\nOption Explicit\nPublic Sub Start()\n    \n    Dim Fruits1 As Collection\n    Set Fruits1 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"orange\", 4))\n    \n    Dim Fruits2 As Collection\n    Set Fruits2 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"lemon\", 12))\n    \n    ' Get the products from the first collection\n    ' that have duplicates in the second array.\n    \n    Dim Duplicates As Collection\n    Set Duplicates = CollectionExt.Intersect(Fruits1, Fruits2, New ProductComparer)\n    \n    Dim Item As Product\n    For Each Item In Duplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n    \nEnd Sub\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n\n' This code produces the following output:\n' apple 9\n```"
+    },
+    "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
         "description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
@@ -129,16 +214,15 @@
         "example": "The following example finds the first occurrence of either letter a in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\")\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"A\", , , vbCompareMethod.vbBinaryCompare)\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, , vbCompareMethod.vbTextCompare)\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, , vbCompareMethod.vbBinaryCompare)\n\nEnd Sub\n\n' The example displays the following output:\n' Case insensitive search: 0\n' Case sensitive search: 2\n' Case insensitive search with specified StartIndex: 2\n' Case sensitive search with specified StartIndex: 4\n```",
         "remarks": "Index numbering starts from 0 (zero). The startIndex parameter can range from 0 to the length of the string instance."
     },
-    "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.Concat (ParamArray Variant)": {
         "short-description": "Concatenates the members of a constructed Variant ParamArray of type String.",
         "description": "Concatenates the elements of a specified String array.",
         "parameters": {
-            "Items": "An array of strings."
+            "Items": "An array of strings to join."
         },
         "returns": [
             "String",
-            "The concatenated elements of `values`."
+            "The concatenated elements of `Items`."
         ],
         "example": "The following example takes three strings and joins them into one.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print StringExt.Concat(\"'01\", \"-\", \"114'\")\nEnd Sub\n\n' The example displays the following output:\n' '01-114'\n```"
     },
@@ -151,7 +235,7 @@
         },
         "returns": [
             "Boolean",
-            "Indicates of `Value` substring exists in the `Str`"
+            "`true` if the `value` parameter occurs within this string, or if `Value` is the empty string (\"\"); otherwise, `false`."
         ],
         "example": "The following example finds the first occurrence of either letter a in the string.\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Debug.Print \"Does A11-003b contains letter B? \" & StringExt.Contains(\"A11-003b\", \"B\")\n    Debug.Print \"Does A11-003b contains letter B?\" & StringExt.Contains(\"A11-003b\", \"a\")\n\nEnd Sub\n\n' The example displays the following output:\n' Does A11-003b contains letter B? True\n' Does A11-003b contains letter z? False\n```",
         "remarks": "This method performs an ordinal (case-sensitive and culture-insensitive) comparison. The search begins at the first character position of this string and continues through the last character position."
@@ -166,7 +250,7 @@
         },
         "returns": [
             "Boolean",
-            "`true` if value matches the end of this instance; otherwise, false."
+            "`true` if value matches the end of this instance; otherwise, `false`."
         ],
         "example": "The following example indicates whether each string in an array ends with a period (\".\").\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Arr(2) As String\n    Arr(0) = \"This is a string.\"\n    Arr(1) = \"Hello!\"\n    Arr(2) = \"Nothing\"\n\n    Dim Item As Variant\n    For Each Item In Arr\n        Dim EndsWithPeriod As Boolean\n        EndsWithPeriod = StringExt.EndsWith(Item, \".\", VbCompareMethod.vbTextCompare)\n        Debug.Print Item & \" ends with a period \" & EndsWithPeriod\n    Next Item\n\nEnd Sub\n\n' The example displays the following output:\n' This is a string. ends with a period True\n' Hello! ends with a period False\n' Nothing ends with a period False\n```",
         "errors": [
@@ -322,7 +406,7 @@
         "parameters": {
             "Str": "A source string which will be examined.",
             "StartIndex": "The zero-based position to begin deleting characters.",
-            "Count" : "The number of characters to delete."
+            "Count": "The number of characters to delete."
         },
         "returns": [
             "String",
@@ -346,7 +430,7 @@
         "parameters": {
             "Str": "A source string which will be examined.",
             "Value": "The string to compare.",
-            "StringComparison" : "One of the enumeration values that specifies the rules for the search."
+            "StringComparison": "One of the enumeration values that specifies the rules for the search."
         },
         "returns": [
             "Boolean",
@@ -367,8 +451,8 @@
     },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
-        "short-description": "Checks if given elements exists in the array.",
-        "description": "",
+        "short-description": "Checks if given element exists in the array.",
+        "description": "Checks if given element exists in the array.",
         "parameters": {
             "Item": "",
             "Arr": ""

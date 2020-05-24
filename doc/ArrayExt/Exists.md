@@ -1,5 +1,7 @@
 # ArrayExt.Exists Method
 
+Checks if given element exists in the array.
+
 ```vb
 Public Function Exists(ByVal Item As Variant, ByRef Arr As Variant) As Boolean
 ```
