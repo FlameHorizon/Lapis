@@ -20,10 +20,10 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Make (ParamArray Variant)](./Make.md)|Creates a new collection based on to list of arguments.|
 |[Except (Collection, Collection, IEqualityComparer)](./Except.md)|Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.|
 |[Intersect (Collection, Collection, IEqualityComparer)](./Intersect.md)|Produces the set intersection of two sequences by using the specified IEqualityComparer to compare values.|
-|[Min (Collection, IComparer)](./Min.md)||
-|[Max (Collection, IComparer)](./Max.md)||
-|[Range (Long, Long)](./Range.md)||
-|[Repeat (Variant, Long)](./Repeat.md)||
+|[Min (Collection, IComparer)](./Min.md)|Invokes a Comparer on each element of a sequence and returns the minimum resulting value.|
+|[Max (Collection, IComparer)](./Max.md)|Invokes a Comparer on each element of a sequence and returns the maximum resulting value.|
+|[Range (Long, Long)](./Range.md)|Generates a sequence of integral numbers within a specified range.|
+|[Repeat (Variant, Long)](./Repeat.md)|Generates a sequence that contains one repeated value.|
 |[Reverse (Collection)](./Reverse.md)||
 |[Sum (Collection, Lapis.IConverter)](./Sum.md)||
 |[Average (Collection, Lapis.IConverter)](./Average.md)||

@@ -178,6 +178,94 @@
         ],
         "example": "If you want to compare sequence of objects of some custom data type, you have to implement the IEqualityComparer interface in a helper class. The following code example shows how to implement this interface in a custom data type and provided Equals methods. The following example shows how to implement and equality comparer that can be used in the `Intersect` method.\n\n```vb\n' Product class\nOption Explicit\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\n' A custom comparer for the Product class\nOption Explicit\nImplements Lapis.IEqualityComparer\n\nPublic Function Equals(ByVal x As Product, ByVal y As Product) As Boolean\n\n    If x Is y Then\n        Equals = True\n    \n    ElseIf x Is Nothing Or y Is Nothing Then\n        Equals = False\n    \n    Else\n        Equals = (x.Code = y.Code And x.Name = y.Name)\n    \n    End If\n\nEnd Function\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\nAfter you implement this comparer, you can use sequences of Product objects in the `Intersect` method, as shown in the following example:\n\n```vb\n' Main module\nOption Explicit\nPublic Sub Start()\n    \n    Dim Fruits1 As Collection\n    Set Fruits1 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"orange\", 4))\n    \n    Dim Fruits2 As Collection\n    Set Fruits2 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"lemon\", 12))\n    \n    ' Get the products from the first collection\n    ' that have duplicates in the second array.\n    \n    Dim Duplicates As Collection\n    Set Duplicates = CollectionExt.Intersect(Fruits1, Fruits2, New ProductComparer)\n    \n    Dim Item As Product\n    For Each Item In Duplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n    \nEnd Sub\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n\n' This code produces the following output:\n' apple 9\n```"
     },
+    "CollectionExt.Min (Collection, IComparer)": {
+        "short-description": "Invokes a Comparer on each element of a sequence and returns the minimum resulting value.",
+        "description": "Invokes a Comparer on each element of a sequence and returns the minimum resulting value.",
+        "parameters": {
+            "Source": "A sequence of values to determine the minimum value of `Source`.",
+            "Comparer": "A Comparer to apply to each element."
+        },
+        "returns": [
+            "Variant",
+            "The minimum value in the sequence."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`."
+            ],
+            [
+                "OnArgumentNull",
+                "`Comparer` is `Nothing`."
+            ]
+        ],
+        "example": "The following code example demonstrates how to use `Min` to determine the minimum value in a sequence of projected values.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' PetByAgeComparer class module\nOption Explicit\n\nImplements Lapis.IComparer\n\nPublic Function Compare(ByVal x As Pet, ByVal y As Pet) As Long\n\n    Compare = IIf(x.Age < y.Age, -1, _\n              IIf(x.Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Min As Pet\n    Set Min = CollectionExt.Min(Pets, New PetByAgeComparer)\n    \n    Debug.Print \"The youngest animal is age \" & Min.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The youngest animal is age 1\n```"
+    },
+    "CollectionExt.Max (Collection, IComparer)": {
+        "short-description": "Invokes a Comparer on each element of a sequence and returns the maximum resulting value.",
+        "description": "Invokes a Comparer on each element of a sequence and returns the maximum resulting value.",
+        "parameters": {
+            "Source": "A sequence of values to determine the maximum value of `Source`.",
+            "Comparer": "A Comparer to apply to each element."
+        },
+        "returns": [
+            "Variant",
+            "The maximum value in the sequence."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`."
+            ],
+            [
+                "OnArgumentNull",
+                "`Comparer` is `Nothing`."
+            ]
+        ],
+        "example": "The following code example demonstrates how to use `Max` to determine the maximum value in a sequence of projected values.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' PetByAgeComparer class module\nOption Explicit\n\nImplements Lapis.IComparer\n\nPublic Function Compare(ByVal x As Pet, ByVal y As Pet) As Long\n\n    Compare = IIf(x.Age < y.Age, -1, _\n              IIf(x.Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Max As Pet\n    Set Max = CollectionExt.Max(Pets, New PetByAgeComparer)\n    \n    Debug.Print \"The oldest animal is age \" & Max.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The oldest animal is age 8\n```"
+    },
+    "CollectionExt.Range (Long, Long)": {
+        "short-description": "Generates a sequence of integral numbers within a specified range.",
+        "description": "Generates a sequence of integral numbers within a specified range.",
+        "parameters": {
+            "Start": "The value of the first integer in the sequence.",
+            "Count": "The number of sequential integers to generate."
+        },
+        "returns": [
+            "Collection",
+            "A collection that contains a range of sequential integral numbers."
+        ],
+        "errors": [
+            [
+                "OnArgumentOutOfRange",
+                "`Count` is less than 0."
+            ],
+            [
+                "OnArgumentOutOfRange",
+                "`Start` + `Count` -1 is larger than LongMaxValue"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Range to generate a sequence of values.\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Squares As Collection\n    Set Squares = MakeSquares(CollectionExt.Range(1, 10))\n    \n    Dim Num As Variant\n    For Each Num In Squares\n        Debug.Print Num\n    Next Num\n    \nEnd Sub\n\n\nPrivate Function MakeSquares(ByVal Numbers As Collection) As Collection\n    \n    Dim Output As New Collection\n    Dim Num As Variant\n    For Each Num In Numbers\n        Output.Add Num * Num\n    Next Num\n    Set MakeSquares = Output\n    \nEnd Function\n\n' The example displays the following output:\n' 1\n' 4\n' 9\n' 16\n' 25\n' 36\n' 49\n' 64\n' 81\n' 100\n```"
+    },
+    "CollectionExt.Repeat (Variant, Long)": {
+        "short-description": "Generates a sequence that contains one repeated value.",
+        "description": "Generates a sequence that contains one repeated value.",
+        "parameters": {
+            "Element": "The value to be repeated.",
+            "Count": "The number of times to repeat the value in the generated sequence."
+        },
+        "returns": [
+            "Collection",
+            "A collection that contains a repeated value."
+        ],
+        "errors": [
+            [
+                "OnArgumentOutOfRange",
+                "`Count` is less than 0."
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Repeat to generate a sequence of a repeated value.\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Strings As Collection\n    Set Strings = CollectionExt.Repeat(\"I like programming\", 10)\n    \n    Dim Str As Variant\n    For Each Str In Strings\n        Debug.Print Str\n    Next Str\n    \nEnd Sub\n\n\n' The example displays the following output:\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n```"
+    },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
