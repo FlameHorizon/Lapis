@@ -8,7 +8,7 @@ To start using Lapis, download **Lapis.xlam** file and add reference to it in yo
 
 ## API documentation
 
-Documentation can be found under [this link]().
+Documentation can be found under [this link](./doc/index.md).
 
 ## Change log
 
