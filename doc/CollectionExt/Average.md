@@ -30,6 +30,26 @@ The average of the sequence of values.
 
 ## Examples
 
+The following code example demonstrates how to use Average to calculate the average String length in a sequence of values of type String.
+
+```vb
+' StringToLengthConverter class module
+Option Explicit
+
+Implements Lapis.IConverter
+
+
+Public Function Convert(ByVal Item As Variant) As Variant
+    Convert = VBA.Len(Item)
+End Function
+
+
+Private Function IConverter_Convert(ByVal Item As Variant) As Variant
+    IConverter_Convert = Me.Convert(Item)
+End Function
+```
+
+```vb
 ' Start module
 Option Explicit
 
@@ -49,4 +69,5 @@ End Sub
 ' This code produces the following output:
 
 ' The average string length is 6,5
+```
 
