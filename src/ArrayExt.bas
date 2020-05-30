@@ -51,7 +51,12 @@ Public Sub Copy(ByRef Arr() As Variant, _
     
     Dim Ndx As Long
     For Ndx = SourceIndex To (Length + SourceIndex - 1)
-        DestinationArray(DestNdx) = Arr(Ndx)
+        If IsObject(Arr(Ndx)) Then
+            Set DestinationArray(DestNdx) = Arr(Ndx)
+        Else
+            DestinationArray(DestNdx) = Arr(Ndx)
+        End If
+        
         DestNdx = DestNdx + 1
     Next Ndx
     
