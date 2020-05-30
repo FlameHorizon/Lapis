@@ -297,7 +297,7 @@ Private Sub ToStringReturnsStringWhenItemsAreMixedValueTypesTest()
     Actual = CollectionExt.ToString(Source, New ValueTypeToStringConverter)
 
     ' Assert
-    ExUnit.AreEqual "a,1,2.34,2/2/2020,1484", Actual, GetSig(MethodName)
+    ExUnit.AreEqual "a,1," & 2.34 & "," & #2/2/2020# & ",1484", Actual, GetSig(MethodName)
 
     Exit Sub
 ErrHandler:
