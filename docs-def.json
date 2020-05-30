@@ -116,7 +116,8 @@
         "returns": [
             "Collection",
             "Sorted sequence of items."
-        ]
+        ],
+        "example": "The following code example demonstrates how to use Sort method to sort the elements of a sequence using custom comparers.\n\n```vb\n' Car class module\nOption Explicit\n\nPublic Manufacturer As String\nPublic Year As Long\n```\n\n```vb\n' CarManufacturerComparer class module\nOption Explicit\n\nImplements IComparer\n\n\nPublic Function Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    \n    If System.IsNothing(x) And System.IsNothing(y) Then\n        Compare = 0\n    \n    Else\n        Compare = StringComparers.OrdinalIgnoreCase.Compare(x.Manufacturer, y.Manufacturer)\n        \n    End If\n    \nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' CarYearComparer class module\nOption Explicit\n\nImplements IComparer\n\n\nPublic Function Compare(ByRef x As Variant, ByRef y As Variant) As Long\n\n    If System.IsNothing(x) And System.IsNothing(y) Then\n        Compare = 0\n       \n    Else\n        Compare = Lapis.Factory.GetLongComparer.Compare(x.Year, y.Year)\n        \n    End If\n\nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Cars As Collection\n    Set Cars = CollectionExt.Make(MakeCar(\"Toyota\", 1990), _\n                                  MakeCar(\"Porsche\", 1995), _\n                                  MakeCar(\"Fiat\", 1989))\n    \n    Debug.Print \"Cars sorted by the Year of production\"\n    PrintCars CollectionExt.Sort(Cars, New CarYearComparer)\n    Debug.Print vbNewLine\n    \n    Debug.Print \"Cars sorted by the Manufacturer name\"\n    PrintCars CollectionExt.Sort(Cars, New CarManufacturerComparer)\n    \nEnd Sub\n\n\nPrivate Function MakeCar(ByVal Manufacturer As String, ByVal Year As Long) As Car\n    \n    Dim Output As New Car\n    Output.Manufacturer = Manufacturer\n    Output.Year = Year\n    Set MakeCar = Output\n    \nEnd Function\n\n\nPrivate Sub PrintCars(ByVal Cars As Collection)\n\n    Dim Car As Car\n    For Each Car In Cars\n        Debug.Print \"Car manufacturer: \" & Car.Manufacturer & \", Production year: \" & Car.Year\n    Next Car\n\nEnd Sub\n\n' This code produces the following output:\n\n' Cars sorted by the Year of production\n' Car manufacturer: Fiat, Production year: 1989\n' Car manufacturer: Toyota, Production year: 1990\n' Car manufacturer: Porsche, Production year: 1995\n\n\n' Cars sorted by the Manufacturer name\n' Car manufacturer: Fiat, Production year: 1989\n' Car manufacturer: Porsche, Production year: 1995\n' Car manufacturer: Toyota, Production year: 1990\n```"
     },
     "CollectionExt.Make (ParamArray Variant)": {
         "short-description": "Creates a new collection based on to list of arguments.",
@@ -265,6 +266,70 @@
             ]
         ],
         "example": "The following code example demonstrates how to use Repeat to generate a sequence of a repeated value.\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Strings As Collection\n    Set Strings = CollectionExt.Repeat(\"I like programming\", 10)\n    \n    Dim Str As Variant\n    For Each Str In Strings\n        Debug.Print Str\n    Next Str\n    \nEnd Sub\n\n\n' The example displays the following output:\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n' I like programming\n```"
+    },
+    "CollectionExt.Reverse (Collection)": {
+        "short-description": "Inverts the order of the elements in a sequence.",
+        "description": "Inverts the order of the elements in a sequence.",
+        "parameters": {
+            "Source": "A sequence of values to reverse."
+        },
+        "returns": [
+            "Collection",
+            "A sequence whose elements correspond to those of the input sequence in reverse order."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Reverse to reverse the order of elements in an array.\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Apple As Collection\n    Set Apple = CollectionExt.Make(\"a\", \"p\", \"p\", \"l\", \"e\")\n    \n    Dim Reversed As Collection\n    Set Reversed = CollectionExt.Reverse(Apple)\n    \n    Debug.Print CollectionExt.ToString(Reversed, Factory.GetValueTypeToStringConverter, \" \")\n    \nEnd Sub\n```"
+    },
+    "CollectionExt.Sum (Collection, Lapis.IConverter)": {
+        "short-description": "Computes the sum of a sequence of Int32 values.",
+        "description": "Computes the sum of a sequence of Int32 values.",
+        "parameters": {
+            "Source": "A sequence of values to calculate the sum of.",
+            "Selector" : "Method how elements of array will be converted into summable values."
+        },
+        "returns": [
+            "Variant",
+            "The sum of the values in the sequence."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`"
+            ],
+            [
+                "OnArgumentNull",
+                "`Selector` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Sum to sum the values of a sequence.\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = CollectionExt.Make(2, 3, 5, 10)\n    \n    Dim Sum As Long\n    Sum = CollectionExt.Sum(Numbers, Factory.GetValueTypeToNumericConverter)\n    \n    Debug.Print \"The sum fo the numbers is \" & Sum\n    \nEnd Sub\n\n' This code produces the following output:\n\n' The sum fo the numbers is 20\n```"
+    },
+    "CollectionExt.Average (Collection, Lapis.IConverter)": {
+        "short-description": "Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.",
+        "description": "Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.",
+        "parameters": {
+            "Source": "A sequence of values that are used to calculate an average.",
+            "Selector" : "A projection function to apply to each element."
+        },
+        "returns": [
+            "Variant",
+            "The average of the sequence of values."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`"
+            ],
+            [
+                "OnArgumentNull",
+                "`Selector` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Average to calculate the average String length in a sequence of values of type String.\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n    \n    Dim Average As Double\n    Average = CollectionExt.Average(Fruits, New StringToLengthConverter)\n    \n    Debug.Print \"The average string length is \" & Average\n    \nEnd Sub\n\n' This code produces the following output:\n\n' The average string length is 6,5\n```"
     },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {

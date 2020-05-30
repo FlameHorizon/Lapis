@@ -24,9 +24,9 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Max (Collection, IComparer)](./Max.md)|Invokes a Comparer on each element of a sequence and returns the maximum resulting value.|
 |[Range (Long, Long)](./Range.md)|Generates a sequence of integral numbers within a specified range.|
 |[Repeat (Variant, Long)](./Repeat.md)|Generates a sequence that contains one repeated value.|
-|[Reverse (Collection)](./Reverse.md)||
-|[Sum (Collection, Lapis.IConverter)](./Sum.md)||
-|[Average (Collection, Lapis.IConverter)](./Average.md)||
+|[Reverse (Collection)](./Reverse.md)|Inverts the order of the elements in a sequence.|
+|[Sum (Collection, Lapis.IConverter)](./Sum.md)|Computes the sum of a sequence of Int32 values.|
+|[Average (Collection, Lapis.IConverter)](./Average.md)|Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.|
 |[Take (Collection, Long)](./Take.md)||
 |[All (Collection, Predicate)](./All.md)||
 |[Some (Collection, Predicate)](./Some.md)||
