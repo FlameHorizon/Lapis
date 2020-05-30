@@ -6,3 +6,5 @@
 |-|-|
 |[GetStringEqualityComparer ()](./GetStringEqualityComparer.md)||
 |[GetLongEqualityComparer ()](./GetLongEqualityComparer.md)||
+|[GetLongComparer ()](./GetLongComparer.md)||
+|[GetValueTypeToStringConverter ()](./GetValueTypeToStringConverter.md)||

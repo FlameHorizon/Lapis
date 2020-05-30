@@ -13,3 +13,13 @@ Public Function GetLongEqualityComparer() As LongEqualityComparer
 End Function
 
 
+Public Function GetLongComparer() As LongComparer
+    Set GetLongComparer = New LongComparer
+End Function
+
+
+Public Function GetValueTypeToStringConverter() As ValueTypeToStringConverter
+    Set GetValueTypeToStringConverter = New ValueTypeToStringConverter
+End Function
+
+
