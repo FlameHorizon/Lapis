@@ -290,7 +290,7 @@
         "description": "Computes the sum of a sequence of Int32 values.",
         "parameters": {
             "Source": "A sequence of values to calculate the sum of.",
-            "Selector" : "Method how elements of array will be converted into summable values."
+            "Selector": "Method how elements of array will be converted into summable values."
         },
         "returns": [
             "Variant",
@@ -313,7 +313,7 @@
         "description": "Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.",
         "parameters": {
             "Source": "A sequence of values that are used to calculate an average.",
-            "Selector" : "A projection function to apply to each element."
+            "Selector": "A projection function to apply to each element."
         },
         "returns": [
             "Variant",
@@ -330,6 +330,44 @@
             ]
         ],
         "example": "The following code example demonstrates how to use Average to calculate the average String length in a sequence of values of type String.\n\n```vb\n' StringToLengthConverter class module\nOption Explicit\n\nImplements Lapis.IConverter\n\n\nPublic Function Convert(ByVal Item As Variant) As Variant\n    Convert = VBA.Len(Item)\nEnd Function\n\n\nPrivate Function IConverter_Convert(ByVal Item As Variant) As Variant\n    IConverter_Convert = Me.Convert(Item)\nEnd Function\n```\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n    \n    Dim Average As Double\n    Average = CollectionExt.Average(Fruits, New StringToLengthConverter)\n    \n    Debug.Print \"The average string length is \" & Average\n    \nEnd Sub\n\n' This code produces the following output:\n\n' The average string length is 6,5\n```"
+    },
+    "CollectionExt.Take (Collection, Long)": {
+        "short-description": "Returns a specified number of contiguous elements from the start of a sequence.",
+        "description": "Returns a specified number of contiguous elements from the start of a sequence.",
+        "parameters": {
+            "Source": "The sequence to return elements from.",
+            "Count": "A projection function to apply to each element."
+        },
+        "returns": [
+            "Collection",
+            "A Collection that contains the specified number of elements from the start of the input sequence."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Take to return elements from the start of a sequence.\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Grades As Collection\n    Set Grades = CollectionExt.Make(59, 82, 70, 56, 92, 98, 85)\n    \n    Dim BottomThreeGrades As Collection\n    Set BottomThreeGrades = CollectionExt.Take( _\n        CollectionExt.Sort(Grades, Lapis.Factory.GetLongComparer), 3)\n        \n    Debug.Print \"The bottom three grades are:\"\n        \n    Dim Grade As Variant\n    For Each Grade In BottomThreeGrades\n        Debug.Print Grade\n    Next Grade\n\nEnd Sub\n\n\n' This code produces the following output:\n' 56 \n' 59 \n' 70 \n```"
+    },
+    "CollectionExt.All (Collection, Predicate)": {
+        "short-description": "Determines whether all elements of a sequence satisfy a condition.",
+        "description": "Determines whether all elements of a sequence satisfy a condition.",
+        "parameters": {
+            "Source": "A Collection that contains the elements to apply the predicate to.",
+            "Predicate": "A function to test each element for a condition."
+        },
+        "returns": [
+            "Boolean",
+            "`true` if every element of the source sequence passes the test in the specified predicate, or if the sequence is empty; otherwise, `false`."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Predicate` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with \"B\" or if the pets array is empty.\n\n```vb\n' Pet Class Module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 10), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 6))\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    Pred.ComparisonValue = 5\n    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n\n    Dim AllOlderThan5Years As Boolean\n    AllOlderThan5Years = CollectionExt.All(Pets, Pred)\n    \n    If AllOlderThan5Years Then\n        Debug.Print \"All pets are older than 5 years.\"\n    Else\n        Debug.Print \"Not all pets are older than 5 years.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Not all pets are older than 5 years.\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n```"
     },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
