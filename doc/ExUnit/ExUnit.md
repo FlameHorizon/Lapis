@@ -3,7 +3,7 @@
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[Setup ()](./Setup.md)||
 |[Teardown ()](./Teardown.md)||
 |[AreEqual (Variant, Variant, String, String)](./AreEqual.md)||

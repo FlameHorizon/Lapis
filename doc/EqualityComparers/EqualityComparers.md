@@ -3,5 +3,5 @@
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[Default (Variant)](./Default.md)||

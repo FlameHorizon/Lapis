@@ -5,7 +5,7 @@ Represents a set of helper methods to work with directories.
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[CreateDirectory (String)](./CreateDirectory.md)||
 |[RemoveAllFilesFromFolder (String)](./RemoveAllFilesFromFolder.md)||
 |[RemoveFromFolder (String, String, SearchOption)](./RemoveFromFolder.md)||

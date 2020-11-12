@@ -5,7 +5,7 @@ The CollectionExt module contains methods that enables users to use collection i
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[ToString (Collection, IToString, String)](./ToString.md)|Returns a collection of property values based on the items in the collection.|
 |[ToStringByProperty (Collection, String)](./ToStringByProperty.md)||
 |[GroupBy (Collection, String)](./GroupBy.md)|Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
