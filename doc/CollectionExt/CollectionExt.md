@@ -32,7 +32,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Some (Collection, Predicate)](./Some.md)|Determines whether any element of a sequence satisfies a condition.|
 |[Skip (Collection, Long)](./Skip.md)|Bypasses a specified number of elements in a sequence and then returns the remaining elements.|
 |[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)||
-|[First (Collection, Predicate)](./First.md)||
+|[First (Collection, Predicate)](./First.md)|Returns the first element in a sequence that satisfies a specified condition.|
 |[Last (Collection, Predicate)](./Last.md)||
 |[SelectOne (Collection, Predicate)](./SelectOne.md)||
 |[Count (Collection, Predicate)](./Count.md)||
