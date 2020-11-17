@@ -30,7 +30,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Take (Collection, Long)](./Take.md)|Returns a specified number of contiguous elements from the start of a sequence.|
 |[All (Collection, Predicate)](./All.md)|Determines whether all elements of a sequence satisfy a condition.|
 |[Some (Collection, Predicate)](./Some.md)|Determines whether any element of a sequence satisfies a condition.|
-|[Skip (Collection, Long)](./Skip.md)||
+|[Skip (Collection, Long)](./Skip.md)|Bypasses a specified number of elements in a sequence and then returns the remaining elements.|
 |[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)||
 |[First (Collection, Predicate)](./First.md)||
 |[Last (Collection, Predicate)](./Last.md)||
