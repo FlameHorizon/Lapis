@@ -664,7 +664,8 @@ Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As
 End Function
 
 
-' Determines whether any element of a sequence exists or satisfies a condition.
+' Determines whether some element of a sequence exists or satisfies a condition.
+' Better matching word in this case is Any but it is reserved keyword.
 Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Boolean
 
     If Source Is Nothing Then

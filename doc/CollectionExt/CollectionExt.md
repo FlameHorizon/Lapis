@@ -29,7 +29,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Average (Collection, Lapis.IConverter)](./Average.md)|Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.|
 |[Take (Collection, Long)](./Take.md)|Returns a specified number of contiguous elements from the start of a sequence.|
 |[All (Collection, Predicate)](./All.md)|Determines whether all elements of a sequence satisfy a condition.|
-|[Some (Collection, Predicate)](./Some.md)||
+|[Some (Collection, Predicate)](./Some.md)|Determines whether any element of a sequence satisfies a condition.|
 |[Skip (Collection, Long)](./Skip.md)||
 |[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)||
 |[First (Collection, Predicate)](./First.md)||

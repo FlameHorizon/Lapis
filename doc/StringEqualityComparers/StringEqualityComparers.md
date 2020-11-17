@@ -1,0 +1,2 @@
+# StringEqualityComparers module
+

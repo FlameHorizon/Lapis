@@ -369,6 +369,25 @@
         ],
         "example": "The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with \"B\" or if the pets array is empty.\n\n```vb\n' Pet Class Module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 10), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 6))\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    Pred.ComparisonValue = 5\n    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n\n    Dim AllOlderThan5Years As Boolean\n    AllOlderThan5Years = CollectionExt.All(Pets, Pred)\n    \n    If AllOlderThan5Years Then\n        Debug.Print \"All pets are older than 5 years.\"\n    Else\n        Debug.Print \"Not all pets are older than 5 years.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Not all pets are older than 5 years.\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n```"
     },
+    "CollectionExt.Some (Collection, Predicate)": {
+        "short-description": "Determines whether any element of a sequence satisfies a condition.",
+        "description": "Determines whether any element of a sequence satisfies a condition.",
+        "parameters": {
+            "Source": "A Collection whose elements to apply the predicate to.",
+            "Predicate": "A function to test each element for a condition."
+        },
+        "returns": [
+            "Boolean",
+            "`true` if any elements in the source sequence pass the test in the specified predicate; otherwise, `false`."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with \"B\" or if the pets array is empty.\n\n```vb\n' Pet Class Module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 10), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 6))\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    Pred.ComparisonValue = 5\n    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n\n    Dim AnyOlderThan5Years As Boolean\n    AnyOlderThan5Years = CollectionExt.Some(Pets, Pred)\n    \n    If AnyOlderThan5Years Then\n        Debug.Print \"Some pets are older than 5 years.\"\n    Else\n        Debug.Print \"Not pet is older than 5 years.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Some pets are older than 5 years.\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n```"
+    },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",

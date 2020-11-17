@@ -23,3 +23,7 @@ Public Function GetValueTypeToStringConverter() As ValueTypeToStringConverter
 End Function
 
 
+Public Function GetPredicate() As Predicate
+    Set GetPredicate = New Predicate
+End Function
+
