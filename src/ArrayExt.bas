@@ -501,17 +501,29 @@ Private Sub MergeSort(ByRef Src() As Variant, _
     q = Mid
     Do While i < DestHigh
         If (q >= High) Then
-            Set Dest(i) = Src(p)
+            If IsObject(Src(p)) Then
+                Set Dest(i) = Src(p)
+            Else
+                Dest(i) = Src(p)
+            End If
             p = p + 1
         Else
             ' Otherwise, check if p<mid AND src(p) precedes scr(q)
             ' See description of following idom at: https://stackoverflow.com/a/3245183/3795219
             Select Case True
                 Case p >= Mid, Comparer.Compare(Src(p), Src(q)) > 0
-                    Set Dest(i) = Src(q)
+                    If IsObject(Src(q)) Then
+                        Set Dest(i) = Src(q)
+                    Else
+                        Dest(i) = Src(q)
+                    End If
                     q = q + 1
                 Case Else
-                    Set Dest(i) = Src(p)
+                    If IsObject(Src(p)) Then
+                        Set Dest(i) = Src(p)
+                    Else
+                        Dest(i) = Src(p)
+                    End If
                     p = p + 1
             End Select
         End If
