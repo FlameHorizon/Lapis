@@ -34,6 +34,6 @@ The CollectionExt module contains methods that enables users to use collection i
 |[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)||
 |[First (Collection, Predicate)](./First.md)|Returns the first element in a sequence that satisfies a specified condition.|
 |[Last (Collection, Predicate)](./Last.md)|Returns the last element of a sequence.|
-|[SelectOne (Collection, Predicate)](./SelectOne.md)||
+|[SelectOne (Collection, Predicate)](./SelectOne.md)|Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.|
 |[Count (Collection, Predicate)](./Count.md)||
 |[Where (Collection, Predicate)](./Where.md)||

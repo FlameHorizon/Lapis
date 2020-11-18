@@ -461,6 +461,37 @@
         ],
         "example": "The following code example demonstrates how to use Last(Source, Predicate) to return the last element of a collection that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers, Pred)\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 87\n```"
     },
+    "CollectionExt.SelectOne (Collection, Predicate)": {
+        "short-description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.",
+        "description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.",
+        "parameters": {
+            "Source": "A Collection to return a single element from.",
+            "Predicate": "A function to test an element for a condition."
+        },
+        "returns": [
+            "Variant",
+            "The single element of the input sequence that satisfies a condition."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Predicate` is `Nothing`"
+            ],
+            [
+                "OnInvalidOperation",
+                "When the number of elements in `Source is zero"
+            ],
+            [
+                "OnInvalidOperation",
+                "No element satisfies the condition in `predicate`."
+            ],
+            [
+                "OnInvalidOperation",
+                "More than one element satisfies the condition in `predicate`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use SelectOne(Collection, Predicate) to select the only element of a set that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 10\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits, Pred)\n    \n    Debug.Print Fruit1\n\nEnd Sub\n\n' This code produces the following output:\n'\n' passionfruit\n```"
+    },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
