@@ -27,3 +27,7 @@ Public Function GetPredicate() As Predicate
     Set GetPredicate = New Predicate
 End Function
 
+
+Public Function GetWordLengthComparer() As WordLengthComparer
+    Set GetWordLengthComparer = New WordLengthComparer
+End Function
