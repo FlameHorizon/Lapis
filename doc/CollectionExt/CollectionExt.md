@@ -33,7 +33,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Skip (Collection, Long)](./Skip.md)|Bypasses a specified number of elements in a sequence and then returns the remaining elements.|
 |[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)||
 |[First (Collection, Predicate)](./First.md)|Returns the first element in a sequence that satisfies a specified condition.|
-|[Last (Collection, Predicate)](./Last.md)||
+|[Last (Collection, Predicate)](./Last.md)|Returns the last element of a sequence.|
 |[SelectOne (Collection, Predicate)](./SelectOne.md)||
 |[Count (Collection, Predicate)](./Count.md)||
 |[Where (Collection, Predicate)](./Where.md)||

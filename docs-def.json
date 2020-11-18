@@ -434,6 +434,33 @@
         ],
         "example": "The following code example demonstrates how to use First(Source, Predicate) to return the first element of a collection that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 435, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim First As Variant\n    First = Lapis.CollectionExt.First(Numbers, Pred)\n    \n    Debug.Print First\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' 92\n```"
     },
+    "CollectionExt.Last (Collection, Predicate)": {
+        "short-description": "Returns the last element of a sequence.",
+        "description": "Returns the last element of a sequence.",
+        "parameters": {
+            "Source": "A collection to return an element from.",
+            "Predicate": "A function to test each element for a condition."
+        },
+        "returns": [
+            "Variant",
+            "The last element in the sequence that passes the test in the specified predicate function."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Predicate` is `Nothing`"
+            ],
+            [
+                "OnInvalidOperation",
+                "When the number of elements in Source is zero"
+            ],
+            [
+                "OnInvalidOperation",
+                "No element satisfies the condition in predicate."
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Last(Source, Predicate) to return the last element of a collection that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers, Pred)\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 87\n```"
+    },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
