@@ -9,7 +9,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[ToString (Collection, IToString, String)](./ToString.md)|Returns string based on the given set using value converter.|
 |[ToStringByProperty (Collection, String, String)](./ToStringByProperty.md)|Returns string based on the given name of the object's property.|
 |[GroupBy (Collection, String)](./GroupBy.md)|Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
-|[Concat (Collection, Collection)](./Concat.md)|Joins two collections together.|
+|[Concat (Collection, Collection)](./Concat.md)|Concatenates two sequences.|
 |[ToArray (Collection)](./ToArray.md)|Converts collection to an array.|
 |[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns a collection of items which unique property value.|
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Checks if item exists in the collection using custom comparer.|

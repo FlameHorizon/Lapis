@@ -57,16 +57,23 @@
         ]
     },
     "CollectionExt.Concat (Collection, Collection)": {
-        "short-description": "Joins two collections together.",
-        "description": "Joins two collections together.",
+        "short-description": "Concatenates two sequences.",
+        "description": "Concatenates two sequences.",
         "parameters": {
-            "First": "",
-            "Second": ""
+            "First": "The first sequence to concatenate.",
+            "Second": "The sequence to concatenate to the first sequence."
         },
         "returns": [
             "Collection",
-            ""
-        ]
+            "A Collection that contains the concatenated elements of the two input sequences."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`First` or `Second` is `Nothing`"
+            ]
+        ],
+        "example":"The following code example demonstrates how to use Concat(Collection, Collection) to concatenate two sequences.\n\n```\n' Pet Class\nOption Explicit\n\nPublic Name as String\nPublic Age as String\n\n```\n\n```\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Cats As Collection\n    Set Cats = Lapis.CollectionExt.Make(MakePet(\"Alfie\", 2), _\n                                        MakePet(\"Ricky\", 5), _\n                                        MakePet(\"Mikey\", 6))\n\n    Dim Dogs As Collection\n    Set Dogs = Lapis.CollectionExt.Make(MakePet(\"Rooney\", 7), _\n                                        MakePet(\"Bull\", 4), _\n                                        MakePet(\"Fredro\", 3))\n\n    Dim Result As Collection\n    Set Result = Lapis.CollectionExt.Concat(Cats, Dogs)\n    \n    Dim Item As Pet\n    For Each Item In Result\n        Debug.Print Item.Name\n    Next Item\n\nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n\n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n\nEnd Function\n\n' This code produces the following output:\n'\n' Alfie\n' Ricky\n' Mikey\n' Rooney\n' Bull\n' Fredro\n```"
     },
     "CollectionExt.ToArray (Collection)": {
         "short-description": "Converts collection to an array.",
