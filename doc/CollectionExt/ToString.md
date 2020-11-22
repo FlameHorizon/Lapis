@@ -34,7 +34,7 @@ Converting a value to string fails
 
 The following code example demonstrates how to use ToString(Collection, IToString, String) to covert set to string separated by comma.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()
