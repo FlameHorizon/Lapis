@@ -30,8 +30,8 @@ When value of the given property is not accessible.
 ## Examples
 
 The following code example demonstrates how to use ToStringByProperty(Collection, String, String) to covert set to string separated by comma.
- 
-```
+
+```vb
 Option Explicit
 
 Public Sub Start()
