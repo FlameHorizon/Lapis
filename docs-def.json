@@ -1,17 +1,28 @@
 {
     "CollectionExt": "The CollectionExt module contains methods that enables users to use collection in a more robust way.",
     "CollectionExt.ToString (Collection, IToString, String)": {
-        "short-description": "Returns a collection of property values based on the items in the collection.",
-        "description": "Returns a collection of property values based on the items in the collection.",
+        "short-description": "Returns string based on the given set using value converter.",
+        "description": "Returns string based on the given set using value converter",
         "parameters": {
-            "Source": "",
-            "Converter": "",
-            "Delimiter": ""
+            "Source": "Set of items which will be converted.",
+            "Converter": "Contains information how single item of set can be converted to string",
+            "Delimiter": "Optional. Defines delimiter which will be used between each item."
         },
         "returns": [
             "String",
-            ""
-        ]
+            "Text which will represent all items in the source."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Converter` is `Nothing`"
+            ],
+            [
+                "OnInvalidOperation",
+                "Converting a value to string fails"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use ToString(Collection, IToString, String) to covert set to string separated by comma.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Result As String\n    Result = Lapis.CollectionExt.ToString(Fruits, _\n                                          Lapis.Factory.GetValueTypeToStringConverter, _\n                                          Delimiter:=\", \")\n    Debug.Print Result\n\nEnd Sub\n\n' This code produces the following output:\n\n' apple, passionfruit, banana, mango, orange, blueberry, grape, strawberry\n```"
     },
     "CollectionExt.GroupBy (Collection, String)": {
         "short-description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
