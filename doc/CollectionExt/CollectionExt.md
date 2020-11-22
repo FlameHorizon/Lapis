@@ -36,4 +36,4 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Last (Collection, Predicate)](./Last.md)|Returns the last element of a sequence.|
 |[SelectOne (Collection, Predicate)](./SelectOne.md)|Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.|
 |[Count (Collection, Predicate)](./Count.md)|Returns a number that represents how many elements in the specified sequence satisfy a condition.|
-|[Where (Collection, Predicate)](./Where.md)||
+|[Where (Collection, Predicate)](./Where.md)|Filters a sequence of values based on a predicate|

@@ -9,3 +9,4 @@
 |[GetLongComparer ()](./GetLongComparer.md)||
 |[GetValueTypeToStringConverter ()](./GetValueTypeToStringConverter.md)||
 |[GetPredicate ()](./GetPredicate.md)||
+|[GetWordLengthComparer ()](./GetWordLengthComparer.md)||

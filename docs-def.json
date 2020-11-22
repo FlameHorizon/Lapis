@@ -511,6 +511,25 @@
         ],
         "example": "The following code example demonstrates how to use Count(Collection, Pred) to count the elements in an array that satisfy a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 5\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Value As Variant\n    Value = Lapis.CollectionExt.Count(Numbers, Pred)\n    \n    Debug.Print \"There are \" & Value & \" numbers greater than or equal to 5.\"\n\nEnd Sub\n\n' This code produces the following output:\n'\n' There are 6 numbers greater than or equal to 5.\n```"
     },
+    "CollectionExt.Where (Collection, Predicate)": {
+        "short-description": "Filters a sequence of values based on a predicate",
+        "description": "Filters a sequence of values based on a predicate",
+        "parameters": {
+            "Source": "A sequence to filter.",
+            "Predicate": "A function to test each element for a condition."
+        },
+        "returns": [
+            "Collection",
+            "A set that contains elements from the input sequence that satisfy the condition."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Predicate` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Where(Collection, Predicate) to filter a sequence.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    With Pred\n        .ComparisonValue = 6\n        .Operator = Lapis.ComparisonOperator.LessThan\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Query As Collection\n    Set Query = Lapis.CollectionExt.Where(Fruits, Pred)\n    \n    Dim Fruit As Variant\n    For Each Fruit In Query\n        Debug.Print Fruit\n    Next Fruit\n\nEnd Sub\n\n' This code produces the following output:\n' apple\n' mango\n' grape\n```"
+    },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
