@@ -60,7 +60,9 @@ End Function
 
 ' Returns a string which represents collection of objects based on the implementation
 ' of ToString method of each object within Source collection.
-Public Function ToStringByProperty(ByVal Source As Collection, ByVal PropertyName As String) As String
+Public Function ToStringByProperty(ByVal Source As Collection, _
+                                   ByVal PropertyName As String, _
+                                   Optional ByVal Delimiter As String = ",") As String
     
     If Source Is Nothing Then
         Errors.OnArgumentNull "Source", ModuleName & ".ToStringToStringByProperty"
@@ -68,7 +70,7 @@ Public Function ToStringByProperty(ByVal Source As Collection, ByVal PropertyNam
     
     Dim Converter As New PropertyToStringConverter
     Converter.PropertyName = PropertyName
-    ToStringByProperty = CollectionExt.ToString(Source, Converter)
+    ToStringByProperty = CollectionExt.ToString(Source, Converter, Delimiter)
 
 End Function
 

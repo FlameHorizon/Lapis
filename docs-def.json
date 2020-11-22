@@ -24,6 +24,26 @@
         ],
         "example": "The following code example demonstrates how to use ToString(Collection, IToString, String) to covert set to string separated by comma.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Result As String\n    Result = Lapis.CollectionExt.ToString(Fruits, _\n                                          Lapis.Factory.GetValueTypeToStringConverter, _\n                                          Delimiter:=\", \")\n    Debug.Print Result\n\nEnd Sub\n\n' This code produces the following output:\n\n' apple, passionfruit, banana, mango, orange, blueberry, grape, strawberry\n```"
     },
+    "CollectionExt.ToStringByProperty (Collection, String, String)": {
+        "short-description": "Returns string based on the given name of the object's property.",
+        "description": "Returns string based on the given name of the object's property.",
+        "parameters": {
+            "Source": "Set of items which will be converted.",
+            "PropertyName": "Name of the object's property which will be used for conversion.",
+            "Delimiter": "Optional. Defines delimiter which will be used between each item."
+        },
+        "returns": [
+            "String",
+            "Text which will represent all items in the source."
+        ],
+        "errors": [
+            [
+                "OnArgumentOutOfRange",
+                "When value of the given property is not accessible."
+            ]
+        ],
+        "example": "The following code example demonstrates how to use ToStringByProperty(Collection, String, String) to covert set to string separated by comma.\n \n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = Lapis.CollectionExt.Make(MakePet(\"Alfie\", 2), _\n                                        MakePet(\"Ricky\", 5), _\n                                        MakePet(\"Mikey\", 6))\n    Dim Result As String\n    Result = Lapis.CollectionExt.ToStringByProperty(Pets, \"Name\", Delimiter:=\", \")\n    Debug.Print Result\n\nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n\n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n\nEnd Function\n\n' This code produces the following output:\n'\n' Alfie, Ricky, Mikey\n\n' Class Module: Pet\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```"
+    },
     "CollectionExt.GroupBy (Collection, String)": {
         "short-description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
         "description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
