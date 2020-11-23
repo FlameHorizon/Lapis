@@ -25,7 +25,7 @@ An `IEqualityComparer` to use to compare elements.
 ### Errors
 
 `OnArgumentNull` <br>
-`First` or `Converter` is `Nothing`
+`First`, `Second` or `Converter` is `Nothing`
 
 ## Examples
 
