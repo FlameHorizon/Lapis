@@ -100,12 +100,24 @@
         ]
     },
     "CollectionExt.AddRange (Collection, Collection)": {
-        "short-description": "Adds a collection of items to the container.",
-        "description": "Adds a collection of items to the container.",
+        "short-description": "Adds the elements of the specified collection to the end of the set.",
+        "description": "Adds the elements of the specified collection to the end of the set.",
         "parameters": {
-            "Container": "",
-            "Items": ""
-        }
+            "Container": "The collection to which elements will be added.",
+            "Items": "The collection whose elements should be added to the end of the collection. The collection itself cannot be null, but it can contain elements that are `Nothing`"
+        },
+        "errors" :[
+            [
+                "OnArgumentNull",
+                "`Container` is `Nothing"
+            ],
+            [
+                "OnArgumentNull",
+                "`Items` is `Nothing`"
+            ]
+        ],
+        "example" : "The following example demonstrates the AddRange method that act on ranges.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Dinosaurs As Collection\n    Set Dinosaurs = Lapis.CollectionExt.Make(\"Brachiosaurus\", \"Amargasaurus\", \"Mamenchisaurus\")\n\n    Dim Item As Variant\n    For Each Item In Dinosaurs\n        Debug.Print Item\n    Next Item\n    \n    Dim MoreDinosaurs As Collection\n    Set MoreDinosaurs = Lapis.CollectionExt.Make(\"Tyrannosaurus Rex\", \"Stegosaurus\", \"Triceratops\")\n\n    Lapis.CollectionExt.AddRange Dinosaurs, MoreDinosaurs\n    Debug.Print vbNewLine\n    For Each Item In Dinosaurs\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n' This code example produces the following output:\n'\n' Brachiosaurus\n' Amargasaurus\n' Mamenchisaurus\n'\n'\n' Brachiosaurus\n' Amargasaurus\n' Mamenchisaurus\n' Tyrannosaurus Rex\n' Stegosaurus\n' Triceratops\n```"
+
     },
     "CollectionExt.Sort (Collection, Lapis.IComparer)": {
         "short-description": "Sorts given collection using merge sort according to defined comparer.",

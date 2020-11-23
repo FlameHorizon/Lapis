@@ -13,7 +13,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Checks if item exists in the collection using custom comparer.|
 |[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)|Returns a collection which contains distinct values from the Collection.|
 |[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection|
-|[AddRange (Collection, Collection)](./AddRange.md)|Adds a collection of items to the container.|
+|[AddRange (Collection, Collection)](./AddRange.md)|Adds the elements of the specified collection to the end of the set.|
 |[Sort (Collection, Lapis.IComparer)](./Sort.md)|Sorts given collection using merge sort according to defined comparer.|
 |[Make (ParamArray Variant)](./Make.md)|Creates a new collection based on to list of arguments.|
 |[Except (Collection, Collection, IEqualityComparer)](./Except.md)|Produces the set difference of two sequences by using the specified IEqualityComparer to compare values.|

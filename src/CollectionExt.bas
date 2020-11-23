@@ -226,7 +226,7 @@ End Function
 
 ' Info: Adds every item from Items collection to the Container collection.
 ' Throws ArgumentNullException when either Container or Items collection are set to nothing.
-Public Sub AddRange(ByRef Container As Collection, ByRef Items As Collection)
+Public Sub AddRange(ByRef Container As Collection, ByVal Items As Collection)
 
     Const MethodName = "AddRange"
     
