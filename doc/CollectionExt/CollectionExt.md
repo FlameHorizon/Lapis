@@ -28,7 +28,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[All (Collection, Predicate)](./All.md)|Determines whether all elements of a sequence satisfy a condition.|
 |[Some (Collection, Predicate)](./Some.md)|Determines whether any element of a sequence satisfies a condition.|
 |[Skip (Collection, Long)](./Skip.md)|Bypasses a specified number of elements in a sequence and then returns the remaining elements.|
-|[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)||
+|[SequenceEqual (Collection, Collection, IEqualityComparer)](./SequenceEqual.md)|Determines whether two sequences are equal by comparing their elements by using a specified IEqualityComparer.|
 |[First (Collection, Predicate)](./First.md)|Returns the first element in a sequence that satisfies a specified condition.|
 |[Last (Collection, Predicate)](./Last.md)|Returns the last element of a sequence.|
 |[SelectOne (Collection, Predicate)](./SelectOne.md)|Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.|
