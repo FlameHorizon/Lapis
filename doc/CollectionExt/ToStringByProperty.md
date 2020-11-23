@@ -32,6 +32,14 @@ When value of the given property is not accessible.
 The following code example demonstrates how to use ToStringByProperty(Collection, String, String) to covert set to string separated by comma.
 
 ```vb
+' Pet class module
+Option Explicit
+
+Public Name As String
+Public Age As Long
+```
+
+```vb
 Option Explicit
 
 Public Sub Start()
@@ -59,11 +67,5 @@ End Function
 ' This code produces the following output:
 '
 ' Alfie, Ricky, Mikey
-
-' Class Module: Pet
-Option Explicit
-
-Public Name As String
-Public Age As Long
 ```
 
