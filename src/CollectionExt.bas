@@ -126,35 +126,6 @@ Public Function Contains(ByVal Source As Collection, _
 End Function
 
 
-' Returns a collection which contains distinct values from the Collection.
-Public Function DistinctValues(ByRef Items As Collection, ByRef Comparer As IEqualityComparer) As Collection
-        
-    Const MethodName = "DistinctValues"
-        
-    If Items Is Nothing Then
-        Errors.OnArgumentNull "Items", ModuleName & "." & MethodName
-    End If
-    
-    If Comparer Is Nothing Then
-        Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
-    End If
-    
-    Dim Output As New Collection
-    Dim Item As Variant
-    
-    For Each Item In Items
-        If Not Contains(Output, Item, Comparer) Then
-            Output.Add Item
-        End If
-        
-    Next Item
-    
-    Set DistinctValues = Output
-    Set Output = Nothing
-    
-End Function
-
-
 ' Returns an index of an Value in collection.
 Public Function IndexOf(ByVal Source As Collection, _
                         ByVal Value As Variant, _
