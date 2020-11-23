@@ -5,76 +5,6 @@ Option Explicit
 Private Const ModuleName = "CollectionHelper"
 
 
-Public Function ToString(ByVal Source As Collection, _
-                         ByVal Converter As IToString, _
-                         Optional ByVal Delimiter As String = ",") As String
-
-    Const MethodName = "ToString"
-
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-
-    If Converter Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Converter", ModuleName & "." & MethodName
-    End If
-
-    If Source.Count = 0 Then
-        ToString = vbNullString
-        Exit Function
-    End If
-    
-    Dim Output As String
-    Dim Item As Variant
-    For Each Item In Source
-        On Error Resume Next
-        Output = Output & Delimiter & Converter.ToString(Item)
-        If Err.Number = ErrorNumber.ObjectRequired Or Err.Number = ErrorNumber.TypeMismatch Then
-            On Error GoTo 0
-            Errors.OnInvalidOperation vbNullString, _
-                                      "Given convert was not able to convert value of collection into string. " _
-                                      & ModuleName & "." & MethodName
-                                       
-        ElseIf Err.Number = ErrorNumber.ObjectVariableOrWithBlockVariableNotSet Then
-            On Error GoTo 0
-            Errors.OnInvalidOperation vbNullString, _
-                                      "Given item, inside collection is not set. " _
-                                      & ModuleName & "." & MethodName
-        
-        ElseIf Err.Number = ErrorNumber.ObjectDoesntSupportThisPropertyOrMethod Then
-            On Error GoTo 0
-            Errors.OnArgumentOutOfRange vbNullString, _
-                                        "Given property is not a party of object. " _
-                                        & ModuleName & "." & MethodName
-        
-        End If
-        On Error GoTo 0
- 
-    Next Item
-    
-    Output = StringExt.RemoveRange(Output, 0, Len(Delimiter))
-    ToString = Output
-
-End Function
-
-
-' Returns a string which represents collection of objects based on the implementation
-' of ToString method of each object within Source collection.
-Public Function ToStringByProperty(ByVal Source As Collection, _
-                                   ByVal PropertyName As String, _
-                                   Optional ByVal Delimiter As String = ",") As String
-    
-    If Source Is Nothing Then
-        Errors.OnArgumentNull "Source", ModuleName & ".ToStringToStringByProperty"
-    End If
-    
-    Dim Converter As New PropertyToStringConverter
-    Converter.PropertyName = PropertyName
-    ToStringByProperty = CollectionExt.ToString(Source, Converter, Delimiter)
-
-End Function
-
-
 ' Groups a collection's items using PropertyName value.
 ' PropertyName value has to be a name of a property of grouped items.
 Public Function GroupBy(ByRef Items As Collection, ByVal PropertyName As String) As Scripting.Dictionary
@@ -906,4 +836,25 @@ Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) 
 End Function
 
 
+' Projects each element of a sequence into a new form.
+Public Function Convert(ByVal Source As Collection, ByVal Converter As Lapis.IConverter) As Collection
 
+    Const MethodName As String = "Convert"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Converter Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Converter", ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim Item As Variant
+    For Each Item In Source
+        Output.Add Converter.Convert(Item)
+    Next Item
+    
+    Set Convert = Output
+
+End Function

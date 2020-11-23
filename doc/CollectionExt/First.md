@@ -33,9 +33,9 @@ No element satisfies the condition in predicate.
 
 ## Examples
 
-The following code example demonstrates how to use First(Source, Predicate) to return the first element of a collection that satisfies a condition.
+The following code example demonstrates how to use First(Collection, Predicate) to return the first element of a collection that satisfies a condition.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()

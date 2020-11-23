@@ -6,11 +6,9 @@ The CollectionExt module contains methods that enables users to use collection i
 
 |Name|Description|
 |-|-|
-|[ToString (Collection, IToString, String)](./ToString.md)|Returns string based on the given set using value converter.|
-|[ToStringByProperty (Collection, String, String)](./ToStringByProperty.md)|Returns string based on the given name of the object's property.|
 |[GroupBy (Collection, String)](./GroupBy.md)|Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
 |[Concat (Collection, Collection)](./Concat.md)|Concatenates two sequences.|
-|[ToArray (Collection)](./ToArray.md)|Converts collection to an array.|
+|[ToArray (Collection)](./ToArray.md)|Creates an array from a collection.|
 |[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns a collection of items which unique property value.|
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Checks if item exists in the collection using custom comparer.|
 |[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)|Returns a collection which contains distinct values from the Collection.|
@@ -37,3 +35,4 @@ The CollectionExt module contains methods that enables users to use collection i
 |[SelectOne (Collection, Predicate)](./SelectOne.md)|Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.|
 |[Count (Collection, Predicate)](./Count.md)|Returns a number that represents how many elements in the specified sequence satisfy a condition.|
 |[Where (Collection, Predicate)](./Where.md)|Filters a sequence of values based on a predicate|
+|[Convert (Collection, Lapis.IConverter)](./Convert.md)|Projects each element of a sequence into a new form.|

@@ -33,9 +33,9 @@ No element satisfies the condition in predicate.
 
 ## Examples
 
-The following code example demonstrates how to use Last(Source, Predicate) to return the last element of a collection that satisfies a condition.
+The following code example demonstrates how to use Last(Collection, Predicate) to return the last element of a collection that satisfies a condition.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()

@@ -28,7 +28,7 @@ A set that contains elements from the input sequence that satisfy the condition.
 
 The following code example demonstrates how to use Where(Collection, Predicate) to filter a sequence.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()

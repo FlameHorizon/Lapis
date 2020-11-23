@@ -10,3 +10,4 @@
 |[GetValueTypeToStringConverter ()](./GetValueTypeToStringConverter.md)||
 |[GetPredicate ()](./GetPredicate.md)||
 |[GetWordLengthComparer ()](./GetWordLengthComparer.md)||
+|[PropertyToStringConverter ()](./PropertyToStringConverter.md)||

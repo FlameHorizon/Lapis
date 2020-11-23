@@ -39,7 +39,7 @@ More than one element satisfies the condition in `predicate`
 
 The following code example demonstrates how to use SelectOne(Collection, Predicate) to select the only element of a set that satisfies a condition.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()

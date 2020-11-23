@@ -28,7 +28,7 @@ A Collection that contains the elements that occur after the specified index in 
 
 The following code example demonstrates how to use Skip to skip a specified number of elements in a sorted array and return the remaining elements.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()

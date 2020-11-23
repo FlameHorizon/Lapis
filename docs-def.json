@@ -1,49 +1,5 @@
 {
     "CollectionExt": "The CollectionExt module contains methods that enables users to use collection in a more robust way.",
-    "CollectionExt.ToString (Collection, IToString, String)": {
-        "short-description": "Returns string based on the given set using value converter.",
-        "description": "Returns string based on the given set using value converter",
-        "parameters": {
-            "Source": "Set of items which will be converted.",
-            "Converter": "Contains information how single item of set can be converted to string",
-            "Delimiter": "Optional. Defines delimiter which will be used between each item."
-        },
-        "returns": [
-            "String",
-            "Text which will represent all items in the source."
-        ],
-        "errors": [
-            [
-                "OnArgumentNull",
-                "`Source` or `Converter` is `Nothing`"
-            ],
-            [
-                "OnInvalidOperation",
-                "Converting a value to string fails"
-            ]
-        ],
-        "example": "The following code example demonstrates how to use ToString(Collection, IToString, String) to covert set to string separated by comma.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Result As String\n    Result = Lapis.CollectionExt.ToString(Fruits, _\n                                          Lapis.Factory.GetValueTypeToStringConverter, _\n                                          Delimiter:=\", \")\n    Debug.Print Result\n\nEnd Sub\n\n' This code produces the following output:\n\n' apple, passionfruit, banana, mango, orange, blueberry, grape, strawberry\n```"
-    },
-    "CollectionExt.ToStringByProperty (Collection, String, String)": {
-        "short-description": "Returns string based on the given name of the object's property.",
-        "description": "Returns string based on the given name of the object's property.",
-        "parameters": {
-            "Source": "Set of items which will be converted.",
-            "PropertyName": "Name of the object's property which will be used for conversion.",
-            "Delimiter": "Optional. Defines delimiter which will be used between each item."
-        },
-        "returns": [
-            "String",
-            "Text which will represent all items in the source."
-        ],
-        "errors": [
-            [
-                "OnArgumentOutOfRange",
-                "When value of the given property is not accessible."
-            ]
-        ],
-        "example": "The following code example demonstrates how to use ToStringByProperty(Collection, String, String) to covert set to string separated by comma.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = Lapis.CollectionExt.Make(MakePet(\"Alfie\", 2), _\n                                        MakePet(\"Ricky\", 5), _\n                                        MakePet(\"Mikey\", 6))\n    Dim Result As String\n    Result = Lapis.CollectionExt.ToStringByProperty(Pets, \"Name\", Delimiter:=\", \")\n    Debug.Print Result\n\nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n\n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n\nEnd Function\n\n' This code produces the following output:\n'\n' Alfie, Ricky, Mikey\n```"
-    },
     "CollectionExt.GroupBy (Collection, String)": {
         "short-description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
         "description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
@@ -76,15 +32,22 @@
         "example":"The following code example demonstrates how to use Concat(Collection, Collection) to concatenate two sequences.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name as String\nPublic Age as String\n\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Cats As Collection\n    Set Cats = Lapis.CollectionExt.Make(MakePet(\"Alfie\", 2), _\n                                        MakePet(\"Ricky\", 5), _\n                                        MakePet(\"Mikey\", 6))\n\n    Dim Dogs As Collection\n    Set Dogs = Lapis.CollectionExt.Make(MakePet(\"Rooney\", 7), _\n                                        MakePet(\"Bull\", 4), _\n                                        MakePet(\"Fredro\", 3))\n\n    Dim Result As Collection\n    Set Result = Lapis.CollectionExt.Concat(Cats, Dogs)\n    \n    Dim Item As Pet\n    For Each Item In Result\n        Debug.Print Item.Name\n    Next Item\n\nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n\n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n\nEnd Function\n\n' This code produces the following output:\n'\n' Alfie\n' Ricky\n' Mikey\n' Rooney\n' Bull\n' Fredro\n```"
     },
     "CollectionExt.ToArray (Collection)": {
-        "short-description": "Converts collection to an array.",
-        "description": "Converts collection to an array.",
+        "short-description": "Creates an array from a collection.",
+        "description": "Creates an array from a collection.",
         "parameters": {
-            "Items": ""
+            "Items": "A collection to create an array from."
         },
         "returns": [
             "Variant()",
-            ""
-        ]
+            "An array that contains the elements from the input sequence."
+        ],
+        "errors":[
+            [
+                "OnArgumentNull",
+                "`Items` is `Nothing`"
+            ]
+        ],
+        "example":"The following code example demonstrates how to use ToArray to force immediate query evaluation and return an array of results.\n\n```vb\n' Package class module\nOption Explicit\n\nPublic Company As String\nPublic Weight As Double\n```\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Packages As New Collection\n    With Packages\n        .Add MakePackage(\"Coho Vineyard\", 25.2)\n        .Add MakePackage(\"Lucerne Publishing\", 15)\n        .Add MakePackage(\"Wingtip Toys\", 6)\n        .Add MakePackage(\"Adventure Works\", 33.9)\n    End With\n\n    Dim Converter As Lapis.PropertyToStringConverter\n    Set Converter = Lapis.Factory.PropertyToStringConverter\n    Converter.PropertyName = \"Company\"\n\n    Dim Companies() As Variant\n    Companies = Lapis.CollectionExt.ToArray(Lapis.CollectionExt.Convert(Packages, Converter))\n\n    Dim Item As Variant\n    For Each Item In Companies\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n\n' This code produces the following output:\n'\n' Coho Vineyard\n' Lucerne Publishing\n' Wingtip Toys\n' Adventure Works\n\n\nPrivate Function MakePackage(ByVal Company As String, ByVal Weight As Double) As Package\n\n    Dim Output As New Package\n    Output.Company = Company\n    Output.Weight = Weight\n    Set MakePackage = Output\n\nEnd Function\n```"
     },
     "CollectionExt.Distinct (Collection, IEqualityComparer)": {
         "short-description": "Returns a collection of items which unique property value.",
@@ -470,7 +433,7 @@
                 "No element satisfies the condition in predicate."
             ]
         ],
-        "example": "The following code example demonstrates how to use First(Source, Predicate) to return the first element of a collection that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 435, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim First As Variant\n    First = Lapis.CollectionExt.First(Numbers, Pred)\n    \n    Debug.Print First\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' 92\n```"
+        "example": "The following code example demonstrates how to use First(Collection, Predicate) to return the first element of a collection that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 435, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim First As Variant\n    First = Lapis.CollectionExt.First(Numbers, Pred)\n    \n    Debug.Print First\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' 92\n```"
     },
     "CollectionExt.Last (Collection, Predicate)": {
         "short-description": "Returns the last element of a sequence.",
@@ -497,7 +460,7 @@
                 "No element satisfies the condition in predicate."
             ]
         ],
-        "example": "The following code example demonstrates how to use Last(Source, Predicate) to return the last element of a collection that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers, Pred)\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 87\n```"
+        "example": "The following code example demonstrates how to use Last(Collection, Predicate) to return the last element of a collection that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers, Pred)\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 87\n```"
     },
     "CollectionExt.SelectOne (Collection, Predicate)": {
         "short-description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.",
@@ -528,7 +491,7 @@
                 "More than one element satisfies the condition in `predicate`"
             ]
         ],
-        "example": "The following code example demonstrates how to use SelectOne(Collection, Predicate) to select the only element of a set that satisfies a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 10\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits, Pred)\n    \n    Debug.Print Fruit1\n\nEnd Sub\n\n' This code produces the following output:\n'\n' passionfruit\n```"
+        "example": "The following code example demonstrates how to use SelectOne(Collection, Predicate) to select the only element of a set that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 10\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits, Pred)\n    \n    Debug.Print Fruit1\n\nEnd Sub\n\n' This code produces the following output:\n'\n' passionfruit\n```"
     },
     "CollectionExt.Count (Collection, Predicate)": {
         "short-description": "Returns a number that represents how many elements in the specified sequence satisfy a condition.",
@@ -547,7 +510,7 @@
                 "`Source` or `Predicate` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Count(Collection, Pred) to count the elements in an array that satisfy a condition.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 5\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Value As Variant\n    Value = Lapis.CollectionExt.Count(Numbers, Pred)\n    \n    Debug.Print \"There are \" & Value & \" numbers greater than or equal to 5.\"\n\nEnd Sub\n\n' This code produces the following output:\n'\n' There are 6 numbers greater than or equal to 5.\n```"
+        "example": "The following code example demonstrates how to use Count(Collection, Predicate) to count the elements in an array that satisfy a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 5\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Value As Variant\n    Value = Lapis.CollectionExt.Count(Numbers, Pred)\n    \n    Debug.Print \"There are \" & Value & \" numbers greater than or equal to 5.\"\n\nEnd Sub\n\n' This code produces the following output:\n'\n' There are 6 numbers greater than or equal to 5.\n```"
     },
     "CollectionExt.Where (Collection, Predicate)": {
         "short-description": "Filters a sequence of values based on a predicate",
@@ -566,7 +529,26 @@
                 "`Source` or `Predicate` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Where(Collection, Predicate) to filter a sequence.\n\n```\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    With Pred\n        .ComparisonValue = 6\n        .Operator = Lapis.ComparisonOperator.LessThan\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Query As Collection\n    Set Query = Lapis.CollectionExt.Where(Fruits, Pred)\n    \n    Dim Fruit As Variant\n    For Each Fruit In Query\n        Debug.Print Fruit\n    Next Fruit\n\nEnd Sub\n\n' This code produces the following output:\n' apple\n' mango\n' grape\n```"
+        "example": "The following code example demonstrates how to use Where(Collection, Predicate) to filter a sequence.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    With Pred\n        .ComparisonValue = 6\n        .Operator = Lapis.ComparisonOperator.LessThan\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Query As Collection\n    Set Query = Lapis.CollectionExt.Where(Fruits, Pred)\n    \n    Dim Fruit As Variant\n    For Each Fruit In Query\n        Debug.Print Fruit\n    Next Fruit\n\nEnd Sub\n\n' This code produces the following output:\n' apple\n' mango\n' grape\n```"
+    },
+    "CollectionExt.Convert (Collection, Lapis.IConverter)": {
+        "short-description": "Projects each element of a sequence into a new form.",
+        "description": "Projects each element of a sequence into a new form.",
+        "parameters": {
+            "Source": "A sequence of values to invoke a transform function on.",
+            "Converter": "A transform function to apply to each element."
+        },
+        "returns": [
+            "Collection",
+            "A set whose elements are the result of invoking the transform function on each element of `Source`"
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Converter` is `Nothing`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use Convert(Collection, Lapis.IConverter) to force immediate query evaluation and return a set of results.\n\n```vb\n' MathSquareConverter class module\nOption Explicit\n\nImplements Lapis.IConverter\n\n\nPublic Function Convert(ByVal Item As Variant) As Variant\n    Convert = Item * Item\nEnd Function\n\n\nPrivate Function IConverter_Convert(ByVal Item As Variant) As Variant\n    IConverter_Convert = Me.Convert(Item)\nEnd Function\n```\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Range(1, 10)\n    \n    Dim Squares As Collection\n    SetSquares = Lapis.CollectionExt.Convert(Numbers, New MathSquareConverter)\n\n    Dim Item As Variant\n    For Each Item In Squares\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n\n' This code produces the following output:\n'\n' 1\n' 4\n' 9\n' 16\n' 25\n' 36\n' 49\n' 64\n' 81\n' 100\n```"
     },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
     "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {

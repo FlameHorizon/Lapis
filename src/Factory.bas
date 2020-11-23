@@ -31,3 +31,8 @@ End Function
 Public Function GetWordLengthComparer() As WordLengthComparer
     Set GetWordLengthComparer = New WordLengthComparer
 End Function
+
+
+Public Function PropertyToStringConverter() As PropertyToStringConverter
+    Set PropertyToStringConverter = New PropertyToStringConverter
+End Function

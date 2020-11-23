@@ -6,22 +6,6 @@ Private Const ModuleName As String = "CollectionTests"
 
 
 Public Sub Start()
-
-    ToStringValueTypesTest
-    ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest
-    ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest
-    ToStringReturnsEmptyStringWhenSourceIsEmptyTest
-    ToStringReturnsStringWithDefinedDelimeterTest
-    ToStringReturnsStringWhenDelimterIsNullStringTest
-    ToStringReturnsStringWhenItemsAreNumbersTest
-    ToStringReturnsStringWhenItemsAreMixedValueTypesTest
-    ToStringReturnsStringWhenItemsContainsObjectsTest
-    ToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest
-    ToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest
-    ToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest
-    
-    ToStringByPropertyTest
-    ToStringByPropertyReturnsArgumentOutOfRangeErrorWhenPropertyDoesNotExistsTest
     
     DistinctTest
     DistinctReturnsItemWhenSingleItemGivenTest
@@ -147,268 +131,10 @@ Public Sub Start()
     IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest
     IndexOfReturnsValueWhenItemImplementsIComparableTest
     
-End Sub
-
-
-Private Sub ToStringValueTypesTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringValueTypesTest"
+    ConvertTest
+    ConvertReturnsArgumentNullWhenSourceIsNothingTest
+    ConvertReturnsArgumentNullWhenConverterIsNothingTest
     
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make("abc", "cba"), New ValueTypeToStringConverter)
-
-    ' Assert
-    Lapis.ExUnit.AreEqual "abc,cba", Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Function GetSig(ByVal MethodName As String) As String
-    GetSig = ModuleName & "." & MethodName
-End Function
-
-
-Private Sub ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "ToStringReturnsArgumentNullErrorWhenSourceIsNothingTest"
-
-    ' Act
-    CollectionExt.ToString Nothing, New ValueTypeToStringConverter
-    
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "ToStringReturnsArgumentNullErrorWhenConverterIsNothingTest"
-
-    ' Act
-    CollectionExt.ToString New Collection, Nothing
-    
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsEmptyStringWhenSourceIsEmptyTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringReturnsEmptyStringWhenSourceIsEmptyTest"
-    
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(New Collection, New ValueTypeToStringConverter)
-
-    ' Assert
-    ExUnit.AreEqual vbNullString, Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsStringWithDefinedDelimeterTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringReturnsStringWithDefinedDelimeterTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make("abc", "cba"), New ValueTypeToStringConverter, "-")
-    
-    ' Assert
-    ExUnit.AreEqual "abc-cba", Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsStringWhenDelimterIsNullStringTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringReturnsStringWhenDelimterIsNullStringTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make("abc", "cba"), New ValueTypeToStringConverter, vbNullString)
-    
-    ' Assert
-    ExUnit.AreEqual "abccba", Actual, GetSig(MethodName)
-
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsStringWhenItemsAreNumbersTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringReturnsStringWhenItemsAreNumbersTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make(1, 3, 4), New ValueTypeToStringConverter)
-
-    ' Assert
-    ExUnit.AreEqual "1,3,4", Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsStringWhenItemsAreMixedValueTypesTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringReturnsStringWhenItemsAreMixedValueTypesTest"
-
-    ' Arrange
-    Dim Source As Collection
-    Set Source = CollectionExt.Make("a", 1, 2.34, #2/2/2020#, &H5CC)
-    
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(Source, New ValueTypeToStringConverter)
-
-    ' Assert
-    ExUnit.AreEqual "a,1," & 2.34 & "," & #2/2/2020# & ",1484", Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsStringWhenItemsContainsObjectsTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringReturnsStringWhenItemsContainsObjectsTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make(ThisWorkbook, ThisWorkbook), New WorkbookToStringConverter)
-
-    ' Assert
-    ExUnit.AreEqual "Lapis.xlam,Lapis.xlam", Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.InvalidOperation
-    Const MethodName = "ToStringReturnsInvalidOperationWhenConverterCantConvertNonObjectTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make("a"), New WorkbookToStringConverter)
-
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.InvalidOperation
-    Const MethodName = "ToStringReturnsInvalidOperationWhenConverterCantConvertDiffObjectTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make(New Collection), New WorkbookToStringConverter)
-
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.InvalidOperation
-    Const MethodName = "ToStringReturnsInvalidOperationWhenConverterCantConvertNothingTest"
-    
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToString(CollectionExt.Make(Nothing), New WorkbookToStringConverter)
-
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringByPropertyTest()
-
-    On Error GoTo ErrHandler
-    Const MethodName = "ToStringByPropertyTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToStringByProperty(CollectionExt.Make(ThisWorkbook, ThisWorkbook), "Name")
-
-    ' Assert
-    ExUnit.AreEqual "Lapis.xlam,Lapis.xlam", Actual, GetSig(MethodName)
-
-    Exit Sub
-ErrHandler:
-    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
-
-End Sub
-
-
-Private Sub ToStringByPropertyReturnsArgumentOutOfRangeErrorWhenPropertyDoesNotExistsTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
-    Const MethodName = "ToStringByPropertyReturnsArgumentOutOfRangeErrorWhenPropertyDoesNotExistsTest"
-
-    ' Act
-    Dim Actual As String
-    Actual = CollectionExt.ToStringByProperty(CollectionExt.Make(ThisWorkbook, ThisWorkbook), "NotExistingProperty")
-
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
 End Sub
 
 
@@ -432,6 +158,11 @@ ErrHandler:
     Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
+
+
+Private Function GetSig(ByVal MethodName As String) As String
+    GetSig = ModuleName & "." & MethodName
+End Function
 
 
 Private Sub DistinctReturnsItemWhenSingleItemGivenTest()
@@ -2452,4 +2183,54 @@ ErrHandler:
 End Sub
 
 
+Private Sub ConvertTest()
 
+    On Error GoTo ErrHandler
+    Const MethodName = "ConvertTest"
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt.Convert(CollectionExt.Make("a", "ab", "abc"), New StringToLengthConverter)
+    
+    ' Assert
+    Lapis.ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
+    Lapis.ExUnit.AreEqual 2, Actual.Item(2), GetSig(MethodName)
+    Lapis.ExUnit.AreEqual 3, Actual.Item(3), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ConvertReturnsArgumentNullWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ConvertReturnsArgumentNullWhenSourceIsNothingTest"
+
+    ' Act
+    Lapis.Convert Nothing, New StringToLengthConverter
+
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ConvertReturnsArgumentNullWhenConverterIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ConvertReturnsArgumentNullWhenConverterIsNothingTest"
+
+    ' Act
+    Lapis.CollectionExt.Convert New Collection, Nothing
+
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub

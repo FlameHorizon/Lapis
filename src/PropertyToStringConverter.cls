@@ -10,18 +10,18 @@ Attribute VB_Exposed = False
 '@Folder("Lapis")
 Option Explicit
 
-Implements IToString
+Implements Lapis.IConverter
 
 Private pPropertyName As String
 
 
-Public Function ToString(ByVal Obj As Variant) As String
-    ToString = VBA.CallByName(Obj, PropertyName, VbCallType.VbGet)
+Public Function Convert(ByVal Obj As Variant) As Variant
+    Convert = VBA.CallByName(Obj, PropertyName, VbCallType.VbGet)
 End Function
 
 
-Private Function IToString_ToString(ByVal Obj As Variant) As String
-    IToString_ToString = ToString(Obj)
+Private Function IConverter_Convert(ByVal Obj As Variant) As Variant
+    IConverter_Convert = Convert(Obj)
 End Function
 
 

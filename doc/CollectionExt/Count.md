@@ -26,9 +26,9 @@ A number that represents how many elements in the sequence satisfy the condition
 
 ## Examples
 
-The following code example demonstrates how to use Count(Collection, Pred) to count the elements in an array that satisfy a condition.
+The following code example demonstrates how to use Count(Collection, Predicate) to count the elements in an array that satisfy a condition.
 
-```
+```vb
 Option Explicit
 
 Public Sub Start()

@@ -29,7 +29,7 @@ A Collection that contains the concatenated elements of the two input sequences.
 The following code example demonstrates how to use Concat(Collection, Collection) to concatenate two sequences.
 
 ```vb
-' Pet Class
+' Pet class module
 Option Explicit
 
 Public Name as String
