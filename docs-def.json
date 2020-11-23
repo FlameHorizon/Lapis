@@ -29,7 +29,7 @@
                 "`First` or `Second` is `Nothing`"
             ]
         ],
-        "example":"The following code example demonstrates how to use Concat(Collection, Collection) to concatenate two sequences.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name as String\nPublic Age as String\n\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Cats As Collection\n    Set Cats = Lapis.CollectionExt.Make(MakePet(\"Alfie\", 2), _\n                                        MakePet(\"Ricky\", 5), _\n                                        MakePet(\"Mikey\", 6))\n\n    Dim Dogs As Collection\n    Set Dogs = Lapis.CollectionExt.Make(MakePet(\"Rooney\", 7), _\n                                        MakePet(\"Bull\", 4), _\n                                        MakePet(\"Fredro\", 3))\n\n    Dim Result As Collection\n    Set Result = Lapis.CollectionExt.Concat(Cats, Dogs)\n    \n    Dim Item As Pet\n    For Each Item In Result\n        Debug.Print Item.Name\n    Next Item\n\nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n\n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n\nEnd Function\n\n' This code produces the following output:\n'\n' Alfie\n' Ricky\n' Mikey\n' Rooney\n' Bull\n' Fredro\n```"
+        "example": "The following code example demonstrates how to use Concat(Collection, Collection) to concatenate two sequences.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name as String\nPublic Age as String\n\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Cats As Collection\n    Set Cats = Lapis.CollectionExt.Make(MakePet(\"Alfie\", 2), _\n                                        MakePet(\"Ricky\", 5), _\n                                        MakePet(\"Mikey\", 6))\n\n    Dim Dogs As Collection\n    Set Dogs = Lapis.CollectionExt.Make(MakePet(\"Rooney\", 7), _\n                                        MakePet(\"Bull\", 4), _\n                                        MakePet(\"Fredro\", 3))\n\n    Dim Result As Collection\n    Set Result = Lapis.CollectionExt.Concat(Cats, Dogs)\n    \n    Dim Item As Pet\n    For Each Item In Result\n        Debug.Print Item.Name\n    Next Item\n\nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n\n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n\nEnd Function\n\n' This code produces the following output:\n'\n' Alfie\n' Ricky\n' Mikey\n' Rooney\n' Bull\n' Fredro\n```"
     },
     "CollectionExt.ToArray (Collection)": {
         "short-description": "Creates an array from a collection.",
@@ -41,25 +41,32 @@
             "Variant()",
             "An array that contains the elements from the input sequence."
         ],
-        "errors":[
+        "errors": [
             [
                 "OnArgumentNull",
                 "`Items` is `Nothing`"
             ]
         ],
-        "example":"The following code example demonstrates how to use ToArray to force immediate query evaluation and return an array of results.\n\n```vb\n' Package class module\nOption Explicit\n\nPublic Company As String\nPublic Weight As Double\n```\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Packages As New Collection\n    With Packages\n        .Add MakePackage(\"Coho Vineyard\", 25.2)\n        .Add MakePackage(\"Lucerne Publishing\", 15)\n        .Add MakePackage(\"Wingtip Toys\", 6)\n        .Add MakePackage(\"Adventure Works\", 33.9)\n    End With\n\n    Dim Converter As Lapis.PropertyToStringConverter\n    Set Converter = Lapis.Factory.PropertyToStringConverter\n    Converter.PropertyName = \"Company\"\n\n    Dim Companies() As Variant\n    Companies = Lapis.CollectionExt.ToArray(Lapis.CollectionExt.Convert(Packages, Converter))\n\n    Dim Item As Variant\n    For Each Item In Companies\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n\n' This code produces the following output:\n'\n' Coho Vineyard\n' Lucerne Publishing\n' Wingtip Toys\n' Adventure Works\n\n\nPrivate Function MakePackage(ByVal Company As String, ByVal Weight As Double) As Package\n\n    Dim Output As New Package\n    Output.Company = Company\n    Output.Weight = Weight\n    Set MakePackage = Output\n\nEnd Function\n```"
+        "example": "The following code example demonstrates how to use ToArray to force immediate query evaluation and return an array of results.\n\n```vb\n' Package class module\nOption Explicit\n\nPublic Company As String\nPublic Weight As Double\n```\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Packages As New Collection\n    With Packages\n        .Add MakePackage(\"Coho Vineyard\", 25.2)\n        .Add MakePackage(\"Lucerne Publishing\", 15)\n        .Add MakePackage(\"Wingtip Toys\", 6)\n        .Add MakePackage(\"Adventure Works\", 33.9)\n    End With\n\n    Dim Converter As Lapis.PropertyToStringConverter\n    Set Converter = Lapis.Factory.PropertyToStringConverter\n    Converter.PropertyName = \"Company\"\n\n    Dim Companies() As Variant\n    Companies = Lapis.CollectionExt.ToArray(Lapis.CollectionExt.Convert(Packages, Converter))\n\n    Dim Item As Variant\n    For Each Item In Companies\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n\n' This code produces the following output:\n'\n' Coho Vineyard\n' Lucerne Publishing\n' Wingtip Toys\n' Adventure Works\n\n\nPrivate Function MakePackage(ByVal Company As String, ByVal Weight As Double) As Package\n\n    Dim Output As New Package\n    Output.Company = Company\n    Output.Weight = Weight\n    Set MakePackage = Output\n\nEnd Function\n```"
     },
     "CollectionExt.Distinct (Collection, IEqualityComparer)": {
-        "short-description": "Returns a collection of items which unique property value.",
-        "description": "Returns a collection of items which unique property value.",
+        "short-description": "Returns distinct elements from a sequence by using a specified IEqualityComparer to compare values.",
+        "description": "Returns distinct elements from a sequence by using a specified IEqualityComparer to compare values.",
         "parameters": {
-            "Source": "",
-            "Comparer": ""
+            "Source": "The sequence to remove duplicate elements from.",
+            "Comparer": "An IEqualityComparer to compare values."
         },
         "returns": [
             "Collection",
-            ""
-        ]
+            "A set that contains distinct elements from the source sequence."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Source` or `Comparer` is `Nothing`"
+            ]
+        ],
+        "example" : "The following example shows how to implement an equality comparer that can be used in the Distinct method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Products As Collection\n    Set Products = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                            MakeProduct(\"Orange\", 4), _\n                                            MakeProduct(\"Apple\", 9), _\n                                            MakeProduct(\"Lemon\", 12))\n    ' Exclude duplicates\n\n    Dim NoDuplicates As Collection\n    Set NoDuplicates = Lapis.CollectionExt.Distinct(Products, New ProductComparer)\n    \n    Dim Item As Variant\n    For Each Item In NoDuplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Apple 9\n' Orange 4\n' Lemon 12\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n```"
     },
     "CollectionExt.Contains (Collection, Variant, IEqualityComparer)": {
         "short-description": "Determines whether a sequence contains a specified element.",
@@ -73,13 +80,13 @@
             "Boolean",
             "`True` if the source sequence contains an element that has the specified value; otherwise, `False`"
         ],
-        "errors" : [
+        "errors": [
             [
                 "OnArgumentNull",
                 "`Source` is `Nothing`"
             ]
         ],
-        "example" : "The following example shows how to implement an equality comparer that can be used in the Contains method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' Product class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                          MakeProduct(\"Orange\", 4), _\n                                          MakeProduct(\"Lemon\", 12))\n    \n    Dim Apple As Product: Set Apple = MakeProduct(\"Apple\", 9)\n    Dim Kiwi As Product: Set Kiwi = MakeProduct(\"Kiwi\", 8)\n    Dim ProdComp As New ProductComparer\n    \n    Dim HasApple As Boolean: HasApple = Lapis.CollectionExt.Contains(Fruits, Apple, ProdComp)\n    Dim HasKiwi As Boolean: HasKiwi = Lapis.CollectionExt.Contains(Fruits, Kiwi, ProdComp)\n    \n    Debug.Print \"Apple? \" & HasApple\n    Debug.Print \"Kiwi? \" & HasKiwi\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Apple? True\n' Kiwi? False\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n```"
+        "example": "The following example shows how to implement an equality comparer that can be used in the Contains method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                          MakeProduct(\"Orange\", 4), _\n                                          MakeProduct(\"Lemon\", 12))\n    \n    Dim Apple As Product: Set Apple = MakeProduct(\"Apple\", 9)\n    Dim Kiwi As Product: Set Kiwi = MakeProduct(\"Kiwi\", 8)\n    Dim ProdComp As New ProductComparer\n    \n    Dim HasApple As Boolean: HasApple = Lapis.CollectionExt.Contains(Fruits, Apple, ProdComp)\n    Dim HasKiwi As Boolean: HasKiwi = Lapis.CollectionExt.Contains(Fruits, Kiwi, ProdComp)\n    \n    Debug.Print \"Apple? \" & HasApple\n    Debug.Print \"Kiwi? \" & HasKiwi\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Apple? True\n' Kiwi? False\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n```"
     },
     "CollectionExt.DistinctValues (Collection, IEqualityComparer)": {
         "short-description": "Returns a collection which contains distinct values from the Collection.",
@@ -113,7 +120,7 @@
             "Container": "The collection to which elements will be added.",
             "Items": "The collection whose elements should be added to the end of the collection. The collection itself cannot be null, but it can contain elements that are `Nothing`"
         },
-        "errors" :[
+        "errors": [
             [
                 "OnArgumentNull",
                 "`Container` is `Nothing"
@@ -123,8 +130,7 @@
                 "`Items` is `Nothing`"
             ]
         ],
-        "example" : "The following example demonstrates the AddRange method that act on ranges.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Dinosaurs As Collection\n    Set Dinosaurs = Lapis.CollectionExt.Make(\"Brachiosaurus\", \"Amargasaurus\", \"Mamenchisaurus\")\n\n    Dim Item As Variant\n    For Each Item In Dinosaurs\n        Debug.Print Item\n    Next Item\n    \n    Dim MoreDinosaurs As Collection\n    Set MoreDinosaurs = Lapis.CollectionExt.Make(\"Tyrannosaurus Rex\", \"Stegosaurus\", \"Triceratops\")\n\n    Lapis.CollectionExt.AddRange Dinosaurs, MoreDinosaurs\n    Debug.Print vbNewLine\n    For Each Item In Dinosaurs\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n' This code example produces the following output:\n'\n' Brachiosaurus\n' Amargasaurus\n' Mamenchisaurus\n'\n'\n' Brachiosaurus\n' Amargasaurus\n' Mamenchisaurus\n' Tyrannosaurus Rex\n' Stegosaurus\n' Triceratops\n```"
-
+        "example": "The following example demonstrates the AddRange method that act on ranges.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Dinosaurs As Collection\n    Set Dinosaurs = Lapis.CollectionExt.Make(\"Brachiosaurus\", \"Amargasaurus\", \"Mamenchisaurus\")\n\n    Dim Item As Variant\n    For Each Item In Dinosaurs\n        Debug.Print Item\n    Next Item\n    \n    Dim MoreDinosaurs As Collection\n    Set MoreDinosaurs = Lapis.CollectionExt.Make(\"Tyrannosaurus Rex\", \"Stegosaurus\", \"Triceratops\")\n\n    Lapis.CollectionExt.AddRange Dinosaurs, MoreDinosaurs\n    Debug.Print vbNewLine\n    For Each Item In Dinosaurs\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n' This code example produces the following output:\n'\n' Brachiosaurus\n' Amargasaurus\n' Mamenchisaurus\n'\n'\n' Brachiosaurus\n' Amargasaurus\n' Mamenchisaurus\n' Tyrannosaurus Rex\n' Stegosaurus\n' Triceratops\n```"
     },
     "CollectionExt.Sort (Collection, Lapis.IComparer)": {
         "short-description": "Sorts given collection using merge sort according to defined comparer.",

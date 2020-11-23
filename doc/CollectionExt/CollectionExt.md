@@ -9,7 +9,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[GroupBy (Collection, String)](./GroupBy.md)|Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
 |[Concat (Collection, Collection)](./Concat.md)|Concatenates two sequences.|
 |[ToArray (Collection)](./ToArray.md)|Creates an array from a collection.|
-|[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns a collection of items which unique property value.|
+|[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns distinct elements from a sequence by using a specified IEqualityComparer to compare values.|
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Determines whether a sequence contains a specified element.|
 |[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)|Returns a collection which contains distinct values from the Collection.|
 |[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection|
