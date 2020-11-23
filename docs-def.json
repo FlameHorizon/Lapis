@@ -88,29 +88,17 @@
         ],
         "example": "The following example shows how to implement an equality comparer that can be used in the Contains method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                          MakeProduct(\"Orange\", 4), _\n                                          MakeProduct(\"Lemon\", 12))\n    \n    Dim Apple As Product: Set Apple = MakeProduct(\"Apple\", 9)\n    Dim Kiwi As Product: Set Kiwi = MakeProduct(\"Kiwi\", 8)\n    Dim ProdComp As New ProductComparer\n    \n    Dim HasApple As Boolean: HasApple = Lapis.CollectionExt.Contains(Fruits, Apple, ProdComp)\n    Dim HasKiwi As Boolean: HasKiwi = Lapis.CollectionExt.Contains(Fruits, Kiwi, ProdComp)\n    \n    Debug.Print \"Apple? \" & HasApple\n    Debug.Print \"Kiwi? \" & HasKiwi\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Apple? True\n' Kiwi? False\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n```"
     },
-    "CollectionExt.DistinctValues (Collection, IEqualityComparer)": {
-        "short-description": "Returns a collection which contains distinct values from the Collection.",
-        "description": "Returns a collection which contains distinct values from the Collection.",
-        "parameters": {
-            "Items": "",
-            "Comparer": ""
-        },
-        "returns": [
-            "Collection",
-            "Collection of distinct items."
-        ]
-    },
     "CollectionExt.IndexOf (Collection, Variant, IEqualityComparer)": {
-        "short-description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
+        "short-description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection.",
         "description": "Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection",
         "parameters": {
             "Source": "Collection which will be scanned.",
             "Value": "The item to locate in the Collection.",
-            "Comparer": "Just a comparer"
+            "Comparer": "Optional. A comparer to compare items between each other."
         },
         "returns": [
             "Long",
-            "The index of value if found in the collection; otherwise, 0."
+            "The following example shows how IndexOf method can be used for strings.\n\n```vb\nOption Explicit\n' Main module\n\nPublic Sub Start()\n\n    Dim Dinosaurs as Collection\n    Set Dinosaurs = Lapis.CollectionExt.Make(\"Tyrannosaurus\", \"Amargasaurus\", \"Mamenchisaurus\", _\n                                             \"Brachiosaurus\", \"Deinonychus\", \"Tyrannosaurus\", _\n                                             \"Compsognathus\")\n\n    Debug.Print \"IndexOf Tyrannosaurus: \" & Lapis.CollectionExt.IndexOf(Dinosaurs, \"Tyrannosaurus\")\n    Debug.Print \"IndexOf Hydronexus: \" & Lapis.CollectionExt.IndexOf(Dinosaurs, \"Hydronexus\")\n\nEnd Sub\n\n' This code example produces the following output:\n'\n' IndexOf Tyrannosaurus: 1\n' IndexOf Hydronexus: -1\n```"
         ]
     },
     "CollectionExt.AddRange (Collection, Collection)": {

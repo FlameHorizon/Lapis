@@ -11,7 +11,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[ToArray (Collection)](./ToArray.md)|Creates an array from a collection.|
 |[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns distinct elements from a sequence by using a specified IEqualityComparer to compare values.|
 |[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Determines whether a sequence contains a specified element.|
-|[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection|
+|[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection.|
 |[AddRange (Collection, Collection)](./AddRange.md)|Adds the elements of the specified collection to the end of the set.|
 |[Sort (Collection, Lapis.IComparer)](./Sort.md)|Sorts given collection using merge sort according to defined comparer.|
 |[Make (ParamArray Variant)](./Make.md)|Creates a new collection based on to list of arguments.|

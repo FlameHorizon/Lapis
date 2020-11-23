@@ -15,10 +15,32 @@ Collection which will be scanned.
 The item to locate in the Collection.
 
 **Comparer** `IEqualityComparer` <br>
-Just a comparer
+Optional. A comparer to compare items between each other.
 
 ### Returns
 
 `Long` <br>
-The index of value if found in the collection; otherwise, 0.
+The following example shows how IndexOf method can be used for strings.
+
+```vb
+Option Explicit
+' Main module
+
+Public Sub Start()
+
+    Dim Dinosaurs as Collection
+    Set Dinosaurs = Lapis.CollectionExt.Make("Tyrannosaurus", "Amargasaurus", "Mamenchisaurus", _
+                                             "Brachiosaurus", "Deinonychus", "Tyrannosaurus", _
+                                             "Compsognathus")
+
+    Debug.Print "IndexOf Tyrannosaurus: " & Lapis.CollectionExt.IndexOf(Dinosaurs, "Tyrannosaurus")
+    Debug.Print "IndexOf Hydronexus: " & Lapis.CollectionExt.IndexOf(Dinosaurs, "Hydronexus")
+
+End Sub
+
+' This code example produces the following output:
+'
+' IndexOf Tyrannosaurus: 1
+' IndexOf Hydronexus: -1
+```
 
