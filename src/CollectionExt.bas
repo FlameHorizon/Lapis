@@ -7,7 +7,7 @@ Private Const ModuleName = "CollectionHelper"
 
 ' Groups a collection's items using PropertyName value.
 ' PropertyName value has to be a name of a property of grouped items.
-Public Function GroupBy(ByRef Items As Collection, ByVal PropertyName As String) As Scripting.Dictionary
+Public Function GroupBy(ByVal Items As Collection, ByVal PropertyName As String) As Scripting.Dictionary
 
     If Items Is Nothing Then
         Errors.OnArgumentNull "Items", ModuleName & ".GroupBy"

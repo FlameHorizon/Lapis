@@ -4,13 +4,24 @@
         "short-description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
         "description": "Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.",
         "parameters": {
-            "Items": "",
-            "PropertyName": ""
+            "Items": "A set which will be grouped.",
+            "PropertyName": "A property of the object which will by used as key."
         },
         "returns": [
             "Scripting.Dictionary",
-            ""
-        ]
+            "Grouped dictionary base on value."
+        ],
+        "errors": [
+            [
+                "OnArgumentNull",
+                "`Items` is `Nothing"
+            ],
+            [
+                "OnArgumentError",
+                "`PropertyName` is `vbNullString`"
+            ]
+        ],
+        "example": "The following code example demonstrates how to use GroupBy(Collection, String) to group the project elements of sequence.\n\n```vb\nOption Explicit\n\n' Reservation class\nPublic Id As Long\nPublic BookedOn As Date\n```\n\n```vb\nOption Explicit\n\n'Main module\nPublic Sub Start()\n\n    Dim Reservations As Collection\n    Set Reservations = Lapis.CollectionExt.Make(MakeReservation(1, #1/1/2020#), _\n                                                MakeReservation(2, #1/1/2020#), _\n                                                MakeReservation(3, #1/2/2020#), _\n                                                MakeReservation(4, #1/3/2020#))\n    \n    Dim GroupedByDate As Scripting.Dictionary\n    Set GroupedByDate = Lapis.CollectionExt.GroupBy(Reservations, \"BookedOn\")\n    \n    Dim DateKey As Variant\n    For Each DateKey In GroupedByDate.Keys\n        Debug.Print \"DateKey: \" & DateKey & \", elements: \" & GroupedByDate.Item(DateKey).Count\n    Next DateKey\n\nEnd Sub\n\n\nPrivate Function MakeReservation(ByVal Id As Long, ByVal BookedOn As Date) As Reservation\n    \n    Dim Output As New Reservation\n    Output.Id = Id\n    Output.BookedOn = BookedOn\n    Set MakeReservation = Output\n    \nEnd Function\n\n```"
     },
     "CollectionExt.Concat (Collection, Collection)": {
         "short-description": "Concatenates two sequences.",
@@ -66,7 +77,7 @@
                 "`Source` or `Comparer` is `Nothing`"
             ]
         ],
-        "example" : "The following example shows how to implement an equality comparer that can be used in the Distinct method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Products As Collection\n    Set Products = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                            MakeProduct(\"Orange\", 4), _\n                                            MakeProduct(\"Apple\", 9), _\n                                            MakeProduct(\"Lemon\", 12))\n    ' Exclude duplicates\n\n    Dim NoDuplicates As Collection\n    Set NoDuplicates = Lapis.CollectionExt.Distinct(Products, New ProductComparer)\n    \n    Dim Item As Variant\n    For Each Item In NoDuplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Apple 9\n' Orange 4\n' Lemon 12\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n```"
+        "example": "The following example shows how to implement an equality comparer that can be used in the Distinct method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Products As Collection\n    Set Products = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                            MakeProduct(\"Orange\", 4), _\n                                            MakeProduct(\"Apple\", 9), _\n                                            MakeProduct(\"Lemon\", 12))\n    ' Exclude duplicates\n\n    Dim NoDuplicates As Collection\n    Set NoDuplicates = Lapis.CollectionExt.Distinct(Products, New ProductComparer)\n    \n    Dim Item As Variant\n    For Each Item In NoDuplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Apple 9\n' Orange 4\n' Lemon 12\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n```"
     },
     "CollectionExt.Contains (Collection, Variant, IEqualityComparer)": {
         "short-description": "Determines whether a sequence contains a specified element.",
@@ -569,7 +580,7 @@
         "parameters": {
             "First": "A set to compare to `Second`.",
             "Second": "A set to compare to the first sequence.",
-            "Comparer" : "An `IEqualityComparer` to use to compare elements."
+            "Comparer": "An `IEqualityComparer` to use to compare elements."
         },
         "returns": [
             "Boolean",
