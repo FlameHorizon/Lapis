@@ -10,7 +10,7 @@ The CollectionExt module contains methods that enables users to use collection i
 |[Concat (Collection, Collection)](./Concat.md)|Concatenates two sequences.|
 |[ToArray (Collection)](./ToArray.md)|Creates an array from a collection.|
 |[Distinct (Collection, IEqualityComparer)](./Distinct.md)|Returns a collection of items which unique property value.|
-|[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Checks if item exists in the collection using custom comparer.|
+|[Contains (Collection, Variant, IEqualityComparer)](./Contains.md)|Determines whether a sequence contains a specified element.|
 |[DistinctValues (Collection, IEqualityComparer)](./DistinctValues.md)|Returns a collection which contains distinct values from the Collection.|
 |[IndexOf (Collection, Variant, IEqualityComparer)](./IndexOf.md)|Searches for the specified object and returns the one-based index of the first occurrence within the entire Collection|
 |[AddRange (Collection, Collection)](./AddRange.md)|Adds the elements of the specified collection to the end of the set.|

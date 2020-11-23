@@ -16,12 +16,10 @@ Implements IEqualityComparer
 Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
 
     Equals = (x = y)
-
+    
 End Function
 
 
 Private Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
     IEqualityComparer_Equals = Me.Equals(x, y)
 End Function
-
-
