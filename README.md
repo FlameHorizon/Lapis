@@ -6,6 +6,8 @@ Lapis in Excel Add-in with a collection of various methods and data types which 
 
 To start using Lapis, download **Lapis.xlam** file and add reference to it in your VBA project.
 
+![VBA Add Reference](./readme_img/add_reference.png)
+
 ## API documentation
 
 Documentation can be found under [this link](./doc/index.md).
