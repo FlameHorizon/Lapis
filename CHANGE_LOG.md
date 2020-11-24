@@ -10,7 +10,7 @@ Private Sub RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest()
 
     On Error GoTo ErrHandler
     Const MethodName = "RemoveThrowsArgumentOutOfRangeWhenStartIndexIsNegetiveTest"
-    ExUnit.AreEqual "foo", StringH.Remove("foo-bar", -1), "StringHelperTests." & MethodName
+    ExUnit.AreEqual "foo", StringExt.Remove("foo-bar", -1), "StringHelperTests." & MethodName
 
 ErrHandler:
     ExUnit.IsException ExceptionCode.ArgumentOutOfRange, Err.Number, "StringHelperTests." & MethodName
@@ -28,7 +28,7 @@ End Sub
 
 * Added `ErrorNumberEnum.ToString` and `ErrorNumberEnum.TryToString` to retrieve error names for built-in VBA errors.
 
-* TODO: Tests which do fail assertion have more better descriptions.
+* TODO: Tests which do fail assertion should have more better descriptions.
 
 * Instead of displaying each assertion result separately, `ExUnit` now groups test results based on the source. Each test method is represented by one `TestResult` object.
 
@@ -76,11 +76,11 @@ End Sub
 ## Changes in 0.6.0
 
 * Exposed `ExUnit.TestPass` and `ExUnit.TestFail` methods to better express some test's intentions.
-* Added `StringH.Remove` which returns new string in which a specified number of characters from the current string are deleted.
+* Added `StringExt.Remove` which returns new string in which a specified number of characters from the current string are deleted.
 
 ```vb
 Public Sub Start()
-    Debug.Print StringH.Remove("foo-bar", 3)
+    Debug.Print StringExt.Remove("foo-bar", 3)
 End Sub
 
 ' This example produces the following results:
@@ -88,12 +88,12 @@ End Sub
 ' foo
 ```
 
-* Added `StringH.RemoveRange` which returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.
+* Added `StringExt.RemoveRange` which returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.
 
 ```vb
 Option Explicit
 Public Sub Start()
-    Debug.Print StringH.RemoveRange("foo-bar", 3, 1)
+    Debug.Print StringExt.RemoveRange("foo-bar", 3, 1)
 End Sub
 
 ' This example produces the following results:
@@ -101,12 +101,12 @@ End Sub
 ' foobar
 ```
 
-* Added `StringH.Concat` which concatenates elements of a specified string array.
+* Added `StringExt.Concat` which concatenates elements of a specified string array.
 
 ```vb
 Option Explicit
 Public Sub Start()
-    Debug.Print StringH.Concat("A", "bbb", "c", "12#")
+    Debug.Print StringExt.Concat("A", "bbb", "c", "12#")
 End Sub
 
 ' This example produces the following results:
@@ -114,7 +114,7 @@ End Sub
 ' Abbbc12#
 ```
 
-* Added `StringH.StartsWith` which determines whether the beginning of this string instance matches a specified string.
+* Added `StringExt.StartsWith` which determines whether the beginning of this string instance matches a specified string.
 
 ```vb
 Option Explicit
@@ -135,7 +135,7 @@ Private Sub Test(ByVal x as String, ByVal y as String, ByVal CompareMethod as vb
         Debug.Print "vbCompareMethod.vbBinaryCompare"
     End if
 
-    If StringH.StartsWith(x, y, CompareMethod) Then
+    If StringExt.StartsWith(x, y, CompareMethod) Then
         Debug.Print x & " ends with " & y
     Else
         Debug.Print x & " does not ends with " & y
@@ -154,7 +154,7 @@ End Sub
 ' John does not starts with J
 ```
 
-* Added `StringH.EndsWith` which determines whether the end of this string instance matches the specified string when compared using the specified comparison option.
+* Added `StringExt.EndsWith` which determines whether the end of this string instance matches the specified string when compared using the specified comparison option.
 
 ```vb
 Option Explicit
@@ -175,7 +175,7 @@ Private Sub Test(ByVal x as String, ByVal y as String, ByVal CompareMethod as vb
         Debug.Print "vbCompareMethod.vbBinaryCompare"
     End if
 
-    If StringH.EndsWith(x, y, CompareMethod) Then
+    If StringExt.EndsWith(x, y, CompareMethod) Then
         Debug.Print x & " ends with " & y
     Else
         Debug.Print x & " does not ends with " & y
@@ -193,7 +193,7 @@ End Sub
 ' John does not ends with N
 ```
 
-* Added `StringH.Insert` which returns a new string in which a specified string is inserted at a specified index position in the instance.
+* Added `StringExt.Insert` which returns a new string in which a specified string is inserted at a specified index position in the instance.
 
 ```vb
 Option Explicit
@@ -201,7 +201,7 @@ Public Sub Start()
 
     Dim Original as String: Original = "aaabbb"
     Dim Modified as String
-    Modified = StringH.Insert(Original, 3, " ")
+    Modified = StringExt.Insert(Original, 3, " ")
     Debug.Print "This is original string: " & Original
     Debug.Print "This is modified string: " & Modified
 
@@ -213,14 +213,14 @@ End Sub
 ' This is modified string: aaa bbb
 ```
 
-* Added `StringH.LastIndexOf` which reports the zero-based index position of the last occurrence of a specified string within this instance.
+* Added `StringExt.LastIndexOf` which reports the zero-based index position of the last occurrence of a specified string within this instance.
 
 ```vb
 Option Explicit
 Public Sub Start()
 
-    Debug.Print "Comparison: vbTextCompare. Location: " & StringH.LastIndexOf(Text, "b", 0, Len(Text), vbCompareMethod.vbTextCompare
-    Debug.Print "Comparison: vbBinaryCompare. Location:  " & StringH.LastIndexOf(Text, "B", 0, Len(Text), vbCompareMethod.vbBinaryCompare)
+    Debug.Print "Comparison: vbTextCompare. Location: " & StringExt.LastIndexOf(Text, "b", 0, Len(Text), vbCompareMethod.vbTextCompare
+    Debug.Print "Comparison: vbBinaryCompare. Location:  " & StringExt.LastIndexOf(Text, "B", 0, Len(Text), vbCompareMethod.vbBinaryCompare)
 
 End Sub
 
@@ -230,15 +230,15 @@ End Sub
 ' Comparison: vbBinaryCompare. Location: -1
 ```
 
-* Added `StringH.LastIndexOfAny` which reports the zero-based index position of the last occurrence in this instance of one or more characters.
+* Added `StringExt.LastIndexOfAny` which reports the zero-based index position of the last occurrence in this instance of one or more characters.
 
 ```vb
 Option Explicit
 Public Sub Start()
 
-    Debug.Print "The last character occurrence location: " & StringH.LastIndexOfAny("abcd", StringArray("a", "d"))
-    Debug.Print "The last character occurrence location: " & StringH.LastIndexOfAny("abcd", StringArray("d", "a"))
-    Debug.Print "The last character occurrence location: " & StringH.LastIndexOfAny("abcd", StringArray("b", "c"))
+    Debug.Print "The last character occurrence location: " & StringExt.LastIndexOfAny("abcd", StringArray("a", "d"))
+    Debug.Print "The last character occurrence location: " & StringExt.LastIndexOfAny("abcd", StringArray("d", "a"))
+    Debug.Print "The last character occurrence location: " & StringExt.LastIndexOfAny("abcd", StringArray("b", "c"))
 
 End Sub
 
