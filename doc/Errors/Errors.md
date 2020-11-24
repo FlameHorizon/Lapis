@@ -5,7 +5,7 @@ Predeclared (static) class which a custom errors to better express indent of a c
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[OnArgumentNull (String, String)](./OnArgumentNull.md)||
 |[OnArgumentOutOfRange (String, String)](./OnArgumentOutOfRange.md)||
 |[OnInvalidOperation (String, String)](./OnInvalidOperation.md)||

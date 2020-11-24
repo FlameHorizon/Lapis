@@ -5,7 +5,7 @@ Represents a collection of helper methods to work with a string type.
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[IndexOfAny (String, String)](./IndexOfAny.md)|Reports the zero-based index of the first occurrence in this instance of any character in a specified array of characters.|
 |[IndexOf (String, String, Long, Long, VbCompareMethod)](./IndexOf.md)|Returns the zero-based index of the first occurrence of the specified string in the current string|
 |[Contains (String, String)](./Contains.md)|Returns a value indicating whether a specified substring occurs within this string.|

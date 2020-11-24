@@ -5,7 +5,7 @@ Represents a collection of helper methods to work with an array type.
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[Exists (Variant, Variant)](./Exists.md)|Checks if given element exists in the array.|
 |[IsInitialized (Variant)](./IsInitialized.md)|Indicates if array is initialized.|
 |[ToCollection (Variant)](./ToCollection.md)|Converts array into a collection.|

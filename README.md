@@ -12,4 +12,4 @@ Documentation can be found under [this link](./doc/index.md).
 
 ## Change log
 
-If you would like to to see a change log, please refer the [change log file](https://github.com/FlameHorizon/Lapis/blob/master/CHANGE_LOG.md).
+If you would like to to see a change log, please refer the [change log file](./CHANGE_LOG.md).

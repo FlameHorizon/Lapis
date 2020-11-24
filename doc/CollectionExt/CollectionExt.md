@@ -5,7 +5,7 @@ The CollectionExt module contains methods that enables users to use collection i
 # Methods
 
 |Name|Description|
-|-|-|
+|---|---|
 |[GroupBy (Collection, String)](./GroupBy.md)|Returns a dictionary with grouped values where key is a unique value and item is a collection of items which matches key.|
 |[Concat (Collection, Collection)](./Concat.md)|Concatenates two sequences.|
 |[ToArray (Collection)](./ToArray.md)|Creates an array from a collection.|
