@@ -6,15 +6,15 @@ Predeclared (static) class which a custom errors to better express indent of a c
 
 |Name|Description|
 |---|---|
+|[OnArgumentError (String, String)](./OnArgumentError.md)||
 |[OnArgumentNull (String, String)](./OnArgumentNull.md)||
 |[OnArgumentOutOfRange (String, String)](./OnArgumentOutOfRange.md)||
-|[OnInvalidOperation (String, String)](./OnInvalidOperation.md)||
 |[OnBaseError (String, String)](./OnBaseError.md)||
-|[OnUnhandledError (String)](./OnUnhandledError.md)||
-|[OnArgumentError (String, String)](./OnArgumentError.md)||
-|[OnNotImplemented (String, String)](./OnNotImplemented.md)||
 |[OnDirectoryNotFound (String, String)](./OnDirectoryNotFound.md)||
-|[OnTimeout (String, String)](./OnTimeout.md)||
+|[OnInvalidOperation (String, String)](./OnInvalidOperation.md)||
+|[OnMissingConfiguration (String, String)](./OnMissingConfiguration.md)||
+|[OnNotImplemented (String, String)](./OnNotImplemented.md)||
 |[OnNotSupported (String, String)](./OnNotSupported.md)||
 |[OnOverflow (String, String)](./OnOverflow.md)||
-|[OnMissingConfiguration (String, String)](./OnMissingConfiguration.md)||
+|[OnTimeout (String, String)](./OnTimeout.md)||
+|[OnUnhandledError (String)](./OnUnhandledError.md)||

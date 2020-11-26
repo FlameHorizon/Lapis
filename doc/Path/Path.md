@@ -4,5 +4,5 @@
 
 |Name|Description|
 |---|---|
-|[HasIllegalCharacterInPath (String)](./HasIllegalCharacterInPath.md)||
 |[HasIllegalCharacterInFilename (String)](./HasIllegalCharacterInFilename.md)||
+|[HasIllegalCharacterInPath (String)](./HasIllegalCharacterInPath.md)||

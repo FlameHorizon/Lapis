@@ -6,6 +6,6 @@ Represents a collection of helper methods to work with a date data type.
 
 |Name|Description|
 |---|---|
+|[DaysInMonth (Date)](./DaysInMonth.md)||
 |[FirstDayOfMonth (Date)](./FirstDayOfMonth.md)||
 |[LastDayOfMonth (Date)](./LastDayOfMonth.md)||
-|[DaysInMonth (Date)](./DaysInMonth.md)||

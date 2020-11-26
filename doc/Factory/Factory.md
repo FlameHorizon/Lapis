@@ -4,10 +4,10 @@
 
 |Name|Description|
 |---|---|
-|[GetStringEqualityComparer ()](./GetStringEqualityComparer.md)||
-|[GetLongEqualityComparer ()](./GetLongEqualityComparer.md)||
 |[GetLongComparer ()](./GetLongComparer.md)||
-|[GetValueTypeToStringConverter ()](./GetValueTypeToStringConverter.md)||
+|[GetLongEqualityComparer ()](./GetLongEqualityComparer.md)||
 |[GetPredicate ()](./GetPredicate.md)||
+|[GetStringEqualityComparer ()](./GetStringEqualityComparer.md)||
+|[GetValueTypeToStringConverter ()](./GetValueTypeToStringConverter.md)||
 |[GetWordLengthComparer ()](./GetWordLengthComparer.md)||
 |[PropertyToStringConverter ()](./PropertyToStringConverter.md)||
