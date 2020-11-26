@@ -1,5 +1,23 @@
 # Change log
 
+## Changes in 0.8.0
+
+* Updated or created entries in `CollectionExt` documentation.
+
+* Added following method to `CollectionExt`:
+
+    * Convert
+
+* Removed following methods from `CollectionExt`:
+    
+    * ToString
+
+    * ToStringByProperty
+
+    * DistinctValues
+
+* Fixed a bug in MergeSort algorithm which would not allow to sort items which aren't reference type items.
+
 ## Changes in 0.7.0
 
 * ExUnit, instead of displaying error numbers when test fails, now shows name of the error. This applies for both, custom defined exceptions in `Exception` class as well as for VBA's error numbers.
