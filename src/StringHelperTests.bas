@@ -54,7 +54,13 @@ Public Sub Start()
     LastIndexOfAnyReturnsMinusWhenCharNotItStringTest
     LastIndexOfAnyThrowsArgumentExceptionWhenAnyOfIsEmpty
     LastIndexOfAnyThrowsArgumentExceptionWhenAnyOfArrayIsNotInitalizedTest
-
+    
+    IndexOfTest
+    IndexOfThrowsOnArgumentExceptionWhenStrIsEmptyTest
+    IndexOfThrowsOnArgumentOutOfRangeErrorWhenStartIndexIsSmallerThanZeroTest
+    IndexOfThrowOnArgumentOutOfRangeWhenStartIndexIsGreaterThanLenOfStrTest
+    IndexOfThrowsOnArgumentOutOfRangeWhenComparisonMethodIsNotSupportedTest
+    
 End Sub
 
 
@@ -614,3 +620,87 @@ ErrHandler:
 End Sub
 
 
+Private Sub IndexOfTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "IndexOfTest"
+    
+    Const Str As String = "ABC"
+    
+    ' Act & Assert
+    ExUnit.AreEqual 0, StringExt.IndexOf(Str, "A"), GetSig(MethodName)
+    ExUnit.AreEqual 1, StringExt.IndexOf(Str, "BC"), GetSig(MethodName)
+    ExUnit.AreEqual -1, StringExt.IndexOf(Str, "CD"), GetSig(MethodName)
+    ExUnit.AreEqual -1, StringExt.IndexOf(Str, "D"), GetSig(MethodName)
+    
+    ExUnit.AreEqual 0, StringExt.IndexOf(Str, "A", 0, 1), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfThrowsOnArgumentExceptionWhenStrIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentException
+    Const MethodName = "IndexOfThrowsOnArgumentErrorWhenStrIsEmptyTest"
+
+    ' Act
+    StringExt.IndexOf vbNullString, "A"
+    
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfThrowsOnArgumentOutOfRangeErrorWhenStartIndexIsSmallerThanZeroTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "IndexOfThrowsOnArgumentOutOfRangeErrorWhenStartIndexIsSmallerThanZeroTest"
+
+    ' Act
+    StringExt.IndexOf "ABC", "A", -1
+    
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfThrowOnArgumentOutOfRangeWhenStartIndexIsGreaterThanLenOfStrTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "IndexOfThrowOnArgumentOutOfRangeWhenStartIndexIsGreaterThanLenOfStrTest"
+
+    ' Act
+    StringExt.IndexOf "ABC", "A", Len("ABC") + 1
+    
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub IndexOfThrowsOnArgumentOutOfRangeWhenComparisonMethodIsNotSupportedTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "IndexOfThrowsOnArgumentOutOfRangeWhenComparisonMethodIsNotSupportedTest"
+    
+    ' Act
+    StringExt.IndexOf "ABC", "A", 0, VbCompareMethod.vbDatabaseCompare + 1
+    
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub

@@ -16,7 +16,10 @@ Private Sub Workbook_AfterSave(ByVal Success As Boolean)
     Const SourceControlEnabled As Boolean = True
 
     If SourceControlEnabled Then
-        DirectoryExt.RemoveAllFilesFromFolder ThisWorkbook.Path & "/src"
+        If DirectoryExt.GetFiles(ThisWorkbook.Path & "/src").Count > 0 Then
+            DirectoryExt.RemoveAllFilesFromFolder ThisWorkbook.Path & "/src"
+        End If
+        
         SourceControl.ExportEmptyComponents = False
         SourceControl.ExportProjectComponents ThisWorkbook.VBProject, ThisWorkbook.Path & "/src"
     End If

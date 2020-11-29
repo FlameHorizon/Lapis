@@ -21,7 +21,7 @@ Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
 
     Dim i As Long
     For i = 0 To UBound(AnyOf)
-        IndexOfAny = IndexOf(Str, AnyOf(i), 0, Len(Str), vbTextCompare)
+        IndexOfAny = IndexOf(Str, AnyOf(i), 0, vbTextCompare)
 
         If IndexOfAny <> 0 Then
             Exit Function
@@ -36,16 +36,12 @@ End Function
 Public Function IndexOf(ByVal Str As String, _
                         ByVal Value As String, _
                         Optional ByVal StartIndex As Long = System.LongMinValue, _
-                        Optional ByVal Count As Long = System.LongMinValue, _
                         Optional ByVal ComparisonMethod As VbCompareMethod = VbCompareMethod.vbTextCompare) As Long
     
     Const MethodName = "IndexOf"
     
     Dim Start As Long
     Start = IIf(StartIndex = System.LongMinValue, 0, StartIndex)
-    
-    Dim Cnt As Long
-    Cnt = IIf(Count = System.LongMinValue, VBA.Len(Str) - StartIndex, Count)
     
     If Str = vbNullString Then
         Errors.OnArgumentError "Str", _
@@ -57,13 +53,9 @@ Public Function IndexOf(ByVal Str As String, _
         Errors.OnArgumentOutOfRange "Start", ModuleName & "." & MethodName
     End If
     
-    If Count < 0 Or Start > Len(Str) - Cnt Then
-        Errors.OnArgumentOutOfRange "Cnt", ModuleName & "." & MethodName
-    End If
-    
     Select Case ComparisonMethod
         Case VbCompareMethod.vbBinaryCompare, VbCompareMethod.vbTextCompare
-            IndexOf = InStr(StartIndex + 1, Str, Value, ComparisonMethod) - 1
+            IndexOf = VBA.InStr(Start + 1, Str, Value, ComparisonMethod) - 1
         
         Case Else
             Errors.OnArgumentOutOfRange "ComparisonMethod", "Not supported string comparison. " & MethodName & "." & MethodName
@@ -74,7 +66,7 @@ End Function
 
 
 Public Function Contains(ByVal Str As String, ByVal Value As String) As Boolean
-    Contains = IndexOf(Str, Value, 0, Len(Str), VbCompareMethod.vbTextCompare) >= 0
+    Contains = IndexOf(Str, Value, 0, VbCompareMethod.vbTextCompare) >= 0
 End Function
 
 

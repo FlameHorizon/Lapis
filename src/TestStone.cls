@@ -16,7 +16,7 @@ Public Weight As Single
 Public Age As Single
 
 
-Public Function CompareTo(ByRef x As Variant) As Long
+Public Function CompareTo(ByVal x As TestStone) As Long
 
     If IsObject(x) = False Then
         Lapis.Errors.OnArgumentError "x", "TestStone.CompareTo"
