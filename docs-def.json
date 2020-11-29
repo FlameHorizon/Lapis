@@ -595,14 +595,13 @@
         "example": "The following example shows how to implement an equality comparer that can be used in the SequenceEqual(Collection, Collection, IEqualityComparer) method.\n\n```vb\n' Product class\nOption Explicit\n\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\nOption Explicit\n\nImplements Lapis.IEqualityComparer\n\n' Determines whether the specified objects are equal.\nPublic Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n\n    If x Is Nothing Or y Is Nothing Then\n        Equals = False\n        Exit Function\n    End If\n    \n    Equals = (x.Name = y.Name) And (x.Code = y.Code)\n    \nEnd Function\n\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\n```vb\nOption Explicit\n' Main module\n\nPublic Sub Start()\n\n    Dim StoreA As Collection\n    Set StoreA = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                          MakeProduct(\"Orange\", 4))\n    \n    Dim StoreB As Collection\n    Set StoreB = Lapis.CollectionExt.Make(MakeProduct(\"Apple\", 9), _\n                                          MakeProduct(\"Orange\", 4))\n    \n    Dim EqualAB As Boolean\n    EqualAB = Lapis.CollectionExt.SequenceEqual(StoreA, StoreB, New ProductComparer)\n    \n    Debug.Print \"Equal? \" & EqualAB\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Equal? True\n\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n\n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n\nEnd Function\n\n```"
     },
     "StringExt": "Represents a collection of helper methods to work with a string type.",
-    "StringExt.IndexOf (String, String, Long, Long, VbCompareMethod)": {
+    "StringExt.IndexOf (String, String, Long, VbCompareMethod)": {
         "short-description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
         "description": "Returns the zero-based index of the first occurrence of the specified string in the current string",
         "parameters": {
             "Str": "A source string which will be examined.",
             "Value": "The string to seek.",
             "StartIndex": "The search starting position. If value is not provided, the default value will be 0. That means, search will start from the beginning of `Str`.",
-            "Count": "The number of character positions to examine. If value is not provided, the default value will be `Len(Str) - StartIndex`.",
             "ComparisonMethod": "One of the enumeration values that specifies the rules for the search."
         },
         "returns": [
@@ -620,15 +619,26 @@
             ],
             [
                 "OnArgumentOutOfRangeException",
-                "`Len(Str) - Count` is smaller than `StartIndex`"
-            ],
-            [
-                "OnArgumentOutOfRangeException",
                 "`ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`."
             ]
         ],
-        "example": "The following example finds the first occurrence of either letter a in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\")\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"A\", , , vbCompareMethod.vbBinaryCompare)\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, , vbCompareMethod.vbTextCompare)\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, , vbCompareMethod.vbBinaryCompare)\n\nEnd Sub\n\n' The example displays the following output:\n' Case insensitive search: 0\n' Case sensitive search: 2\n' Case insensitive search with specified StartIndex: 2\n' Case sensitive search with specified StartIndex: 4\n```",
+        "example": "The following example finds the first occurrence of either letter a in the string.\n\n```vb\nOption Explicit\nPublic Sub Start()\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\")\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"A\", , vbCompareMethod.vbBinaryCompare)\n    Debug.Print \"Case insensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, vbCompareMethod.vbTextCompare)\n    Debug.Print \"Case sensitive search: \" & StringExt.IndexOf(\"aaAAaa\", \"a\", 2, vbCompareMethod.vbBinaryCompare)\n\nEnd Sub\n\n' The example displays the following output:\n' Case insensitive search: 0\n' Case sensitive search: 2\n' Case insensitive search with specified StartIndex: 2\n' Case sensitive search with specified StartIndex: 4\n```",
         "remarks": "Index numbering starts from 0 (zero). The startIndex parameter can range from 0 to the length of the string instance."
+    },
+    "StringExt.Compare (String, String, Boolean)": {
+        "short-description": "Compares two specified Strings, ignoring or honoring their case, and returns an integer that indicates their relative position in the sort order.",
+        "description": "Compares two specified Strings, ignoring or honoring their case, and returns an integer that indicates their relative position in the sort order.",
+        "parameters": {
+            "Str1": "The first string to compare.",
+            "Str2": "The second string to compare.",
+            "IgnoreCase": "`true` to ignore case during the comparison; otherwise, `false`."
+        },
+        "returns": [
+            "Long",
+            "A long value that indicates the lexical relationship between the two comparands.\n\n|Value|Condition|\n|---|---|\n|Less than zero|`strA` precedes `strB` in the sort order|\n|Zero|`strA` occurs in the same position as `strB` in the sort order.|\n|Greater than zero|`strA` follows `strB` in the sort order.|"
+        ],
+        "example": "The following example demonstrates the Compare(String, String, Boolean) method in use.\n\n```vb\nOption Explicit\n' Main Module\n\nPublic Sub Start()\n\n    Dim StringUpper As String: StringUpper = \"ABC\"\n    Dim StringLower As String: StringLower = \"abc\"\n\n    Debug.Print \"Comparing \" & StringUpper & \" and \" & StringLower & \".\"\n\n    Debug.Print \"The Strings are equal when capitalized? \" & _\n                IIf(StringExt.Compare(UCase(StringUpper), UCase(StringLower), IgnoreCase:=False) = 0, \"true\", \"false\")\n                \n    Debug.Print \"The Strings are equal when case is ignored? \" & _\n                IIf(StringExt.Compare(StringUpper, StringLower, IgnoreCase:=True) = 0, \"true\", \"false\")\n                \nEnd Sub\n\n' The example displays the following output:\n' Comparing ABC and abc.\n' The Strings are equal when capitalized? true\n' The Strings are equal when case is ignored? true\n```",
+        "remarks": ""
     },
     "StringExt.Concat (ParamArray Variant)": {
         "short-description": "Concatenates the members of a constructed Variant ParamArray of type String.",

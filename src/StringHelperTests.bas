@@ -61,6 +61,8 @@ Public Sub Start()
     IndexOfThrowOnArgumentOutOfRangeWhenStartIndexIsGreaterThanLenOfStrTest
     IndexOfThrowsOnArgumentOutOfRangeWhenComparisonMethodIsNotSupportedTest
     
+    CompareTest
+    
 End Sub
 
 
@@ -702,5 +704,34 @@ Private Sub IndexOfThrowsOnArgumentOutOfRangeWhenComparisonMethodIsNotSupportedT
     ' Assert
 ErrHandler:
     ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub CompareTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "CompareTest"
+
+    ' Assert
+    ExUnit.AreEqual 0, StringExt.Compare("A", "A", IgnoreCase:=True), GetSig(MethodName)
+    ExUnit.AreEqual -1, StringExt.Compare("A", "B", IgnoreCase:=True), GetSig(MethodName)
+    ExUnit.AreEqual 1, StringExt.Compare("B", "A", IgnoreCase:=True), GetSig(MethodName)
+    ExUnit.AreEqual 0, StringExt.Compare("a", "A", IgnoreCase:=True), GetSig(MethodName)
+    ExUnit.AreEqual -1, StringExt.Compare(vbNullString, "A", IgnoreCase:=True), GetSig(MethodName)
+    ExUnit.AreEqual 1, StringExt.Compare("A", vbNullString, IgnoreCase:=True), GetSig(MethodName)
+    ExUnit.AreEqual 0, StringExt.Compare(vbNullString, vbNullString, IgnoreCase:=True), GetSig(MethodName)
+    
+    ExUnit.AreEqual 0, StringExt.Compare("A", "A", IgnoreCase:=False), GetSig(MethodName)
+    ExUnit.AreEqual -1, StringExt.Compare("A", "B", IgnoreCase:=False), GetSig(MethodName)
+    ExUnit.AreEqual 1, StringExt.Compare("B", "A", IgnoreCase:=False), GetSig(MethodName)
+    ExUnit.AreEqual 1, StringExt.Compare("a", "A", IgnoreCase:=False), GetSig(MethodName)
+    ExUnit.AreEqual -1, StringExt.Compare(vbNullString, "A", IgnoreCase:=False), GetSig(MethodName)
+    ExUnit.AreEqual 1, StringExt.Compare("A", vbNullString, IgnoreCase:=False), GetSig(MethodName)
+    ExUnit.AreEqual 0, StringExt.Compare(vbNullString, vbNullString, IgnoreCase:=False), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub

@@ -6,10 +6,11 @@ Represents a collection of helper methods to work with a string type.
 
 |Name|Description|
 |---|---|
+|[Compare (String, String, Boolean)](./Compare.md)|Compares two specified Strings, ignoring or honoring their case, and returns an integer that indicates their relative position in the sort order.|
 |[Concat (ParamArray Variant)](./Concat.md)|Concatenates the members of a constructed Variant ParamArray of type String.|
 |[Contains (String, String)](./Contains.md)|Returns a value indicating whether a specified substring occurs within this string.|
 |[EndsWith (String, String, VbCompareMethod)](./EndsWith.md)|Determines whether the end of this string instance matches the specified string when compared using the specified comparison option.|
-|[IndexOf (String, String, Long, Long, VbCompareMethod)](./IndexOf.md)|Returns the zero-based index of the first occurrence of the specified string in the current string|
+|[IndexOf (String, String, Long, VbCompareMethod)](./IndexOf.md)|Returns the zero-based index of the first occurrence of the specified string in the current string|
 |[IndexOfAny (String, String)](./IndexOfAny.md)|Reports the zero-based index of the first occurrence in this instance of any character in a specified array of characters.|
 |[Insert (String, Long, String)](./Insert.md)|Returns a new string in which a specified string is inserted at a specified index position in this instance.|
 |[LastIndexOf (String, String, Long, Long, VbCompareMethod)](./LastIndexOf.md)|Returns the zero-based index of the last occurrence of the specified string in the current string.|

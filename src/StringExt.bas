@@ -316,4 +316,15 @@ Public Function LastIndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As 
 End Function
 
 
+' Compares two specified strings, ignoring or honoring their case,
+' and returns an integer that indicates their relative position in the sort order.
+Public Function Compare(ByVal Str1 As String, _
+                        ByVal Str2 As String, _
+                        ByVal IgnoreCase As Boolean) As Long
+    
+    Dim CompMethod As CompareMethod
+    CompMethod = IIf(IgnoreCase, CompareMethod.TextCompare, CompareMethod.BinaryCompare)
+    Compare = Strings.StrComp(Mid$(Str1, 1, 1), Mid$(Str2, 1, 1), CompMethod)
+
+End Function
 

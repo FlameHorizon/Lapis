@@ -3,7 +3,7 @@
 Returns the zero-based index of the first occurrence of the specified string in the current string
 
 ```vb
-Public Function IndexOf(ByVal Str As String, ByVal Value As String, Optional ByVal StartIndex As Long = System.LongMinValue, Optional ByVal Count As Long = System.LongMinValue, Optional ByVal ComparisonMethod As VbCompareMethod = VbCompareMethod.vbTextCompare) As Long
+Public Function IndexOf(ByVal Str As String, ByVal Value As String, Optional ByVal StartIndex As Long = System.LongMinValue, Optional ByVal ComparisonMethod As VbCompareMethod = VbCompareMethod.vbTextCompare) As Long
 ```
 
 ### Parameters
@@ -16,9 +16,6 @@ The string to seek.
 
 **StartIndex** `Long` <br>
 The search starting position. If value is not provided, the default value will be 0. That means, search will start from the beginning of `Str`.
-
-**Count** `Long` <br>
-The number of character positions to examine. If value is not provided, the default value will be `Len(Str) - StartIndex`.
 
 **ComparisonMethod** `VbCompareMethod` <br>
 One of the enumeration values that specifies the rules for the search.
@@ -38,10 +35,6 @@ When `Str` is empty string.
 
 -or-
 
-`Len(Str) - Count` is smaller than `StartIndex`
-
--or-
-
 `ComparisonMethod` is not `vbTextCompare` or `vbBinaryCompare`.
 
 ## Examples
@@ -52,9 +45,9 @@ The following example finds the first occurrence of either letter a in the strin
 Option Explicit
 Public Sub Start()
     Debug.Print "Case insensitive search: " & StringExt.IndexOf("aaAAaa", "a")
-    Debug.Print "Case sensitive search: " & StringExt.IndexOf("aaAAaa", "A", , , vbCompareMethod.vbBinaryCompare)
-    Debug.Print "Case insensitive search: " & StringExt.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbTextCompare)
-    Debug.Print "Case sensitive search: " & StringExt.IndexOf("aaAAaa", "a", 2, , vbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case sensitive search: " & StringExt.IndexOf("aaAAaa", "A", , vbCompareMethod.vbBinaryCompare)
+    Debug.Print "Case insensitive search: " & StringExt.IndexOf("aaAAaa", "a", 2, vbCompareMethod.vbTextCompare)
+    Debug.Print "Case sensitive search: " & StringExt.IndexOf("aaAAaa", "a", 2, vbCompareMethod.vbBinaryCompare)
 
 End Sub
 
