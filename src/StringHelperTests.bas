@@ -63,6 +63,8 @@ Public Sub Start()
     
     CompareTest
     
+    TrimStartTest
+    
 End Sub
 
 
@@ -734,4 +736,22 @@ Private Sub CompareTest()
 ErrHandler:
     ExUnit.TestFailRunTime GetSig(MethodName)
 
+End Sub
+
+
+Private Sub TrimStartTest()
+    
+    On Error GoTo ErrHandler
+    Const MethodName = "TrimStartTest"
+    
+    ' Assert
+    ExUnit.AreEqual "Hello World", StringExt.TrimStart("   Hello World"), GetSig(MethodName)
+    ExUnit.AreEqual "Hello World", StringExt.TrimStart("   Hello World", " "), GetSig(MethodName)
+    ExUnit.AreEqual "   Hello World", StringExt.TrimStart("   Hello World", ""), GetSig(MethodName)
+    ExUnit.AreEqual "   Hello World", StringExt.TrimStart("   Hello World", "#"), GetSig(MethodName)
+    ExUnit.AreEqual "Hello World", StringExt.TrimStart("__##__ Hello World", "_", "#", "_", " "), GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
 End Sub

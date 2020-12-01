@@ -332,3 +332,31 @@ Public Function Compare(ByVal Str1 As String, _
 
 End Function
 
+
+' Removes all the leading occurrences of a set of characters specified in an array from the current string.
+Public Function TrimStart(ByVal Str As String, ParamArray TrimChars() As Variant) As String
+
+    Dim Output As String: Output = Str
+    Dim ToRemove As New Collection
+    Dim Char As Variant
+    ' If true, this means TrimChars were not defined.
+    ' By default, method will removed whitespaces.
+    If UBound(TrimChars) = -1 Then
+        ToRemove.Add " "
+    Else
+        For Each Char In TrimChars
+            If Char <> vbNullString Then
+                ToRemove.Add Char
+            End If
+        Next Char
+    End If
+
+    For Each Char In ToRemove
+        Do While StringExt.StartsWith(Output, Char, vbTextCompare)
+            Output = StringExt.RemoveRange(Output, 0, 1)
+        Loop
+    Next Char
+    
+    TrimStart = Output
+
+End Function
