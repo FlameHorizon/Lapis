@@ -2,7 +2,7 @@ Attribute VB_Name = "StringExt"
 Option Explicit
 '@Folder("Helper")
 
-Private Const ModuleName As String = "StringExtelper"
+Private Const ModuleName As String = "StringExt"
 
 
 Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
@@ -132,7 +132,9 @@ Public Function Concat(ParamArray Items() As Variant) As String
 End Function
 
 
-Public Function StartsWith(ByVal Str As String, ByVal Value As String, ByVal StringComparison As VbCompareMethod) As Boolean
+Public Function StartsWith(ByVal Str As String, _
+                           ByVal Value As String, _
+                           ByVal StringComparison As VbCompareMethod) As Boolean
 
     Const MethodName = "StartsWith"
     
@@ -141,7 +143,9 @@ Public Function StartsWith(ByVal Str As String, ByVal Value As String, ByVal Str
     End If
     
     If Str = vbNullString Then
-        Errors.OnArgumentError "Str", ModuleName & "." & MethodName
+        Errors.OnArgumentError "Str", _
+                                "Value of Str can't be an empty string. " & _
+                                ModuleName & "." & MethodName
     End If
     
     If Len(Value) = 0 Then
@@ -157,7 +161,7 @@ Public Function StartsWith(ByVal Str As String, ByVal Value As String, ByVal Str
     If StringComparison = VbCompareMethod.vbBinaryCompare Then
         StartsWith = (Str Like Value & "*")
     Else
-        StartsWith = (VBA.LCase$(Str) Like VBA.LCase$(Value) & "*")
+        StartsWith = (VBA.LCase$(Str) Like "[" & VBA.LCase$(Value) & "]" & "*")
     End If
 
 End Function

@@ -2,7 +2,7 @@ Attribute VB_Name = "StringHelperTests"
 Option Explicit
 '@Folder("Tests")
 
-Private Const ModuleName As String = "StringExtelperTests"
+Private Const ModuleName As String = "StringHelperTests"
 
 
 Public Sub Start()
