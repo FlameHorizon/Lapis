@@ -749,7 +749,7 @@ Private Sub TrimStartTest()
     ExUnit.AreEqual "Hello World", StringExt.TrimStart("   Hello World", " "), GetSig(MethodName)
     ExUnit.AreEqual "   Hello World", StringExt.TrimStart("   Hello World", ""), GetSig(MethodName)
     ExUnit.AreEqual "   Hello World", StringExt.TrimStart("   Hello World", "#"), GetSig(MethodName)
-    ExUnit.AreEqual "Hello World", StringExt.TrimStart("__##__ Hello World", "_", "#", "_", " "), GetSig(MethodName)
+    ExUnit.AreEqual "Hello World", StringExt.TrimStart("__##__ Hello World", "_", "#", " "), GetSig(MethodName)
     
     Exit Sub
 ErrHandler:

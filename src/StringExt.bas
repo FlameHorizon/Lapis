@@ -351,11 +351,15 @@ Public Function TrimStart(ByVal Str As String, ParamArray TrimChars() As Variant
         Next Char
     End If
 
-    For Each Char In ToRemove
-        Do While StringExt.StartsWith(Output, Char, vbTextCompare)
-            Output = StringExt.RemoveRange(Output, 0, 1)
-        Loop
-    Next Char
+    Dim i As Long
+    For i = 1 To ToRemove.Count
+        If StringExt.StartsWith(Output, ToRemove.Item(i), vbTextCompare) Then
+            Do While StringExt.StartsWith(Output, ToRemove.Item(i), vbTextCompare)
+                Output = StringExt.RemoveRange(Output, 0, 1)
+            Loop
+            i = 0
+        End If
+    Next i
     
     TrimStart = Output
 
