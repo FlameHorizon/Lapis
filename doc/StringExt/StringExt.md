@@ -18,3 +18,4 @@ Represents a collection of helper methods to work with a string type.
 |[Remove (String, Long)](./Remove.md)|Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.|
 |[RemoveRange (String, Long, Long)](./RemoveRange.md)|Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.|
 |[StartsWith (String, String, VbCompareMethod)](./StartsWith.md)|Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.|
+|[TrimStart (String, ParamArray Variant)](./TrimStart.md)|Removes all the leading occurrences of a set of characters specified in an array from the current string.|
