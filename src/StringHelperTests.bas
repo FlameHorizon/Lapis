@@ -65,6 +65,8 @@ Public Sub Start()
     
     TrimStartTest
     
+    TrimEndTest
+    
 End Sub
 
 
@@ -750,8 +752,30 @@ Private Sub TrimStartTest()
     ExUnit.AreEqual "   Hello World", StringExt.TrimStart("   Hello World", ""), GetSig(MethodName)
     ExUnit.AreEqual "   Hello World", StringExt.TrimStart("   Hello World", "#"), GetSig(MethodName)
     ExUnit.AreEqual "Hello World", StringExt.TrimStart("__##__ Hello World", "_", "#", " "), GetSig(MethodName)
+    ExUnit.AreEqual vbNullString, StringExt.TrimStart(vbNullString), GetSig(MethodName)
     
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetSig(MethodName)
+End Sub
+
+
+Private Sub TrimEndTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "TrimEndTest"
+    
+    ' Assert
+    ExUnit.AreEqual "Word", StringExt.TrimEnd("Word.", "."), GetSig(MethodName)
+    ExUnit.AreEqual "Word,", StringExt.TrimEnd("Word,", "."), GetSig(MethodName)
+    ExUnit.AreEqual vbNullString, StringExt.TrimEnd(vbNullString), GetSig(MethodName)
+    ExUnit.AreEqual "Word", StringExt.TrimEnd("Word"), GetSig(MethodName)
+    ExUnit.AreEqual vbNullString, StringExt.TrimEnd(vbNullString, "."), GetSig(MethodName)
+    ExUnit.AreEqual "Word", StringExt.TrimEnd("Word.,", ".", ","), GetSig(MethodName)
+    ExUnit.AreEqual "##Word", StringExt.TrimEnd("##Word.,", ".", ",", "#"), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
+
 End Sub

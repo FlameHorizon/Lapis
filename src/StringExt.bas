@@ -364,3 +364,53 @@ Public Function TrimStart(ByVal Str As String, ParamArray TrimChars() As Variant
     TrimStart = Output
 
 End Function
+
+
+' Removes all the trailing occurrences of a set of
+' characters specified in an array from the current string.
+Public Function TrimEnd(ByVal Str As String, ParamArray TrimChars() As Variant) As String
+    
+    Dim Start As Long: Start = 1
+    Dim Length As Long: Length = Len(Str)
+    Dim Finish As Long: Finish = Length
+    Dim TrimCharsLength As Long: TrimCharsLength = UBound(TrimChars) + 1
+    
+    For Finish = Length To Start Step -1
+        
+        Dim i As Long: i = 0
+        Dim Ch As String: Ch = Mid(Str, Finish, 1)
+        For i = 0 To TrimCharsLength - 1
+            If TrimChars(i) = Ch Then
+                Exit For
+            End If
+        Next i
+        
+        If i = TrimCharsLength Then
+            Exit For
+        End If
+        
+    Next Finish
+    
+    TrimEnd = CreateTrimmedString(Str, Length, Start, Finish)
+
+End Function
+
+
+Private Function CreateTrimmedString(ByVal Str As String, _
+                                     ByVal Length As Long, _
+                                     ByVal Start As Long, _
+                                     ByVal Finish As Long) As String
+    
+    Dim Ln As Long: Ln = Finish - Start + 1
+
+    If Ln = Length Then
+        CreateTrimmedString = Str
+        
+    ElseIf Ln = 0 Then
+        CreateTrimmedString = vbNullString
+        
+    Else
+        CreateTrimmedString = VBA.Mid$(Str, Start, Ln)
+    End If
+    
+End Function
