@@ -4,6 +4,8 @@ Option Explicit
 
 Private Const ModuleName As String = "StringExt"
 
+
+' Specifies which portions of the string should be trimmed in a trimming operation.
 Private Enum TrimType
 
     ' Trim from the beginning of the string
@@ -349,87 +351,62 @@ End Function
 ' Removes all the leading occurrences of a set of characters specified in an array from the current string.
 Public Function TrimStart(ByVal Str As String, ParamArray TrimChars() As Variant) As String
 
-    Dim Output As String: Output = Str
-    Dim ToRemove As New Collection
-    Dim Char As Variant
-    ' If true, this means TrimChars were not defined.
-    ' By default, method will removed whitespaces.
     If UBound(TrimChars) = -1 Then
-        ToRemove.Add " "
+        TrimStart = TrimWhiteSpaceHelper(Str, TrimType.Head)
     Else
-        For Each Char In TrimChars
-            If Char <> vbNullString Then
-                ToRemove.Add Char
-            End If
-        Next Char
+        TrimStart = TrimHelper(Str, TrimChars, UBound(TrimChars), TrimType.Head)
     End If
-
-    Dim i As Long
-    For i = 1 To ToRemove.Count
-        If StringExt.StartsWith(Output, ToRemove.Item(i), vbTextCompare) Then
-            Do While StringExt.StartsWith(Output, ToRemove.Item(i), vbTextCompare)
-                Output = StringExt.RemoveRange(Output, 0, 1)
-            Loop
-            i = 0
-        End If
-    Next i
     
-    TrimStart = Output
-
 End Function
 
 
 ' Removes all the trailing occurrences of a set of
 ' characters specified in an array from the current string.
 Public Function TrimEnd(ByVal Str As String, ParamArray TrimChars() As Variant) As String
-    
+
+    If UBound(TrimChars) = -1 Then
+        TrimEnd = TrimWhiteSpaceHelper(Str, TrimType.Tail)
+    Else
+        TrimEnd = TrimHelper(Str, TrimChars, UBound(TrimChars), TrimType.Tail)
+    End If
+
+End Function
+
+
+Private Function TrimWhiteSpaceHelper(ByVal Str As String, _
+                                      ByVal TrmType As TrimType) As String
+                                          
+    Dim Finish As Long: Finish = Len(Str)
     Dim Start As Long: Start = 1
-    Dim Length As Long: Length = Len(Str)
-    Dim Finish As Long: Finish = Length
-    Dim TrimCharsLength As Long: TrimCharsLength = UBound(TrimChars) + 1
     
-    For Finish = Length To Start Step -1
-        
-        Dim i As Long: i = 0
-        Dim Ch As String: Ch = Mid(Str, Finish, 1)
-        For i = 0 To TrimCharsLength - 1
-            If TrimChars(i) = Ch Then
+    If WorksheetFunction.Bitand(TrmType, TrimType.Head) <> 0 Then
+    
+        For Start = 1 To Len(Str)
+            Dim Ch As String: Ch = VBA.Mid$(Str, Start, 1)
+            If Ch <> Chr(32) Then ' blank space
                 Exit For
             End If
-        Next i
+        Next Start
         
-        If i = TrimCharsLength Then
-            Exit For
-        End If
-        
-    Next Finish
-    
-    TrimEnd = CreateTrimmedString(Str, Length, Start, Finish)
-
-End Function
-
-
-Private Function CreateTrimmedString(ByVal Str As String, _
-                                     ByVal Length As Long, _
-                                     ByVal Start As Long, _
-                                     ByVal Finish As Long) As String
-    
-    Dim Ln As Long: Ln = Finish - Start + 1
-
-    If Ln = Length Then
-        CreateTrimmedString = Str
-        
-    ElseIf Ln = 0 Then
-        CreateTrimmedString = vbNullString
-        
-    Else
-        CreateTrimmedString = VBA.Mid$(Str, Start, Ln)
     End If
     
+    If WorksheetFunction.Bitand(TrmType, TrimType.Tail) <> 0 Then
+        
+        For Finish = Len(Str) To Start Step -1
+            Ch = VBA.Mid$(Str, Finish, 1)
+            If Ch <> Chr(32) Then ' blank space
+                Exit For
+            End If
+        Next Finish
+        
+    End If
+    
+    TrimWhiteSpaceHelper = CreateTrimmedString(Str, Start, Finish)
+                                          
 End Function
 
 
-
+' Removes all leading and trailing occurrences of a set of characters specified in an array from the current string.
 Public Function Trim(ByVal Str As String, ParamArray TrimChars() As Variant) As String
     
     If UBound(TrimChars) = -1 Then
@@ -447,7 +424,7 @@ Private Function TrimHelper(ByVal Str As String, _
                             ByVal TrmType As TrimType) As String
 
     Dim Finish As Long: Finish = Len(Str)
-    Dim Start As Long: Start = 0
+    Dim Start As Long: Start = 1
     Dim TrimCharsLength As Long: TrimCharsLength = UBound(TrimChars) + 1
     
     If WorksheetFunction.Bitand(TrmType, TrimType.Head) <> 0 Then
@@ -488,7 +465,26 @@ Private Function TrimHelper(ByVal Str As String, _
         Next Finish
     End If
     
-    TrimHelper = CreateTrimmedString(Str, Len(Str), Start, Finish)
+    TrimHelper = CreateTrimmedString(Str, Start, Finish)
 
+End Function
+
+
+Private Function CreateTrimmedString(ByVal Str As String, _
+                                     ByVal Start As Long, _
+                                     ByVal Finish As Long) As String
+    
+    Dim Ln As Long: Ln = Finish - Start + 1
+
+    If Ln = Len(Str) Then
+        CreateTrimmedString = Str
+        
+    ElseIf Ln = 0 Then
+        CreateTrimmedString = vbNullString
+        
+    Else
+        CreateTrimmedString = VBA.Mid$(Str, Start, Ln)
+    End If
+    
 End Function
 
