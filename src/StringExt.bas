@@ -488,3 +488,8 @@ Private Function CreateTrimmedString(ByVal Str As String, _
     
 End Function
 
+
+' Returns a copy of this string converted to uppercase.
+Public Function ToUpper(ByVal Str As String) As String
+    ToUpper = VBA.UCase$(Str)
+End Function

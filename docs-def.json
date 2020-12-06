@@ -914,6 +914,18 @@
         ],
         "example": "The following example uses the Trim(String, ParamArray) method to remove space, asterisk (*), and apostrophe (') characters from a string.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Banner As String: Banner = \"*** Banner - Buffalo Bull EFB ***\"\n    Dim Result As String: Result = StringExt.Trim(Banner, \"*\", \" \", \"'\")\n    \n    Debug.Print \"Trimmer \" & Banner & \" to '\" & Result & \"'\"\n\nEnd Sub\n\n' The example displays the following output:\n'\n' Trimmer *** Banner - Buffalo Bull EFB *** to 'Banner - Buffalo Bull EFB'\n```"
     },
+    "StringExt.ToUpper (String)": {
+        "short-description": "The uppercase equivalent of the current string.",
+        "description": "The uppercase equivalent of the current string.",
+        "parameters": {
+            "Str": "A source string which will be turned into upper cased version."
+        },
+        "returns": [
+            "String",
+            "The uppercase equivalent of the current string."
+        ],
+        "example": "The following example uses the Trim(String, ParamArray) method to remove space, asterisk (*), and apostrophe (') characters from a string.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim ToUpperLetters As String: ToUpperLetters = \"abcDefg\"\n    Debug.Print StringExt.ToUpper(ToUpperLetters)\n\nEnd Sub\n\n' The example displays the following output:\n'\n' ABCDEFG\n```"
+    },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
         "short-description": "Checks if given element exists in the array.",
