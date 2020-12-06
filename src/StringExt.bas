@@ -4,6 +4,19 @@ Option Explicit
 
 Private Const ModuleName As String = "StringExt"
 
+Private Enum TrimType
+
+    ' Trim from the beginning of the string
+    Head = 1
+    
+    ' Trim from the end of the string.
+    Tail
+    
+    ' Trim from both the beginning and the end of the string.
+    Both
+    
+End Enum
+
 
 Public Function IndexOfAny(ByVal Str As String, ByRef AnyOf() As String) As Long
     
@@ -414,3 +427,68 @@ Private Function CreateTrimmedString(ByVal Str As String, _
     End If
     
 End Function
+
+
+
+Public Function Trim(ByVal Str As String, ParamArray TrimChars() As Variant) As String
+    
+    If UBound(TrimChars) = -1 Then
+        Trim = VBA.Trim$(Str)
+    Else
+        Trim = TrimHelper(Str, TrimChars, UBound(TrimChars) + 1, TrimType.Both)
+    End If
+    
+End Function
+
+
+Private Function TrimHelper(ByVal Str As String, _
+                            ByVal TrimChars As Variant, _
+                            ByVal Length As Long, _
+                            ByVal TrmType As TrimType) As String
+
+    Dim Finish As Long: Finish = Len(Str)
+    Dim Start As Long: Start = 0
+    Dim TrimCharsLength As Long: TrimCharsLength = UBound(TrimChars) + 1
+    
+    If WorksheetFunction.Bitand(TrmType, TrimType.Head) <> 0 Then
+    
+        For Start = 1 To Len(Str)
+            Dim i As Long: i = 0
+            Dim Ch As String: Ch = Mid(Str, Start, 1)
+            
+            For i = 0 To TrimCharsLength - 1
+                If TrimChars(i) = Ch Then
+                    Exit For
+                End If
+            Next i
+            
+            If i = TrimCharsLength Then
+                Exit For
+            End If
+            
+        Next Start
+    
+    End If
+    
+    If WorksheetFunction.Bitand(TrmType, TrimType.Tail) <> 0 Then
+        For Finish = Len(Str) To Start Step -1
+        
+            i = 0
+            Ch = Mid(Str, Finish, 1)
+            For i = 0 To TrimCharsLength - 1
+                If TrimChars(i) = Ch Then
+                    Exit For
+                End If
+            Next i
+            
+            If i = TrimCharsLength Then
+                Exit For
+            End If
+            
+        Next Finish
+    End If
+    
+    TrimHelper = CreateTrimmedString(Str, Len(Str), Start, Finish)
+
+End Function
+

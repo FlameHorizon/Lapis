@@ -901,6 +901,19 @@
         ],
         "example": "The following example demonstrates how you can use the TrimEnd(String, ParamArray) method to trim white space or punctuation marks from the end of a string.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Sentence As String\n    Sentence = \"The dog had a bone, a ball, and other toys.\"\n    \n    Dim Words As Variant: Words = VBA.Split(Sentence)\n    Dim Word As Variant\n    For Each Word In Words\n        Debug.Print StringExt.TrimEnd(Word, \",\", \".\", \" \")\n    Next Word\n\nEnd Sub\n\n' The example displays the following output:\n'\n' The\n' dog\n' had\n' a\n' bone\n' a\n' ball\n' and\n' other\n' toys\n```"
     },
+    "StringExt.Trim (String, ParamArray Variant)": {
+        "short-description": "Removes all leading and trailing occurrences of a set of characters specified in an array from the current string.",
+        "description": "Removes all leading and trailing occurrences of a set of characters specified in an array from the current string.",
+        "parameters": {
+            "Str": "A source string which will be trimmed.",
+            "TrimChars": "An array of Unicode characters to remove, or `vbNullString`."
+        },
+        "returns": [
+            "String",
+            "The string that remains after all occurrences of the characters in the `trimChars` parameter are removed from the start and end of the current string. If `trimChars` is an empty array, white-space characters are removed instead. If no characters can be trimmed from the current instance, the method returns the current instance unchanged."
+        ],
+        "example": "The following example uses the Trim(String, ParamArray) method to remove space, asterisk (*), and apostrophe (') characters from a string.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Banner As String: Banner = \"*** Banner - Buffalo Bull EFB ***\"\n    Dim Result As String: Result = StringExt.Trim(Banner, \"*\", \" \", \"'\")\n    \n    Debug.Print \"Trimmer \" & Banner & \" to '\" & Result & \"'\"\n\nEnd Sub\n\n' The example displays the following output:\n'\n' Trimmer *** Banner - Buffalo Bull EFB *** to 'Banner - Buffalo Bull EFB'\n```"
+    },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
         "short-description": "Checks if given element exists in the array.",
