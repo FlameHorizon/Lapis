@@ -18,7 +18,7 @@ The uppercase equivalent of the current string.
 
 ## Examples
 
-The following example uses the Trim(String, ParamArray) method to remove space, asterisk (*), and apostrophe (') characters from a string.
+The following example calls the ToUpper method to convert a series of one-character strings that contain each character in the Basic Latin, Latin-1 Supplement, and Latin Extended-A character sets. It then displays each string whose uppercase character is different from its lowercase character.
 
 ```vb
 Option Explicit

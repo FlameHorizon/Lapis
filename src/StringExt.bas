@@ -493,3 +493,9 @@ End Function
 Public Function ToUpper(ByVal Str As String) As String
     ToUpper = VBA.UCase$(Str)
 End Function
+
+
+' Returns a copy of this string converted to lowercase.
+Public Function ToLower(ByVal Str As String) As String
+    ToLower = VBA.LCase$(Str)
+End Function

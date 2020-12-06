@@ -924,7 +924,19 @@
             "String",
             "The uppercase equivalent of the current string."
         ],
-        "example": "The following example uses the Trim(String, ParamArray) method to remove space, asterisk (*), and apostrophe (') characters from a string.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim ToUpperLetters As String: ToUpperLetters = \"abcDefg\"\n    Debug.Print StringExt.ToUpper(ToUpperLetters)\n\nEnd Sub\n\n' The example displays the following output:\n'\n' ABCDEFG\n```"
+        "example": "The following example calls the ToUpper method to convert a series of one-character strings that contain each character in the Basic Latin, Latin-1 Supplement, and Latin Extended-A character sets. It then displays each string whose uppercase character is different from its lowercase character.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim ToUpperLetters As String: ToUpperLetters = \"abcDefg\"\n    Debug.Print StringExt.ToUpper(ToUpperLetters)\n\nEnd Sub\n\n' The example displays the following output:\n'\n' ABCDEFG\n```"
+    },
+    "StringExt.ToLower (String)": {
+        "short-description": "Returns a copy of this string converted to lowercase.",
+        "description": "Returns a copy of this string converted to lowercase.",
+        "parameters": {
+            "Str": "A source string which will be turned into lower cased version."
+        },
+        "returns": [
+            "String",
+            "A string in lowercase."
+        ],
+        "example": "The following example converts string to lowercase.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim BigLetters As String: BigLetters = \"ABCDEFG\"\n    Debug.Print StringExt.ToLower(BigLetters)\n    \nEnd Sub\n\n' The example displays the following output:\n'\n' abcdefg\n```"
     },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
