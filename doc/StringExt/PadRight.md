@@ -9,7 +9,7 @@ Public Function PadRight(ByVal Str As String, ByVal TotalWidth As Long, ByVal Pa
 ### Parameters
 
 **Str** `String` <br>
-A source string which will be turned into lower cased version.
+A source string.
 
 **TotalWidth** `Long` <br>
 The number of characters in the resulting string, equal to the number of original characters plus any additional padding characters.
