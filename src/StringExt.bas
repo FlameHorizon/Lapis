@@ -499,3 +499,26 @@ End Function
 Public Function ToLower(ByVal Str As String) As String
     ToLower = VBA.LCase$(Str)
 End Function
+
+
+' Returns a new string that left-aligns the characters in this string
+' by padding them on the right with a specified Unicode character,
+' for a specified total length.
+Public Function PadRight(ByVal Str As String, _
+                         ByVal TotalWidth As Long, _
+                         ByVal PaddingChar As String) As String
+
+    If TotalWidth < 0 Then
+        Errors.OnArgumentOutOfRange "TotalWidth", "Argument must be positive value."
+    End If
+    
+    Dim OldLength As Long: OldLength = VBA.Len(Str)
+    Dim Count As Long: Count = TotalWidth - OldLength
+    If Count <= 0 Then
+        PadRight = Str
+        Exit Function
+    End If
+    
+    PadRight = Str & String(Count, PaddingChar)
+
+End Function

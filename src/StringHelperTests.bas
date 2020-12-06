@@ -69,6 +69,9 @@ Public Sub Start()
     
     TrimTest
     
+    PadRightTest
+    PadRightThrowsArgumentOutOfRangeErrorWhenTotalWidthIsLessThanZeroTest
+    
 End Sub
 
 
@@ -798,5 +801,42 @@ Private Sub TrimTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+
+Private Sub PadRightTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "PadRightTest"
+
+    ' Arrange
+    Const Str As String = "Word"
+    
+    ' Act & Assert
+    ExUnit.AreEqual Str & ".", StringExt.PadRight(Str, Len(Str) + 1, "."), GetSig(MethodName)
+    ExUnit.AreEqual Str, StringExt.PadRight(Str, Len(Str) - 1, "."), GetSig(MethodName)
+    ExUnit.AreEqual Str, StringExt.PadRight(Str, Len(Str), "."), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub PadRightThrowsArgumentOutOfRangeErrorWhenTotalWidthIsLessThanZeroTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentOutOfRange
+    Const MethodName = "PadRightThrowsArgumentOutOfRangeErrorWhenTotalWidthIsLessThanZeroTest"
+
+    ' Act
+    StringExt.PadRight "Word", -1, "."
+    
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub

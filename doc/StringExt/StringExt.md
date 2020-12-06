@@ -15,6 +15,7 @@ Represents a collection of helper methods to work with a string type.
 |[Insert (String, Long, String)](./Insert.md)|Returns a new string in which a specified string is inserted at a specified index position in this instance.|
 |[LastIndexOf (String, String, Long, Long, VbCompareMethod)](./LastIndexOf.md)|Returns the zero-based index of the last occurrence of the specified string in the current string.|
 |[LastIndexOfAny (String, String)](./LastIndexOfAny.md)|Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a array.|
+|[PadRight (String, Long, String)](./PadRight.md)|Returns a new string that left-aligns the characters in this string by padding them on the right with a specified Unicode character, for a specified total length.|
 |[Remove (String, Long)](./Remove.md)|Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.|
 |[RemoveRange (String, Long, Long)](./RemoveRange.md)|Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.|
 |[StartsWith (String, String, VbCompareMethod)](./StartsWith.md)|Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.|
