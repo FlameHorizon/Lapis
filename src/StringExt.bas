@@ -550,3 +550,50 @@ Public Function PadLeft(ByVal Str As String, _
     PadLeft = String(Count, PaddingChar) & Str
 
 End Function
+
+
+' Retrieves a substring from this instance.
+' The substring starts at a specified character position and has a specified length.
+' If length is not specified, selection continues to the end of the string.
+Public Function Substring(ByVal Str As String, _
+                          ByVal StartIndex As Long, _
+                          Optional ByVal Length As Long = -1) As String
+    
+    Const MethodName As String = "Substring"
+    
+    If Length = -1 Then
+        Length = VBA.Len(Str)
+    End If
+    
+    If StartIndex < 1 Then
+        Errors.OnArgumentOutOfRange "StartIndex", _
+                                    "Value must be positive value. " _
+                                    & ModuleName & "." & MethodName
+    End If
+    
+    If StartIndex > VBA.Len(Str) Then
+        Errors.OnArgumentOutOfRange "StartIndex", _
+                                    "Value must be smaller than Length. " _
+                                    & ModuleName & "." & MethodName
+    End If
+    
+    If Length < 0 Then
+        Errors.OnArgumentOutOfRange "Length", _
+                                    "Value must be non-negative. " _
+                                    & ModuleName & "." & MethodName
+    End If
+    
+    If StartIndex > VBA.Len(Str) - Length + 1 Then
+        Errors.OnArgumentOutOfRange "Length", _
+                                    "Value is out of range. " _
+                                    & ModuleName & "." & MethodName
+    End If
+    
+    If StartIndex = 1 And Length = VBA.Len(Str) Then
+        Substring = Str
+        Exit Function
+    End If
+    
+    Substring = VBA.Mid$(Str, StartIndex, Length)
+    
+End Function

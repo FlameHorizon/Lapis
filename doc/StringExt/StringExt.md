@@ -20,6 +20,7 @@ Represents a collection of helper methods to work with a string type.
 |[Remove (String, Long)](./Remove.md)|Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.|
 |[RemoveRange (String, Long, Long)](./RemoveRange.md)|Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.|
 |[StartsWith (String, String, VbCompareMethod)](./StartsWith.md)|Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.|
+|[Substring (String, Long, Long)](./Substring.md)|Retrieves a substring from this instance. The substring starts at a specified character position and has a specified length. If length is not specified, selection continues to the end of the string.|
 |[ToLower (String)](./ToLower.md)|Returns a copy of this string converted to lowercase.|
 |[ToUpper (String)](./ToUpper.md)|The uppercase equivalent of the current string.|
 |[Trim (String, ParamArray Variant)](./Trim.md)|Removes all leading and trailing occurrences of a set of characters specified in an array from the current string.|
