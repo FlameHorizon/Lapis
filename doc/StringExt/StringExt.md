@@ -19,6 +19,7 @@ Represents a collection of helper methods to work with a string type.
 |[PadRight (String, Long, String)](./PadRight.md)|Returns a new string that left-aligns the characters in this string by padding them on the right with a specified Unicode character, for a specified total length.|
 |[Remove (String, Long)](./Remove.md)|Returns a new string in which all the characters in the current instance, beginning at a specified position and continuing through the last position, have been deleted.|
 |[RemoveRange (String, Long, Long)](./RemoveRange.md)|Returns a new string in which a specified number of characters in the current instance beginning at a specified position have been deleted.|
+|[Replace (String, String, String, CompareMethod)](./Replace.md)|Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string, using the provided comparison type.|
 |[StartsWith (String, String, VbCompareMethod)](./StartsWith.md)|Determines whether the beginning of this string instance matches the specified string when compared using the specified comparison option.|
 |[Substring (String, Long, Long)](./Substring.md)|Retrieves a substring from this instance. The substring starts at a specified character position and has a specified length. If length is not specified, selection continues to the end of the string.|
 |[ToLower (String)](./ToLower.md)|Returns a copy of this string converted to lowercase.|

@@ -597,3 +597,26 @@ Public Function Substring(ByVal Str As String, _
     Substring = VBA.Mid$(Str, StartIndex, Length)
     
 End Function
+
+
+' Returns a new string in which all occurrences
+' of a specified string in the current instance
+' are replaced with another specified string,
+' using the provided comparison type.
+Public Function Replace(ByVal Str As String, _
+                        ByVal OldValue As String, _
+                        ByVal NewValue As String, _
+                        ByVal ComparisonType As CompareMethod) As String
+    
+    Const MethodName = "Replace"
+    
+    If OldValue = vbNullString Then
+        Errors.OnArgumentError "OldValue", _
+                               "Value can't be empty string. " _
+                               & ModuleName & "." & MethodName
+    End If
+    
+    Replace = VBA.Replace(Str, OldValue, NewValue, 1, -1, ComparisonType)
+
+End Function
+

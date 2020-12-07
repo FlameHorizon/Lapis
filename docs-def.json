@@ -1002,6 +1002,27 @@
         ],
         "example": "The following example illustrates a simple call to the Substring(String, Long, Long) method that extracts two characters from a string starting at the sixth character position (that is, at index six).\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Str As String: Str = \"This is a string\"\n    Dim StartIndex As Long: StartIndex = 6\n    Dim Length As Long: Length = 2\n    \n    Dim SubStr As String\n    SubStr = StringExt.Substring(Str, StartIndex, Length)\n    Debug.Print SubStr\n\nEnd Sub\n\n' The example displays the following output:\n'\n' is\n```"
     },
+    "StringExt.Replace (String, String, String, CompareMethod)": {
+        "short-description": "Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string, using the provided comparison type.",
+        "description": "Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string, using the provided comparison type.",
+        "parameters": {
+            "Str": "A source string.",
+            "OldValue" : "The string to be replaced.",
+            "NewValue" : "The string to replace all occurrences of `OldValue`.",
+            "ComparisonType" : "One of the enumeration values that determines how `OldValue` is searched within this instance."
+        },
+        "returns": [
+            "String",
+            "A string that is equivalent to the current string except that all instances of `OldValue` are replaced with `newValue`. If `OldValue` is not found in the current instance, the method returns the current instance unchanged."
+        ],
+        "errors": [
+            [
+                "OnArgumentError",
+                "`OldValue` is the empty string (vbNullString)."
+            ]
+        ],
+        "example": "Because this method returns the modified string, you can chain together successive calls to the `Replace` method to perform multiple replacements on the original string. Method calls are executed from left to right. The following example provides an illustration.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Str As String: Str = \"aaa\"\n    Debug.Print \"The initial string: \" & Str\n    \n    Str = StringExt.Replace(Str, \"a\", \"b\", TextCompare)\n    Str = StringExt.Replace(Str, \"b\", \"c\", TextCompare)\n    Str = StringExt.Replace(Str, \"c\", \"d\", TextCompare)\n    Debug.Print \"The final string: \" & Str\n    \nEnd Sub\n\n' The example displays the following output:\n'\n' The initial string: aaa\n' The final string: ddd\n\n```"
+    },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
         "short-description": "Checks if given element exists in the array.",
