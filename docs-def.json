@@ -384,7 +384,7 @@
         },
         "returns": [
             "Boolean",
-            "`true` if every element of the source sequence passes the test in the specified predicate, or if the sequence is empty; otherwise, `false`."
+            "`True` if every element of the source sequence passes the test in the specified predicate, or if the sequence is empty; otherwise, `False`."
         ],
         "errors": [
             [
@@ -403,7 +403,7 @@
         },
         "returns": [
             "Boolean",
-            "`true` if any elements in the source sequence pass the test in the specified predicate; otherwise, `false`."
+            "`True` if any elements in the source sequence pass the test in the specified predicate; otherwise, `False`."
         ],
         "errors": [
             [
@@ -631,7 +631,7 @@
         "parameters": {
             "Str1": "The first string to compare.",
             "Str2": "The second string to compare.",
-            "IgnoreCase": "`true` to ignore case during the comparison; otherwise, `false`."
+            "IgnoreCase": "`True` to ignore case during the comparison; otherwise, `False`."
         },
         "returns": [
             "Long",
@@ -661,7 +661,7 @@
         },
         "returns": [
             "Boolean",
-            "`true` if the `value` parameter occurs within this string, or if `Value` is the empty string (\"\"); otherwise, `false`."
+            "`True` if the `value` parameter occurs within this string, or if `Value` is the empty string (\"\"); otherwise, `False`."
         ],
         "example": "The following example finds the first occurrence of either letter a in the string.\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Debug.Print \"Does A11-003b contains letter B? \" & StringExt.Contains(\"A11-003b\", \"B\")\n    Debug.Print \"Does A11-003b contains letter B?\" & StringExt.Contains(\"A11-003b\", \"a\")\n\nEnd Sub\n\n' The example displays the following output:\n' Does A11-003b contains letter B? True\n' Does A11-003b contains letter z? False\n```",
         "remarks": "This method performs an ordinal (case-sensitive and culture-insensitive) comparison. The search begins at the first character position of this string and continues through the last character position."
@@ -676,7 +676,7 @@
         },
         "returns": [
             "Boolean",
-            "`true` if value matches the end of this instance; otherwise, `false`."
+            "`True` if value matches the end of this instance; otherwise, `False`."
         ],
         "example": "The following example indicates whether each string in an array ends with a period (\".\").\n\n```vb\nOption Explicit\nPublic Sub Start()\n\n    Dim Arr(2) As String\n    Arr(0) = \"This is a string.\"\n    Arr(1) = \"Hello!\"\n    Arr(2) = \"Nothing\"\n\n    Dim Item As Variant\n    For Each Item In Arr\n        Dim EndsWithPeriod As Boolean\n        EndsWithPeriod = StringExt.EndsWith(Item, \".\", VbCompareMethod.vbTextCompare)\n        Debug.Print Item & \" ends with a period \" & EndsWithPeriod\n    Next Item\n\nEnd Sub\n\n' The example displays the following output:\n' This is a string. ends with a period True\n' Hello! ends with a period False\n' Nothing ends with a period False\n```",
         "errors": [
@@ -860,7 +860,7 @@
         },
         "returns": [
             "Boolean",
-            "`true` if this instance begins with `value`; otherwise, `false`."
+            "`True` if this instance begins with `value`; otherwise, `False`."
         ],
         "errors": [
             [

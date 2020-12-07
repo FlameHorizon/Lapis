@@ -20,7 +20,7 @@ One of the enumeration values that specifies the rules for the search.
 ### Returns
 
 `Boolean` <br>
-`true` if this instance begins with `value`; otherwise, `false`.
+`True` if this instance begins with `value`; otherwise, `False`.
 
 ### Errors
 

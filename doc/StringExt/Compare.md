@@ -15,7 +15,7 @@ The first string to compare.
 The second string to compare.
 
 **IgnoreCase** `Boolean` <br>
-`true` to ignore case during the comparison; otherwise, `false`.
+`True` to ignore case during the comparison; otherwise, `False`.
 
 ### Returns
 

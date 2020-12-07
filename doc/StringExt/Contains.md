@@ -17,7 +17,7 @@ The string to seek.
 ### Returns
 
 `Boolean` <br>
-`true` if the `value` parameter occurs within this string, or if `Value` is the empty string (""); otherwise, `false`.
+`True` if the `value` parameter occurs within this string, or if `Value` is the empty string (""); otherwise, `False`.
 
 ## Examples
 

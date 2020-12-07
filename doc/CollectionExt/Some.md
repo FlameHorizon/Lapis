@@ -17,7 +17,7 @@ A function to test each element for a condition.
 ### Returns
 
 `Boolean` <br>
-`true` if any elements in the source sequence pass the test in the specified predicate; otherwise, `false`.
+`True` if any elements in the source sequence pass the test in the specified predicate; otherwise, `False`.
 
 ### Errors
 
