@@ -1023,6 +1023,30 @@
         ],
         "example": "Because this method returns the modified string, you can chain together successive calls to the `Replace` method to perform multiple replacements on the original string. Method calls are executed from left to right. The following example provides an illustration.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Str As String: Str = \"aaa\"\n    Debug.Print \"The initial string: \" & Str\n    \n    Str = StringExt.Replace(Str, \"a\", \"b\", TextCompare)\n    Str = StringExt.Replace(Str, \"b\", \"c\", TextCompare)\n    Str = StringExt.Replace(Str, \"c\", \"d\", TextCompare)\n    Debug.Print \"The final string: \" & Str\n    \nEnd Sub\n\n' The example displays the following output:\n'\n' The initial string: aaa\n' The final string: ddd\n\n```"
     },
+    "StringExt.IsEmpty (String)": {
+        "short-description": "Indicates whether the specified string is null or an empty string (vbNullString).",
+        "description": "Indicates whether the specified string is null or an empty string (vbNullString).",
+        "parameters": {
+            "Str": "A source string to test."
+        },
+        "returns": [
+            "Boolean",
+            "`True` if the value parameter is an empty string (vbNullString); otherwise, `False`"
+        ],
+        "example": "The following example examines three strings and determines whether each string has a value, is an empty string.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Str1 As String: Str1 = \"abcd\"\n    Dim Str2 As String: Str2 = \"\"\n    Dim Str3 As String: Str3 = vbNullString\n    \n    Debug.Print \"String Str1 \" & Test(Str1)\n    Debug.Print \"String Str2 \" & Test(Str2)\n    Debug.Print \"String Str3 \" & Test(Str3)\n\nEnd Sub\n\n\nPrivate Function Test(ByVal Str As String) As String\n\n    If StringExt.IsEmpty(Str) Then\n        Test = \"is empty.\"\n    Else\n        Test = \"(\"\"\" & Str & \"\"\") is not empty\"\n    End If\n\nEnd Function\n\n' The example displays the following output:\n'\n' String Str1 (\"abcd\") is not empty\n' String Str2 is empty.\n' String Str3 is empty.\n\n\n```"
+    },
+    "StringExt.IsEmptyOrWhiteSpace (String)": {
+        "short-description": "Indicates whether a specified string is empty, or consists only of white-space characters.",
+        "description": "Indicates whether a specified string is empty, or consists only of white-space characters.",
+        "parameters": {
+            "Str": "A source string to test."
+        },
+        "returns": [
+            "Boolean",
+            "`True` if the value parameter empty, or if value consists exclusively of white-space characters"
+        ],
+        "example": "The following example creates a string Collection, and then passes each element of the Collection to the `IsEmptyOrWhiteSpace` method.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Values As Collection\n    Set Values = CollectionExt.Make(vbNullString, _\n                                    \"\", _\n                                    \"ABCDE\", _\n                                    String(20, \" \"), _\n                                    vbTab)\n    \n    Dim Str As Variant\n    For Each Str In Values\n        Debug.Print StringExt.IsEmptyOrWhiteSpace(Str)\n    Next Str\n    \nEnd Sub\n\n' The example displays the following output:\n'\n' True\n' True\n' False\n' True\n' True\n```"
+    },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
         "short-description": "Checks if given element exists in the array.",

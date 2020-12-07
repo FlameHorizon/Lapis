@@ -13,6 +13,8 @@ Represents a collection of helper methods to work with a string type.
 |[IndexOf (String, String, Long, VbCompareMethod)](./IndexOf.md)|Returns the zero-based index of the first occurrence of the specified string in the current string|
 |[IndexOfAny (String, String)](./IndexOfAny.md)|Reports the zero-based index of the first occurrence in this instance of any character in a specified array of characters.|
 |[Insert (String, Long, String)](./Insert.md)|Returns a new string in which a specified string is inserted at a specified index position in this instance.|
+|[IsEmpty (String)](./IsEmpty.md)|Indicates whether the specified string is null or an empty string (vbNullString).|
+|[IsEmptyOrWhiteSpace (String)](./IsEmptyOrWhiteSpace.md)|Indicates whether a specified string is empty, or consists only of white-space characters.|
 |[LastIndexOf (String, String, Long, Long, VbCompareMethod)](./LastIndexOf.md)|Returns the zero-based index of the last occurrence of the specified string in the current string.|
 |[LastIndexOfAny (String, String)](./LastIndexOfAny.md)|Reports the zero-based index position of the last occurrence in this instance of one or more characters specified in a array.|
 |[PadLeft (String, Long, String)](./PadLeft.md)|Returns a new string that right-aligns the characters in this instance by padding them on the left with a specified Unicode character, for a specified total length.|

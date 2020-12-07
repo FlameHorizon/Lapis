@@ -620,3 +620,33 @@ Public Function Replace(ByVal Str As String, _
 
 End Function
 
+
+' Indicates whether the specified string is an empty string (vbNullString).
+Public Function IsEmpty(ByVal Str As String) As Boolean
+    IsEmpty = VBA.Len(Str) = 0
+End Function
+
+
+' Indicates whether a specified string empty,
+' or consists only of white-space characters.
+Public Function IsEmptyOrWhiteSpace(ByVal Str As String) As Boolean
+    
+    If Str = vbTab Then
+        IsEmptyOrWhiteSpace = True
+        Exit Function
+    End If
+    
+    Dim Ch As String
+    Dim i As Long
+    For i = 1 To VBA.Len(Str)
+        Ch = StringExt.Substring(Str, i, 1)
+        If Asc(Ch) <> 32 Then
+            IsEmptyOrWhiteSpace = False
+            Exit Function
+        End If
+    Next i
+    
+    IsEmptyOrWhiteSpace = True
+    
+End Function
+
