@@ -1,5 +1,43 @@
 # Change log
 
+## Changes in 0.9.0
+
+* Added following methods to `StringExt`:
+
+    * `Compare` - Compares two specified Strings, ignoring or honoring their case, and returns an integer that indicates their relative position in the sort order.
+
+    * `Concat` - Concatenates the members of a constructed Variant ParamArray of type String.
+
+    * `IsEmpty` - Indicates whether the specified string is null or an empty string (vbNullString).
+
+    * `IsEmptyOrWhiteSpace` - Indicates whether a specified string is empty, or consists only of white-space characters.
+
+    * `PadLeft` - Returns a new string that right-aligns the characters in this instance by padding them on the left with a specified Unicode character, for a specified total length.
+
+    * `PadRight` - Returns a new string that left-aligns the characters in this string by padding them on the right with a specified Unicode character, for a specified total length.
+
+    * `Replace` - Returns a new string in which all occurrences of a specified string in the current instance are replaced with another specified string, using the provided comparison type.
+
+    * `Substring` - Retrieves a substring from this instance. The substring starts at a specified character position and has a specified length. If length is not specified, selection continues to the end of the string.
+
+    * `ToLower` - Returns a copy of this string converted to lowercase.
+
+    * `ToUpper` - The uppercase equivalent of the current string.
+
+    * `Trim` - Removes all leading and trailing occurrences of a set of characters specified in an array from the current string.
+
+    * `TrimEnd` - Removes all the trailing occurrences of a set of characters specified in an array from the current string.
+
+    * `TrimStart` - Removes all the leading occurrences of a set of characters specified in an array from the current string.
+
+* Changed signature of `StringExt.IndexOf` method. `Count` argument is no longer accepted.
+
+* Methods are now listed in alphabetical order. This should allow easier navigation though module documentation.
+
+* Fixed casing for boolean literals in documentation.
+
+* Fixed a bug where `StringExt.StartsWith` would not pickup symbols like `#` and `*`.
+
 ## Changes in 0.8.0
 
 * Updated or created entries in `CollectionExt` documentation.
