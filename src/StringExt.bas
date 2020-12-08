@@ -649,4 +649,3 @@ Public Function IsEmptyOrWhiteSpace(ByVal Str As String) As Boolean
     IsEmptyOrWhiteSpace = True
     
 End Function
-

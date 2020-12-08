@@ -110,7 +110,7 @@ Public Function NumElements(ByRef Arr() As Variant, Optional ByVal Dimension As 
         Exit Function
     End If
     
-    If IsEmpty(Arr) = True Then
+    If VBA.IsEmpty(Arr) = True Then
         NumElements = 0
         Exit Function
     End If
