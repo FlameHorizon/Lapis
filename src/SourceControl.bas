@@ -36,9 +36,9 @@ End Property
 
 ' Exports and saves project's components, from Source workbook
 ' to the location which is specified in Path argument.
-' If Source.VBProject is protected, throw an InvalidOperationErrors.
+' If Source.VBProject is protected, throw an OnInvalidOperation.
 ' If target path does not exists or if path does not points to a folder,
-' throw an DirectoryNotFoundErrors.
+' throw an OnDirectoryNotFound.
 Public Sub ExportProjectComponents(ByVal Source As VBProject, ByVal Path As String)
 
     Const MethodName = "ExportProjectComponents"
@@ -177,9 +177,8 @@ End Property
 ' Params
 ' Target - Workbook into which VBComponents will be imported to.
 ' Path - Path to the folder which contains modules to import.
-' Throws an InvalidOperationException when Target's VBProject is locked.
-' Throws an InvalidOperationException when IsImportEnabled is False.
-' Throws an DirectoryNotFoundException when path to folder is not valid or folder doesn't exists.
+' Throws an OnInvalidOperation when Target's VBProject is locked.
+' Throws an OnDirectoryNotFound when path to folder is not valid or folder doesn't exists.
 Public Sub ImportProjectComponents(ByVal Target As Workbook, ByVal Path As String)
 
     Const MethodName = "ImportProjectComponents"
@@ -282,11 +281,6 @@ Private Function SupportedImportExtensions() As Variant 'Array<String>
                                       ComponentTypeToExtension.Item(vbext_ct_StdModule))
                                       
 End Function
-
-
-'Private Function ImportableComponentsTypes() As Variant
-'    ImportableComponentsTypes = Array(vbext_ct_ClassModule, vbext_ct_StdModule)
-'End Function
 
 
 ' Imports components based on to the specified Workbook

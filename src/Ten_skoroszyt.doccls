@@ -14,17 +14,28 @@ Option Explicit
 Private Sub Workbook_AfterSave(ByVal Success As Boolean)
     
     Const SourceControlEnabled As Boolean = True
-
+    Dim Path As String
+    Path = ThisWorkbook.Path & "/src"
+    
     If SourceControlEnabled Then
-        If DirectoryExt.GetFiles(ThisWorkbook.Path & "/src").Count > 0 Then
-            DirectoryExt.RemoveAllFilesFromFolder ThisWorkbook.Path & "/src"
+        If Tools.Fso.FolderExists(Path) = False Then
+            DirectoryExt.CreateDirectory Path
+            
+        ElseIf DirectoryExt.GetFiles(Path).Count > 0 Then
+            DirectoryExt.RemoveAllFilesFromFolder Path
+            
         End If
         
         SourceControl.ExportEmptyComponents = False
-        SourceControl.ExportProjectComponents ThisWorkbook.VBProject, ThisWorkbook.Path & "/src"
+        SourceControl.ExportProjectComponents ThisWorkbook.VBProject, Path
     End If
-    TestRunner.Start
+    'TestRunner.Start
     
 End Sub
 
 
+Public Sub Start()
+
+    SourceControl.ImportProjectComponents ThisWorkbook
+
+End Sub
