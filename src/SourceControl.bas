@@ -195,9 +195,7 @@ Public Sub ImportProjectComponents(ByVal Target As Workbook, ByVal Path As Strin
     pIgnoreImport.Add ModuleName, ModuleName
     
     pImportFolderPath = NormalizePath(Path)
-
     ImportComponents Target, GetImportableComponents(Target)
-    UpdateComponents Target, GetUpdatableComponents(Target)
 
 End Sub
 
@@ -446,6 +444,11 @@ Private Function GetComponentFileName(ByVal Component As VBIDE.VBComponent) As S
 End Function
 
 
+' Updates project's components, in Target workbook
+' from the location which is specified in Path argument.
+' If Target.VBProject is protected, throws an OnInvalidOperation.
+' If target path does not exists or if path does not points to a folder,
+' throw an OnDirectoryNotFound.
 Public Sub UpdateProjectComponenets(ByVal Target As Workbook, ByVal Path As String)
 
     Const MethodName = "UpdateProjectComponenets"
