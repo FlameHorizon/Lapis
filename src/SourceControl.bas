@@ -446,4 +446,27 @@ Private Function GetComponentFileName(ByVal Component As VBIDE.VBComponent) As S
 End Function
 
 
+Public Sub UpdateProjectComponenets(ByVal Target As Workbook, ByVal Path As String)
 
+    Const MethodName = "UpdateProjectComponenets"
+
+    If Target.VBProject.Protection = vbext_pp_locked Then
+        Errors.OnInvalidOperation "Target.VBProject.Protection", _
+                                  "The VBA project, in this workbook is protected " & _
+                                  "therefor, it is not possible to import the components. " & _
+                                  "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
+    End If
+
+    If Tools.Fso.FolderExists(Path) = False Then
+        Errors.OnDirectoryNotFound "Path", ModuleName & "." & MethodName
+    End If
+    
+    ' This module can't be imported for the folder because this very module
+    ' is directly responsible for importing components.
+    Set pIgnoreImport = New Dictionary
+    pIgnoreImport.Add ModuleName, ModuleName
+    
+    pImportFolderPath = NormalizePath(Path)
+    UpdateComponents Target, GetUpdatableComponents(Target)
+
+End Sub
