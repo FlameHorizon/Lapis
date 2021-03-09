@@ -449,7 +449,7 @@ End Function
 ' If Target.VBProject is protected, throws an OnInvalidOperation.
 ' If target path does not exists or if path does not points to a folder,
 ' throw an OnDirectoryNotFound.
-Public Sub UpdateProjectComponenets(ByVal Target As Workbook, ByVal Path As String)
+Public Sub UpdateProjectComponents(ByVal Target As Workbook, ByVal Path As String)
 
     Const MethodName = "UpdateProjectComponenets"
 
