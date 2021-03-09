@@ -8,7 +8,7 @@ Option Explicit
 ' References which has to be included:
 ' - Microsoft Visual Basic for Application Extensibility 5.3
 
-Private Const ModuleName As String = "SourceControlH"
+Private Const ModuleName As String = "SourceControl"
 
 ' Path to the folder where components will be saved.
 Private pExportFolderPath As String
@@ -421,7 +421,22 @@ End Function
 
 
 Private Function ComponentExists(ByVal Source As Workbook, ByVal ComponentName As String) As Boolean
-    ComponentExists = IIf(GetComponentByName(Source, ComponentName) Is Nothing, False, True)
+    
+    On Error GoTo ErrHandler
+    ' If this method didn't caused an error, this means compoment exists.
+    GetComponentByName Source, ComponentName
+    ComponentExists = True
+    Exit Function
+    
+ErrHandler:
+    If Err.Number = ErrorCode.ArgumentOutOfRange Then
+        ComponentExists = False
+        On Error GoTo -1
+    Else
+        ' Re-thorw error higher.
+        Err.Raise Err.Number, Err.Source, Err.Description
+    End If
+    
 End Function
 
 
