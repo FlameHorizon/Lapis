@@ -1,5 +1,11 @@
 # Change log
 
+## Changes in 0.10.0
+
+* Changed `SourceControl.ImportProjectComponents` - no longer updates existing project's components in VBProject.
+
+* Added `SourceControl.UpdateProjectComponents` - updates only existing project components in VBProject.
+
 ## Changes in 0.9.0
 
 * Added following methods to `StringExt`:
