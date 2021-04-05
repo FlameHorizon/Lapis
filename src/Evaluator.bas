@@ -2,6 +2,8 @@ Attribute VB_Name = "Evaluator"
 '@Folder("LambdaExpr")
 Option Explicit
 
+Private Const ModuleName As String = "Evaluator"
+
 'Direct call convention of VBA.CallByName
 #If Not Mac Then
     #If VBA7 Then
@@ -22,6 +24,8 @@ Private Const pMinStackSize As Long = 30 'note that the stack size may become sm
 '@param {Operation()} operations  The operations to evaluate
 '@returns {Variant} The result of the operations
 Public Function Evaluate(ByRef Ops() As Operation, ByVal vLastArgs As Variant) As Variant
+
+    Const MethodName = "Evaluate"
 
     Dim Stack() As Variant
     ReDim Stack(0 To 5)
@@ -148,7 +152,7 @@ Public Function Evaluate(ByRef Ops() As Operation, ByVal vLastArgs As Variant) A
                         If ArgIndex <= UBound(vLastArgs) Then
                             PushV Stack, StackPtr, vLastArgs(ArgIndex)
                         Else
-                            Lapis.Errors.OnArgumentError "ArgIndex", "Argument not supplied to Lambda"
+                            Lapis.Errors.OnArgumentError "ArgIndex", "Argument not supplied to Lambda. " & ModuleName & "." & MethodName
                         End If
                     Case Else
                         PushV Stack, StackPtr, Stack(StackPtr - Op.Value)
