@@ -2151,15 +2151,14 @@ End Sub
 Private Sub IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest()
 
     On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentException
     Const MethodName = "IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest"
-
-    ' Act
-    CollectionExt.IndexOf CollectionExt.Make(1, 2, 3, 4), ThisWorkbook
     
     ' Assert
+    Lapis.ExUnit.AreEqual -1, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), ThisWorkbook), GetSig(MethodName)
+    
+    Exit Sub
 ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
 
 End Sub
 

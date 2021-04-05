@@ -327,7 +327,12 @@ Private Sub ObjectCaller(ByRef Stack() As Variant, ByRef StackPtr As Long, ByRef
     'Call rtcCallByName
     Dim Obj As Object
     Set Obj = PopV(Stack, StackPtr)
-    PushV Stack, StackPtr, StdCallByName(Obj, FuncName, CallerType, Args)
+    
+    If Obj Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Obj", ModuleName & "." & "ObjectCaller"
+    Else
+        PushV Stack, StackPtr, StdCallByName(Obj, FuncName, CallerType, Args)
+    End If
     
 End Sub
 
