@@ -84,24 +84,32 @@ Public Function Evaluate(ByRef Ops() As Operation, ByVal vLastArgs As Variant) A
                 PushV Stack, StackPtr, v3
                 'Comparison
             Case EvalOperationType.oComparison
-                v2 = PopV(Stack, StackPtr)
-                v1 = PopV(Stack, StackPtr)
-                Select Case Op.SubType
-                    Case ExpressionType.oEql
-                        v3 = v1 = v2
-                    Case ExpressionType.oNeq
-                        v3 = v1 <> v2
-                    Case ExpressionType.oGt
-                        v3 = v1 > v2
-                    Case ExpressionType.oGte
-                        v3 = v1 >= v2
-                    Case ExpressionType.oLt
-                        v3 = v1 < v2
-                    Case ExpressionType.oLte
-                        v3 = v1 <= v2
-                    Case Else
-                        v3 = Empty
-                End Select
+                System.CopyVariant v2, PopV(Stack, StackPtr)
+                System.CopyVariant v1, PopV(Stack, StackPtr)
+                
+                ' Do not compare value types and reference types together.
+                If IsObject(v1) And IsObject(v2) = False Then
+                    v3 = False
+                ElseIf IsObject(v2) And IsObject(v1) = False Then
+                    v3 = False
+                Else
+                    Select Case Op.SubType
+                        Case ExpressionType.oEql
+                            v3 = EqualityComparers.Default(v1).Equals(v1, v2)
+                        Case ExpressionType.oNeq
+                            v3 = Not EqualityComparers.Default(v1).Equals(v1, v2)
+                        Case ExpressionType.oGt
+                            v3 = Comparers.Default(v1).Compare(v1, v2) >= 1
+                        Case ExpressionType.oGte
+                            v3 = Comparers.Default(v1).Compare(v1, v2) >= 0
+                        Case ExpressionType.oLt
+                            v3 = Comparers.Default(v1).Compare(v1, v2) <= -1
+                        Case ExpressionType.oLte
+                        v3 = Comparers.Default(v1).Compare(v1, v2) <= 0
+                        Case Else
+                            v3 = Empty
+                    End Select
+                End If
                 PushV Stack, StackPtr, v3
                 'Logic
             Case EvalOperationType.oLogic

@@ -18,6 +18,9 @@ Public Function Default(ByVal Value As Variant) As IComparer
         Case VbVarType.vbSingle, VbVarType.vbDouble, VbVarType.vbCurrency, VbVarType.vbDecimal, VbVarType.vbDate
             Set Default = New DecimalComparer
             
+        Case VbVarType.vbObject
+            Set Default = New ReferenceComparer
+            
         Case Else
             Set Default = Nothing
     

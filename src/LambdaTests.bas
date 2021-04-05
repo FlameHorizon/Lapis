@@ -8,9 +8,10 @@ Public Sub Start()
 
     ArithmeticOperationsTest
     LogicalOperationsTest
+    LogicalOperationsWithNothingTest
     ArgumentsTest
     PropertyAccessTest
-    EvaluateMethodsAccessTest
+    'EvaluateMethodsAccessTest ' Causes screen to flash.
     InlineIfTest
     PureFunctionsTest
     MultilineUsingTest
@@ -56,7 +57,40 @@ Private Sub LogicalOperationsTest()
     Const MethodName = "LogicalOperationsTest"
 
     ' Assert
-    ExUnit.IsTrue Lambda.Create("5<3 or 5>3").Run(), GetSig(MethodName)
+    ExUnit.IsTrue Lambda.Create("5<3 or 5>3").Run, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LogicalOperationsWithNothingTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "LogicalOperationsWithNothingTest"
+
+    ' Assert
+    ExUnit.IsFalse Lambda.Create("$1 = 1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("1 = $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 <> 1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 <> 1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 > 1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 >= 1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 < 1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 <= 1").Run(Nothing), GetSig(MethodName)
+    
+    ExUnit.IsTrue Lambda.Create("$1 = $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsTrue Lambda.Create("$1 = $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 <> $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 <> $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 > $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsTrue Lambda.Create("$1 >= $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsFalse Lambda.Create("$1 < $1").Run(Nothing), GetSig(MethodName)
+    ExUnit.IsTrue Lambda.Create("$1 <= $1").Run(Nothing), GetSig(MethodName)
+    
+    
 
     Exit Sub
 ErrHandler:
