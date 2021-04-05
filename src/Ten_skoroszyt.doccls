@@ -34,8 +34,3 @@ Private Sub Workbook_AfterSave(ByVal Success As Boolean)
 End Sub
 
 
-Public Sub Start()
-
-    SourceControl.ImportProjectComponents ThisWorkbook
-
-End Sub

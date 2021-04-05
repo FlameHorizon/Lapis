@@ -18,3 +18,14 @@ Public Function IsNothing(ByVal Item As Variant) As Boolean
 End Function
 
 
+Public Sub CopyVariant(ByRef Dest As Variant, ByVal Value As Variant)
+
+    If IsObject(Value) Then
+        Set Dest = Value
+    Else
+        Dest = Value
+    End If
+    
+End Sub
+
+
