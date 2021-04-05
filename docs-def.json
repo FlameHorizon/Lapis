@@ -1047,6 +1047,43 @@
         ],
         "example": "The following example creates a string Collection, and then passes each element of the Collection to the `IsEmptyOrWhiteSpace` method.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Values As Collection\n    Set Values = CollectionExt.Make(vbNullString, _\n                                    \"\", _\n                                    \"ABCDE\", _\n                                    String(20, \" \"), _\n                                    vbTab)\n    \n    Dim Str As Variant\n    For Each Str In Values\n        Debug.Print StringExt.IsEmptyOrWhiteSpace(Str)\n    Next Str\n    \nEnd Sub\n\n' The example displays the following output:\n'\n' True\n' True\n' False\n' True\n' True\n```"
     },
+    "SourceControl.ExportProjectComponents (VBProject, String)": {
+        "short-description": "Exports and saves project's components, from `Source` workbook to the location which is specified in `Path` argument.",
+        "description": "Exports and saves project's components, from `Source` workbook to the location which is specified in `Path` argument.",
+        "parameters": {
+            "Source": "Project from which, components will be exported.",
+            "Path" : "Location of directory, where components will be stored when export is completed."
+        },
+        "errors": [
+            [
+                "OnInvalidOperation",
+                "`Source` project is protected."
+            ],
+            [
+                "OnDirectoryNotFound",
+                "`Path` does not exists or is unreachable."
+            ]
+        ],
+        "example": "The following example demonstrates, who to setup a using which modules will be exported every time when workbooks is saved. In the example, source code will not be exported when component is empty.\n\n```vb\nOption Explicit\n\nPrivate Sub Workbook_AfterSave(ByVal Success As Boolean)\n    \n    ' Let's you control whether components should be exported or not. Useful, while you are \n    ' deploying code onto production.\n    Const SourceControlEnabled As Boolean = False\n    Dim Path As String\n    Path = ThisWorkbook.Path & \"/src\"\n    \n    If SourceControlEnabled Then\n        If Tools.Fso.FolderExists(Path) = False Then\n            DirectoryExt.CreateDirectory Path\n            \n        ElseIf DirectoryExt.GetFiles(Path).Count > 0 Then\n            DirectoryExt.RemoveAllFilesFromFolder Path\n            \n        End If\n        \n        SourceControl.ExportEmptyComponents = False\n        SourceControl.ExportProjectComponents ThisWorkbook.VBProject, Path\n    End If\n    \nEnd Sub\n```"
+    },
+    "SourceControl.ImportProjectComponents (Workbook, String)": {
+        "short-description": "Imports and saves project's components, from `Path` directory to the specified `Target`.",
+        "description": "Imports and saves project's components, from `Path` directory to the specified `Target`.",
+        "parameters": {
+            "Target": "Workbook to which, components will be imported.",
+            "Path" : "Location of directory, from which components will be stored imported."
+        },
+        "errors": [
+            [
+                "OnInvalidOperation",
+                "`Target` project is protected."
+            ],
+            [
+                "OnDirectoryNotFound",
+                "`Path` does not exists or is unreachable."
+            ]
+        ]
+    },
     "ArrayExt": "Represents a collection of helper methods to work with an array type.",
     "ArrayExt.Exists (Variant, Variant)": {
         "short-description": "Checks if given element exists in the array.",

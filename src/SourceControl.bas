@@ -36,9 +36,9 @@ End Property
 
 ' Exports and saves project's components, from Source workbook
 ' to the location which is specified in Path argument.
-' If Source.VBProject is protected, throw an InvalidOperationErrors.
+' If Source.VBProject is protected, throw an OnInvalidOperation.
 ' If target path does not exists or if path does not points to a folder,
-' throw an DirectoryNotFoundErrors.
+' throw an OnDirectoryNotFound.
 Public Sub ExportProjectComponents(ByVal Source As VBProject, ByVal Path As String)
 
     Const MethodName = "ExportProjectComponents"
@@ -47,7 +47,8 @@ Public Sub ExportProjectComponents(ByVal Source As VBProject, ByVal Path As Stri
         Errors.OnInvalidOperation "Source.Protection", _
                                   "The VBA project, in this workbook is protected. " & _
                                   "Therefore, it is not possible to export the components. " & _
-                                  "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
+                                  "Unlock your VBA project and try again. " _
+                                  & ModuleName & "." & MethodName
     End If
     
     With New Scripting.FileSystemObject
@@ -67,7 +68,12 @@ End Sub
 
 
 Private Property Get ExportableComponentsTypes() As Variant
-    ExportableComponentsTypes = Array(vbext_ct_ClassModule, vbext_ct_MSForm, vbext_ct_StdModule, vbext_ct_Document)
+
+    ExportableComponentsTypes = Array(vbext_ct_ClassModule, _
+                                      vbext_ct_MSForm, _
+                                      vbext_ct_StdModule, _
+                                      vbext_ct_Document)
+
 End Property
 
 
@@ -171,9 +177,8 @@ End Property
 ' Params
 ' Target - Workbook into which VBComponents will be imported to.
 ' Path - Path to the folder which contains modules to import.
-' Throws an InvalidOperationException when Target's VBProject is locked.
-' Throws an InvalidOperationException when IsImportEnabled is False.
-' Throws an DirectoryNotFoundException when path to folder is not valid or folder doesn't exists.
+' Throws an OnInvalidOperation when Target's VBProject is locked.
+' Throws an OnDirectoryNotFound when path to folder is not valid or folder doesn't exists.
 Public Sub ImportProjectComponents(ByVal Target As Workbook, ByVal Path As String)
 
     Const MethodName = "ImportProjectComponents"
@@ -182,7 +187,8 @@ Public Sub ImportProjectComponents(ByVal Target As Workbook, ByVal Path As Strin
         Errors.OnInvalidOperation "Target.VBProject.Protection", _
                                   "The VBA project, in this workbook is protected " & _
                                   "therefor, it is not possible to import the components. " & _
-                                  "Unlock your VBA project and try again. " & ModuleName & "." & MethodName
+                                  "Unlock your VBA project and try again. " _
+                                  & ModuleName & "." & MethodName
     End If
 
     If Tools.Fso.FolderExists(Path) = False Then
@@ -275,12 +281,8 @@ Private Function SupportedImportExtensions() As Variant 'Array<String>
 End Function
 
 
-'Private Function ImportableComponentsTypes() As Variant
-'    ImportableComponentsTypes = Array(vbext_ct_ClassModule, vbext_ct_StdModule)
-'End Function
-
-
-' Imports components based on to the specified Workbook using paths to components specified in Cmps collection.
+' Imports components based on to the specified Workbook
+' using paths to components specified in Cmps collection.
 ' Param
 ' Paths: Collection <String>
 Private Sub ImportComponents(ByVal Target As Workbook, ByVal Paths As Collection)
@@ -380,8 +382,8 @@ Private Function GetComponentByName(ByVal Source As Workbook, ByVal Name As Stri
     Next Cmp
     
     Errors.OnArgumentOutOfRange "Name", _
-                                "Couldn't find the name component name [" & Name & "] in the Source workbook. " _
-                                & ModuleName & ".GetComponentByName"
+                                "Couldn't find the name component name [" & Name & "] " _
+                                & "in the Source workbook. " & ModuleName & ".GetComponentByName"
 
 End Function
 
