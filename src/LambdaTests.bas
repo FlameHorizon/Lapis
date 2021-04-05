@@ -9,6 +9,7 @@ Public Sub Start()
     ArithmeticOperationsTest
     LogicalOperationsTest
     LogicalOperationsWithNothingTest
+    LogicalOperationsWithObjectsTest
     ArgumentsTest
     PropertyAccessTest
     'EvaluateMethodsAccessTest ' Causes screen to flash.
@@ -90,7 +91,26 @@ Private Sub LogicalOperationsWithNothingTest()
     ExUnit.IsFalse Lambda.Create("$1 < $1").Run(Nothing), GetSig(MethodName)
     ExUnit.IsTrue Lambda.Create("$1 <= $1").Run(Nothing), GetSig(MethodName)
     
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LogicalOperationsWithObjectsTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "LogicalOperationsWithObjectsTest"
     
+    ' Arrange
+    Dim Stn1 As New TestStone
+    Dim Stn2 As New TestStone
+    
+    ' Act
+
+    ' Assert
+    ExUnit.IsTrue Lambda.Create("$1 = $2").Run(Stn1, Stn2), GetSig(MethodName)
 
     Exit Sub
 ErrHandler:

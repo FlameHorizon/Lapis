@@ -17,10 +17,26 @@ Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
     
     If VBA.IsObject(x) = False Or VBA.IsObject(y) = False Then
         Equals = False
-    Else
-        Equals = x Is y
+        Exit Function
     End If
     
+    If x Is Nothing And y Is Nothing Then
+        Equals = True
+        Exit Function
+    End If
+    
+    If TypeOf x Is IEquatable Then
+        Equals = CompareUsingEquatable(x, y)
+        Exit Function
+    End If
+    
+    Equals = x Is y
+    
+End Function
+
+
+Private Function CompareUsingEquatable(ByVal Value As IEquatable, ByVal y As Variant) As Long
+    CompareUsingEquatable = Value.Equals(y)
 End Function
 
 

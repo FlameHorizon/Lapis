@@ -11,6 +11,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Implements IComparable
+Implements IEquatable
 
 Public Weight As Single
 Public Age As Single
@@ -47,4 +48,31 @@ Private Function IComparable_CompareTo(ByRef x As Variant) As Long
     IComparable_CompareTo = Me.CompareTo(x)
 End Function
 
+
+Public Function Equals(ByVal Other As Variant) As Boolean
+
+    If IsObject(Other) = False Then
+        Equals = False
+        Exit Function
+    End If
+    
+    If (TypeOf Other Is TestStone) = False Then
+        Equals = False
+        Exit Function
+    End If
+    
+    If Other Is Nothing Then
+        Equals = False
+        Exit Function
+    End If
+
+    Equals = (Weight = Other.Weight) And (Age = Other.Age)
+
+
+End Function
+
+
+Private Function IEquatable_Equals(ByVal Other As Variant) As Boolean
+    IEquatable_Equals = Me.Equals(Other)
+End Function
 
