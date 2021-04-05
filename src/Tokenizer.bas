@@ -2,6 +2,7 @@ Attribute VB_Name = "Tokenizer"
 '@Folder("LambdaExpr")
 Option Explicit
 
+Private Const ModuleName As String = "Tokenizer"
 
 Public Type TokenDefinition
     Name As String
@@ -21,6 +22,8 @@ End Type
 '@param {string} Text String to tokenise
 '@return {token[]} A list of Token structs
 Public Function Tokenise(ByVal Text As String) As Token()
+    
+    Const MethodName = "Tokenise"
     
     Dim Defs() As TokenDefinition
     Defs = GetTokenDefinitions()
@@ -64,7 +67,8 @@ Public Function Tokenise(ByVal Text As String) As Token()
         'If no match made then syntax error
         If Not Matched Then
             Lapis.Errors.OnArgumentError "TextInput", _
-                                         "Syntax Error unexpected character """ & Mid$(TextInput, 1, 1) & """"
+                                         "Syntax Error unexpected character """ & Mid$(TextInput, 1, 1) & """" & ". " _
+                                         & ModuleName & "." & MethodName
         End If
     Wend
     

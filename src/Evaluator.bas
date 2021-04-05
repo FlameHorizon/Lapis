@@ -359,6 +359,8 @@ End Function
 '@returns The result
 Private Function EvaluateFunc(ByVal FuncName As String, ByVal Args As Variant) As Variant
 
+    Const MethodName = "EvaluateFunc"
+
     Dim ArgStart As Long: ArgStart = LBound(Args)
     If TypeName(FunctExt) = "Dictionary" Then
         If FunctExt.Exists(FuncName) Then
@@ -533,7 +535,8 @@ Private Function EvaluateFunc(ByVal FuncName As String, ByVal Args As Variant) A
                 Next
             End If
         Case Else
-            Lapis.Errors.OnInvalidOperation vbNullString, "No such function: " & FuncName
+            Lapis.Errors.OnInvalidOperation vbNullString, "No such function: " & FuncName & ". " _
+                                                          & ModuleName & "." & MethodName
     End Select
     
 End Function

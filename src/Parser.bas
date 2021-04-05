@@ -2,6 +2,8 @@ Attribute VB_Name = "Parser"
 '@Folder("LambdaExpr")
 Option Explicit
 
+Private Const ModuleName As String = "Parser"
+
 Public StackSize As Long
 Public ScopeCount As Long
 Public TokenIndex As Long
@@ -546,12 +548,15 @@ End Sub
 ' @returns {string} The value of the token
 Private Function Consume(ByVal TknName As String) As String
 
+    Const MethodName = "Consume"
+
     Dim FirstToken As Token
     FirstToken = ShiftTokens()
     If FirstToken.Type.Name <> TknName Then
         Lapis.Errors.OnInvalidOperation vbNullString, _
                                         "Unexpected token, found: " & FirstToken.Type.Name _
-                                        & " but expected: " & TknName
+                                        & " but expected: " & TknName & ". " _
+                                        & ModuleName & "." & MethodName
     Else
         Consume = FirstToken.Value
     End If
@@ -561,6 +566,8 @@ End Function
 
 Private Function FindVariable(ByRef VarName As String) As Long
 
+    Const MethodName = "FindVariable"
+
     Dim Scope As Long: Scope = ScopeCount
     FindVariable = -1
     While Scope > 0
@@ -568,10 +575,13 @@ Private Function FindVariable(ByRef VarName As String) As Long
             If Scope < FuncScope Then
                 Lapis.Errors.OnInvalidOperation "VarName", _
                                                 "Can't access """ & VarName _
-                                                & """, functions can unfortunately not access data outside their block"
+                                                & """, functions can unfortunately not access data outside their block." _
+                                                & ModuleName & "." & MethodName
+                                                
             ElseIf pScopesArgCount(Scope).Exists(VarName) Then
                 Lapis.Errors.OnInvalidOperation "VarName", _
-                                                "Expected a variable, but found a function for name " & VarName
+                                                "Expected a variable, but found a function for name " & VarName & ". " _
+                                                & ModuleName & "." & MethodName
             Else
                 FindVariable = StackSize - pScopes(Scope).Item(VarName)
                 Scope = 0
@@ -585,10 +595,13 @@ End Function
 
 Private Sub ParseParameterDeclaration()
 
+    Const MethodName = "ParseParameterDeclaration"
+
     Dim VarName As String: VarName = Consume("var")
     Dim Offset As Long: Offset = FindVariable(VarName)
     If Offset >= 0 Then
-        Lapis.Errors.OnInvalidOperation vbNullString, "You can't declare multiple parameters with the same name"
+        Lapis.Errors.OnInvalidOperation vbNullString, "You can't declare multiple parameters with the same name. " _
+                                                      & ModuleName & "." & MethodName
     Else
         ' Reserve a spot for this parameter, it will be pushed by the caller
         StackSize = StackSize + 1
@@ -691,6 +704,8 @@ End Function
 
 Private Function ParseFunctionAccess() As Boolean
 
+    Const MethodName = "ParseFunctionAccess"
+
     ParseFunctionAccess = False
     Dim FuncName As String: FuncName = Consume("var")
     Dim ArgCount As Long
@@ -713,7 +728,8 @@ Private Function ParseFunctionAccess() As Boolean
         If iArgCount <> ArgCount Then
             Lapis.Errors.OnInvalidOperation vbNullString, _
                                             ArgCount & " arguments should have been provided to " & FuncName _
-                                            & " but only " & iArgCount & " were received"
+                                            & " but only " & iArgCount & " were received. " _
+                                            & ModuleName & "." & MethodName
         End If
         
         ' Add call and return data
@@ -765,13 +781,16 @@ End Function
 
 Private Function FindFunction(ByRef VarName As String, Optional ByRef ArgCount As Long) As Long
 
+    Const MethodName = "FindFunction"
+
     Dim Scope As Long: Scope = ScopeCount
     FindFunction = -1
     While Scope > 0
         If pScopes(Scope).Exists(VarName) Then
             If Not pScopesArgCount(Scope).Exists(VarName) Then
                 Lapis.Errors.OnInvalidOperation "VarName", _
-                                                "Expected a function, but found a variable for name " & VarName
+                                                "Expected a function, but found a variable for name " & VarName & ". " _
+                                                & ModuleName & "." & MethodName
             Else
                 FindFunction = pScopes(Scope).Item(VarName)
                 ArgCount = pScopesArgCount(Scope).Item(VarName)
