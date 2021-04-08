@@ -28,6 +28,7 @@ Public Sub Start()
     GlobalVariablesTest
     DictionaryDeclarationTest
     LateBoundGlobalBindTest
+    CollectionDeclarationTest
     
 End Sub
 
@@ -509,6 +510,28 @@ Private Sub LateBoundGlobalBindTest()
     ExUnit.IsTrue Success, GetSig(MethodName)
     ExUnit.IsTrue Expr.Run, GetSig(MethodName)
     ExUnit.IsFalse NotSuccess, GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub CollectionDeclarationTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "CollectionDeclarationTest"
+
+    ' Arrange
+    Dim Source As New Collection
+    Source.Add "A"
+    Source.Add "B"
+    
+    ' Assert
+    ExUnit.AreEqual 2, Lambda.Create("$1.Count").Run(Source), GetSig(MethodName)
+    ExUnit.AreEqual "A", Lambda.Create("$1.Item(1)").Run(Source), GetSig(MethodName)
+    ExUnit.AreEqual "B", Lambda.Create("$1.Item(2)").Run(Source), GetSig(MethodName)
 
     Exit Sub
 ErrHandler:

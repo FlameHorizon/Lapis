@@ -580,6 +580,15 @@ Public Function StdCallByName(ByRef Obj As Object, _
                     Exit Function
                 End If
         End Select
+    ElseIf TypeName(Obj) = "Collection" Then
+        Select Case FuncName
+            Case "Count"
+                StdCallByName = CallByName(Obj, FuncName, VbCallType.VbMethod)
+                Exit Function
+            Case "Item"
+                StdCallByName = CallByName(Obj, FuncName, VbCallType.VbMethod, Args(1))
+                Exit Function
+        End Select
     End If
 
     'Call CallByName from DLL or
