@@ -211,14 +211,14 @@ Public Function First(ByVal Source As Collection, Optional ByVal Predicate As IC
     End If
     
     If Predicate Is Nothing Then
-        Assing Source.Item(1), First
+        Assign First, Source.Item(1)
         Exit Function
     End If
     
     Dim Item As Variant
     For Each Item In Source
         If Predicate.Run(Item) Then
-            Assing Item, First
+            Assign First, Item
             Exit Function
         End If
     Next Item
@@ -228,13 +228,15 @@ Public Function First(ByVal Source As Collection, Optional ByVal Predicate As IC
 End Function
 
 
-Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
+Private Sub Assign(ByRef Destination As Variant, ByVal Source As Variant)
     
-    If IsObject(Source) Then
-        Set Destination = Source
-    Else
-        Destination = Source
-    End If
+    System.CopyVariant Destination, Source
+    
+'    If IsObject(Source) Then
+'        Set Destination = Source
+'    Else
+'        Destination = Source
+'    End If
     
 End Sub
 
@@ -253,7 +255,7 @@ Public Function Last(ByVal Source As Collection, Optional ByVal Predicate As ICa
     End If
     
     If Predicate Is Nothing Then
-        Assing Source.Item(Source.Count), Last
+        Assign Last, Source.Item(Source.Count)
         Exit Function
     End If
 
@@ -261,21 +263,21 @@ Public Function Last(ByVal Source As Collection, Optional ByVal Predicate As ICa
     Dim Item As Variant
     For Each Item In Source
         If Predicate.Run(Item) Then
-            Assing Item, Output
+            Assign Output, Item
         End If
     Next Item
     
     ' No item matches the predicate or source is empty.
     If VBA.IsObject(Output) Then
         If Not (Output Is Nothing) Then
-            Assing Output, Last
+            Assign Last, Output
             Exit Function
         End If
     ElseIf Output = vbEmpty Then
         Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
     End If
     
-    Assing Output, Last
+    Assign Last, Output
     
 End Function
 
@@ -302,7 +304,7 @@ Public Function SelectOne(ByVal Source As Collection, Optional ByVal Predicate A
                                         "The input sequence contains more than one element. " _
                                         & ModuleName & "." & MethodName
     ElseIf Source.Count = 1 Then
-        Assing Source.Item(1), SelectOne
+        Assign SelectOne, Source.Item(1)
         Exit Function
     End If
 
@@ -313,7 +315,7 @@ Public Function SelectOne(ByVal Source As Collection, Optional ByVal Predicate A
             If Output <> vbEmpty Then
                 Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
             Else
-                Assing Item, Output
+                Assign Output, Item
             End If
         End If
     Next Item
@@ -323,6 +325,8 @@ Public Function SelectOne(ByVal Source As Collection, Optional ByVal Predicate A
         Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
     End If
     
-    Assing Output, SelectOne
+    Assign SelectOne, Output
 
 End Function
+
+
