@@ -278,3 +278,51 @@ Public Function Last(ByVal Source As Collection, Optional ByVal Predicate As ICa
     Assing Output, Last
     
 End Function
+
+
+' Returns the only element of a sequence that satisfies a specified condition,
+' and throws an exception if more than one such element exists.
+Public Function SelectOne(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
+
+    Const MethodName = "SelectOne"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", _
+                                        "The input sequence is empty. " _
+                                        & ModuleName & "." & MethodName
+    End If
+
+    
+    If Predicate Is Nothing And Source.Count > 1 Then
+        Lapis.Errors.OnInvalidOperation vbNullString, _
+                                        "The input sequence contains more than one element. " _
+                                        & ModuleName & "." & MethodName
+    ElseIf Source.Count = 1 Then
+        Assing Source.Item(1), SelectOne
+        Exit Function
+    End If
+
+    Dim Output As Variant
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            If Output <> vbEmpty Then
+                Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+            Else
+                Assing Item, Output
+            End If
+        End If
+    Next Item
+    
+    ' No item matches the predicate or source is empty.
+    If Output = vbEmpty Then
+        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Assing Output, SelectOne
+
+End Function

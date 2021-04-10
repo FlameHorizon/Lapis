@@ -58,6 +58,12 @@ Public Sub Start()
     LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
     LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest
     
+    SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest
+    SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest
+    SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
+    SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest
+    SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest
+    
 End Sub
 
 
@@ -868,3 +874,82 @@ ErrHandler:
 
 End Sub
 
+
+
+Private Sub SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "SelectOneReturnsValueWhenSourceDoesSatisfyConditionTest"
+    
+    ' Act & Assert
+    ExUnit.AreEqual 1, CollectionExt2.SelectOne(CollectionExt.Make(1)), GetSig(MethodName)
+    ExUnit.AreEqual 2, CollectionExt2.SelectOne(CollectionExt.Make(1, 2, 3), Lambda.Create("$1 = 2")), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "SelectOneReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt2.SelectOne Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "SelectOneReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest"
+
+    ' Act
+    CollectionExt2.SelectOne CollectionExt.Make(1, 2, 3), Lambda.Create("$1 = 5")
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "SelectOneReturnsInvalidOperationErrorWhenSourceIsEmptyTest"
+
+    ' Act
+    CollectionExt2.SelectOne New Collection
+
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "SelectOneReturnsInvalidOperationErrorWhenSourceDoesSatisfyConditionMultipleTimesTest"
+
+    ' Act
+    ExUnit.AreEqual 3, CollectionExt2.SelectOne(CollectionExt.Make(1, 2, 3), Lambda.Create("$1 >= 2")), GetSig(MethodName)
+    
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
