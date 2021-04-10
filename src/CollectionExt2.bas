@@ -166,3 +166,27 @@ Public Function Count(ByVal Source As Collection, Optional ByVal Predicate As IC
     Count = CollectionExt2.Where(Source, Predicate).Count
 
 End Function
+
+
+' Projects each element of a sequence into a new form.
+Public Function Convert(ByVal Source As Collection, ByVal Selector As ICallable) As Collection
+
+    Const MethodName As String = "Convert"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Selector Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
+    End If
+    
+    Dim Output As New Collection
+    Dim Item As Variant
+    For Each Item In Source
+        Output.Add Selector.Run(Item)
+    Next Item
+    
+    Set Convert = Output
+
+End Function

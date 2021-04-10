@@ -44,6 +44,10 @@ Public Sub Start()
     CountTest
     CountReturnsArgumentNullErrorWhenSourceIsNothingTest
     
+    ConvertTest
+    ConvertReturnsArgumentNullWhenSourceIsNothingTest
+    ConvertReturnsArgumentNullWhenSelectorIsNothingTest
+    
 End Sub
 
 
@@ -644,5 +648,62 @@ Private Sub CountReturnsArgumentNullErrorWhenSourceIsNothingTest()
     ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+
+Private Sub ConvertTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "ConvertTest"
+    
+    ' Arrange
+    Dim Expr As ICallable: Set Expr = Lambda.Create("len($1)")
+
+    ' Act
+    Dim Actual As Collection
+    Set Actual = CollectionExt2.Convert(CollectionExt.Make("a", "ab", "abc"), Expr)
+    
+    ' Assert
+    Lapis.ExUnit.AreEqual 1, Actual.Item(1), GetSig(MethodName)
+    Lapis.ExUnit.AreEqual 2, Actual.Item(2), GetSig(MethodName)
+    Lapis.ExUnit.AreEqual 3, Actual.Item(3), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ConvertReturnsArgumentNullWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ConvertReturnsArgumentNullWhenSourceIsNothingTest"
+
+    ' Act
+    Lapis.CollectionExt2.Convert Nothing, Lambda.Create("len($1)")
+
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub ConvertReturnsArgumentNullWhenSelectorIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "ConvertReturnsArgumentNullWhenSelectorIsNothingTest"
+
+    ' Act
+    Lapis.CollectionExt2.Convert New Collection, Nothing
+
+    ' Assert
+ErrHandler:
+    ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
