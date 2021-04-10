@@ -20,7 +20,7 @@ Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
         Exit Function
     End If
     
-    Equals = (VBA.Round(x, 15) = VBA.Round(15, y))
+    Equals = (VBA.Round(x, 15) = VBA.Round(y, 15))
     
 End Function
 

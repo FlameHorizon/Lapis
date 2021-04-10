@@ -156,7 +156,7 @@ Public Function Evaluate(ByRef Ops() As Operation, ByVal vLastArgs As Variant) A
             Case EvalOperationType.oAccess
                 Select Case Op.SubType
                     Case ExpressionType.argument
-                        Dim ArgIndex As Long: ArgIndex = val(Mid$(Op.Value, 2)) + LBound(vLastArgs) - 1
+                        Dim ArgIndex As Long: ArgIndex = Val(Mid$(Op.Value, 2)) + LBound(vLastArgs) - 1
                         If ArgIndex <= UBound(vLastArgs) Then
                             PushV Stack, StackPtr, vLastArgs(ArgIndex)
                         Else
@@ -330,7 +330,7 @@ Private Sub ObjectCaller(ByRef Stack() As Variant, ByRef StackPtr As Long, ByRef
     
     If Obj Is Nothing Then
         Lapis.Errors.OnArgumentNull "Obj", _
-                                    "Method can't be called because variable is not object type. " _
+                                    "Method can't be called because variable is to nothing. " _
                                     & ModuleName & "." & "ObjectCaller"
     Else
         PushV Stack, StackPtr, StdCallByName(Obj, FuncName, CallerType, Args)
@@ -487,7 +487,7 @@ Private Function EvaluateFunc(ByVal FuncName As String, ByVal Args As Variant) A
         Case "hex":     EvaluateFunc = VBA.Conversion.Hex$(Args(ArgStart))
         Case "oct":     EvaluateFunc = VBA.Conversion.Oct$(Args(ArgStart))
         Case "str":     EvaluateFunc = VBA.Conversion.Str$(Args(ArgStart))
-        Case "val":     EvaluateFunc = VBA.Conversion.val(Args(ArgStart))
+        Case "val":     EvaluateFunc = VBA.Conversion.Val(Args(ArgStart))
         
             'String functions
         Case "trim":  EvaluateFunc = VBA.Trim$(Args(ArgStart))

@@ -20,6 +20,11 @@ Public Function All(ByVal Source As Collection, ByVal Predicate As ICallable) As
     
     Dim Item As Variant
     For Each Item In Source
+        If System.IsNothing(Item) Then
+            All = False
+            Exit Function
+        End If
+    
         If Predicate.Run(Item) = False Then
             All = False
             Exit Function
@@ -232,3 +237,44 @@ Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
     End If
     
 End Sub
+
+
+' Returns the last element of a sequence that satisfies a specified condition.
+Public Function Last(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
+
+    Const MethodName = "Last"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Assing Source.Item(Source.Count), Last
+        Exit Function
+    End If
+
+    Dim Output As Variant
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            Assing Item, Output
+        End If
+    Next Item
+    
+    ' No item matches the predicate or source is empty.
+    If VBA.IsObject(Output) Then
+        If Not (Output Is Nothing) Then
+            Assing Output, Last
+            Exit Function
+        End If
+    ElseIf Output = vbEmpty Then
+        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Assing Output, Last
+    
+End Function

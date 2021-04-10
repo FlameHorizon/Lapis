@@ -53,6 +53,11 @@ Public Sub Start()
     FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
     FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest
     
+    LastReturnsValueWhenSourceDoesSatisfyConditionTest
+    LastReturnsArgumentNullErrorWhenSourceIsNothingTest
+    LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
+    LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest
+    
 End Sub
 
 
@@ -719,13 +724,24 @@ Private Sub FirstReturnsValueWhenSourceDoesSatisfyConditionTest()
     On Error GoTo ErrHandler
     Const MethodName = "FirstReturnsValueWhenSourceDoesSatisfyConditionTest"
 
-    ' Arrange
+    ' Value types
     Dim Predicate As ICallable: Set Predicate = Lambda.Create("$1 = 3")
     Dim Source As Collection: Set Source = CollectionExt.Make(1, 2, 3)
 
-    ' Act & Assert
     ExUnit.AreEqual 1, CollectionExt2.First(Source), GetSig(MethodName)
     ExUnit.AreEqual 3, CollectionExt2.First(Source, Predicate), GetSig(MethodName)
+    
+    ' Reference Types
+    Dim Stn1 As New TestStone: Stn1.Age = 1: Stn1.Weight = 10
+    Dim Stn2 As New TestStone: Stn2.Age = 2: Stn2.Weight = 20
+    Dim Stn3 As New TestStone: Stn3.Age = 1: Stn3.Weight = 30
+
+    Set Source = CollectionExt.Make(Stn1, Stn2, Stn3)
+    Set Predicate = Lambda.Create("$1.Age = 1")
+
+    ' Act & Assert
+    ExUnit.AreEqual 10, CollectionExt2.First(Source).Weight, GetSig(MethodName)
+    ExUnit.AreEqual 10, CollectionExt2.First(Source, Lambda.Create("$1.Age = 1")).Weight, GetSig(MethodName)
 
     Exit Sub
 ErrHandler:
@@ -775,6 +791,78 @@ Private Sub FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
     ' Act
     CollectionExt2.First New Collection
 
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+
+Private Sub LastReturnsValueWhenSourceDoesSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "LastReturnsValueWhenSourceDoesSatisfyConditionTest"
+
+    ' Arrange
+    Dim Stn1 As New TestStone: Stn1.Age = 1: Stn1.Weight = 10
+    Dim Stn2 As New TestStone: Stn2.Age = 2: Stn2.Weight = 20
+    Dim Stn3 As New TestStone: Stn3.Age = 1: Stn3.Weight = 30
+
+    Dim Source As Collection: Set Source = CollectionExt.Make(Stn1, Stn2, Stn3)
+
+    ' Act & Assert
+    ExUnit.AreEqual 30, CollectionExt2.Last(Source).Weight, GetSig(MethodName)
+    ExUnit.AreEqual 30, CollectionExt2.Last(Source, Lambda.Create("$1.Age = 1")).Weight, GetSig(MethodName)
+    
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "LastReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt2.Last Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "LastReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest"
+
+    ' Act
+    CollectionExt2.Last CollectionExt.Make(1, 2, 3), Lambda.Create("$1 = 5")
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "LastReturnsInvalidOperationErrorWhenSourceIsEmptyTest"
+
+    ' Act
+    CollectionExt2.Last New Collection
+
+    ' Assert
 ErrHandler:
     Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 

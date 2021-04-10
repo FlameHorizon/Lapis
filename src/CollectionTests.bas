@@ -2210,7 +2210,7 @@ Private Sub ConvertReturnsArgumentNullWhenSourceIsNothingTest()
     Const MethodName = "ConvertReturnsArgumentNullWhenSourceIsNothingTest"
 
     ' Act
-    Lapis.Convert Nothing, New StringToLengthConverter
+    Lapis.CollectionExt.Convert Nothing, New StringToLengthConverter
 
     ' Assert
 ErrHandler:
