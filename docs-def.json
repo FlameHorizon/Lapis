@@ -204,12 +204,12 @@
         ],
         "example": "If you want to compare sequence of objects of some custom data type, you have to implement the IEqualityComparer interface in a helper class. The following code example shows how to implement this interface in a custom data type and provided Equals methods. The following example shows how to implement and equality comparer that can be used in the `Intersect` method.\n\n```vb\n' Product class\nOption Explicit\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\n' A custom comparer for the Product class\nOption Explicit\nImplements Lapis.IEqualityComparer\n\nPublic Function Equals(ByVal x As Product, ByVal y As Product) As Boolean\n\n    If x Is y Then\n        Equals = True\n    \n    ElseIf x Is Nothing Or y Is Nothing Then\n        Equals = False\n    \n    Else\n        Equals = (x.Code = y.Code And x.Name = y.Name)\n    \n    End If\n\nEnd Function\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\nAfter you implement this comparer, you can use sequences of Product objects in the `Intersect` method, as shown in the following example:\n\n```vb\n' Main module\nOption Explicit\nPublic Sub Start()\n    \n    Dim Fruits1 As Collection\n    Set Fruits1 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"orange\", 4))\n    \n    Dim Fruits2 As Collection\n    Set Fruits2 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"lemon\", 12))\n    \n    ' Get the products from the first collection\n    ' that have duplicates in the second array.\n    \n    Dim Duplicates As Collection\n    Set Duplicates = CollectionExt.Intersect(Fruits1, Fruits2, New ProductComparer)\n    \n    Dim Item As Product\n    For Each Item In Duplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n    \nEnd Sub\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n\n' This code produces the following output:\n' apple 9\n```"
     },
-    "CollectionExt.Min (Collection, IComparer)": {
-        "short-description": "Invokes a Comparer on each element of a sequence and returns the minimum resulting value.",
-        "description": "Invokes a Comparer on each element of a sequence and returns the minimum resulting value.",
+    "CollectionExt.Min (Collection, ICallable)": {
+        "short-description": "Invokes a transform function on each element of a generic sequence and returns the minimum resulting value.",
+        "description": "Invokes a transform function on each element of a generic sequence and returns the minimum resulting value.",
         "parameters": {
-            "Source": "A sequence of values to determine the minimum value of `Source`.",
-            "Comparer": "A Comparer to apply to each element."
+            "Source": "A sequence of values to determine the minimum value of",
+            "Selector": "A transform function to apply to each element."
         },
         "returns": [
             "Variant",
@@ -221,11 +221,11 @@
                 "`Source` is `Nothing`."
             ],
             [
-                "OnArgumentNull",
-                "`Comparer` is `Nothing`."
+                "OnInvalidOperation",
+                "Default comparer wasn't found for `Value` argument. "
             ]
         ],
-        "example": "The following code example demonstrates how to use `Min` to determine the minimum value in a sequence of projected values.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' PetByAgeComparer class module\nOption Explicit\n\nImplements Lapis.IComparer\n\nPublic Function Compare(ByVal x As Pet, ByVal y As Pet) As Long\n\n    Compare = IIf(x.Age < y.Age, -1, _\n              IIf(x.Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Min As Pet\n    Set Min = CollectionExt.Min(Pets, New PetByAgeComparer)\n    \n    Debug.Print \"The youngest animal is age \" & Min.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The youngest animal is age 1\n```"
+        "example": "The following code example demonstrates how to use `Min` to determine the minimum value in a sequence of projected values.\n\n```vb\n' Pet class module\n\nOption Explicit\n\nImplements IComparable\n\nPublic Name As String\nPublic Age As Long\n\n\nPublic Function CompareTo(ByVal x As Pet) As Long\n\n    Compare = IIf(Age < y.Age, -1, _\n              IIf(Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparable_CompareTo(ByRef x As Variant) As Long\n    IComparable_CompareTo = Me.CompareTo(x)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Min As Pet\n    Set Min = CollectionExt.Min(Pets, Lambda.Create(\"$1.Age\")\n    \n    Debug.Print \"The youngest animal is age \" & Min.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The youngest animal is age 1\n```"
     },
     "CollectionExt.Max (Collection, IComparer)": {
         "short-description": "Invokes a Comparer on each element of a sequence and returns the maximum resulting value.",

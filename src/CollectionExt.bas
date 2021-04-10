@@ -323,8 +323,8 @@ Public Function Min(ByVal Source As Collection, _
     
     ' If comparer is still not found, throw the error.
     If System.IsNothing(Comparer) Then
-        Lapis.Errors.OnArgumentError "Comparer", _
-                                     "Default comparer wasn't found for Value argument. " & ModuleName & "." & MethodName
+        Lapis.Errors.OnInvalidOperation "Comparer", _
+                                        "Default comparer wasn't found for Value argument. " & ModuleName & "." & MethodName
     End If
     
     ' Do the Min comparison.
