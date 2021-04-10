@@ -305,7 +305,8 @@ End Function
 
 
 ' Returns the minimum value in a sequence of values.
-Public Function Min(ByVal Source As Collection, ByVal Comparer As IComparer) As Variant
+Public Function Min(ByVal Source As Collection, _
+                    Optional ByVal Selector As ICallable) As Variant
 
     Const MethodName = "Min"
     
@@ -313,33 +314,57 @@ Public Function Min(ByVal Source As Collection, ByVal Comparer As IComparer) As 
         Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
-    If Comparer Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    Dim Comparer As IComparer
+    If (Selector Is Nothing) = False Then
+        Set Comparer = Comparers.Default(Selector.Run(Source.Item(1)))
+    Else
+        Set Comparer = Comparers.Default(Source.Item(1))
+    End If
+    
+    ' If comparer is still not found, throw the error.
+    If System.IsNothing(Comparer) Then
+        Lapis.Errors.OnArgumentError "Comparer", _
+                                     "Default comparer wasn't found for Value argument. " & ModuleName & "." & MethodName
+    End If
+    
+    ' Do the Min comparison.
+    
+    ' Find first, non-nothing element in source.
+    Dim Value As Variant
+    System.CopyVariant Value, Source.Item(1)
+    Dim Ndx As Long: Ndx = 2
+    Do Until System.IsNothing(Value) = False Or Source.Count < Ndx
+        Set Value = Source.Item(Ndx)
+        Ndx = Ndx + 1
+    Loop
+    
+    ' Check, if entire source is composed of Nothigns.
+    If Source.Count < Ndx Then
+        Set Min = Nothing
+        Exit Function
     End If
     
     Dim Item As Variant
-    Dim Value As Variant
-    If IsObject(Source.Item(1)) Then
-        Set Value = Source.Item(1)
+    For Each Item In Source
+        If System.IsNothing(Item) Then
+            GoTo NextItem
+        End If
         
-        For Each Item In Source
-            If (Item Is Nothing) = False And (Value Is Nothing Or Comparer.Compare(Item, Value) < 0) Then
-                Set Value = Item
-            End If
-        Next Item
-        Set Min = Value
+        Dim IsNewMin As Boolean
+        If (Selector Is Nothing) = False Then
+            IsNewMin = Comparer.Compare(Selector.Run(Item), Selector.Run(Value)) < 0
+        Else
+            IsNewMin = Comparer.Compare(Item, Value) < 0
+        End If
         
-    Else
-        Value = Source.Item(1)
-        For Each Item In Source
-            If Comparer.Compare(Item, Value) < 0 Then
-                Value = Item
-            End If
-        Next Item
-        Min = Value
-        
-    End If
-
+        If IsNewMin Then
+            System.CopyVariant Value, Item
+        End If
+NextItem:
+    Next Item
+    
+    System.CopyVariant Min, Value
+   
 End Function
 
 
