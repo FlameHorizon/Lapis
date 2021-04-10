@@ -97,18 +97,57 @@ Public Function Sum(ByVal Source As Collection, Optional ByVal Selector As ICall
         For Each Item In Source
             Output = Output + VBA.IIf(System.IsNothing(Item), 0, Item)
         Next Item
-    Else
-        For Each Item In Source
-            If System.IsNothing(Item) Then
-                GoTo NextItem
-            End If
-            
-            Output = Output + Selector.Run(Item)
-            
-NextItem:
-        Next Item
+        
+        Sum = Output
+        Exit Function
     End If
+    
+    For Each Item In Source
+        If System.IsNothing(Item) = False Then
+            Output = Output + Selector.Run(Item)
+        End If
+    Next Item
     
     Sum = Output
 
+End Function
+
+
+' Computes the average of a sequence of numeric values.
+Public Function Average(ByVal Source As Collection, Optional ByVal Selector As ICallable) As Variant
+
+    Const MethodName = "Average"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+'    If Selector Is Nothing Then
+'        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
+'    End If
+
+    If Source.Count = 0 Then
+        Average = 0
+        Exit Function
+    End If
+    
+    ' Do not take into account Nothing values when calculating average.
+    Dim NothingCount As Long
+    Dim Item As Variant
+    For Each Item In Source
+        If System.IsNothing(Item) Then
+            NothingCount = NothingCount + 1
+        End If
+    Next Item
+    
+    ' Case where the entire source contains only Nothing values.
+    If Source.Count - NothingCount = 0 Then
+        Average = 0
+        Exit Function
+    End If
+    
+    Dim Sum As Variant
+    Sum = CollectionExt2.Sum(Source, Selector)
+    Average = Sum / (Source.Count - NothingCount)
+    
 End Function
