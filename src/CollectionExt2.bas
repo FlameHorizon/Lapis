@@ -190,3 +190,45 @@ Public Function Convert(ByVal Source As Collection, ByVal Selector As ICallable)
     Set Convert = Output
 
 End Function
+
+
+' Returns the first element in a sequence that satisfies a specified condition.
+Public Function First(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
+    
+    Const MethodName = "First"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Assing Source.Item(1), First
+        Exit Function
+    End If
+    
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            Assing Item, First
+            Exit Function
+        End If
+    Next Item
+    
+    Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+
+End Function
+
+
+Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
+    
+    If IsObject(Source) Then
+        Set Destination = Source
+    Else
+        Destination = Source
+    End If
+    
+End Sub

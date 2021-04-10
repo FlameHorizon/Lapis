@@ -48,6 +48,11 @@ Public Sub Start()
     ConvertReturnsArgumentNullWhenSourceIsNothingTest
     ConvertReturnsArgumentNullWhenSelectorIsNothingTest
     
+    FirstReturnsValueWhenSourceDoesSatisfyConditionTest
+    FirstReturnsArgumentNullErrorWhenSourceIsNothingTest
+    FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest
+    FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest
+    
 End Sub
 
 
@@ -707,3 +712,71 @@ ErrHandler:
     ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
+
+
+Private Sub FirstReturnsValueWhenSourceDoesSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "FirstReturnsValueWhenSourceDoesSatisfyConditionTest"
+
+    ' Arrange
+    Dim Predicate As ICallable: Set Predicate = Lambda.Create("$1 = 3")
+    Dim Source As Collection: Set Source = CollectionExt.Make(1, 2, 3)
+
+    ' Act & Assert
+    ExUnit.AreEqual 1, CollectionExt2.First(Source), GetSig(MethodName)
+    ExUnit.AreEqual 3, CollectionExt2.First(Source, Predicate), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "FirstReturnsArgumentNullErrorWhenSourceIsNothingTest"
+
+    ' Act
+    CollectionExt2.First Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "FirstReturnsInvalidOperationErrorWhenSourceDoesNotSatisfyConditionTest"
+
+    ' Act
+    CollectionExt2.First CollectionExt.Make(1, 2, 3), Lambda.Create("$1 = 5")
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
+
+Private Sub FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.InvalidOperation
+    Const MethodName = "FirstReturnsInvalidOperationErrorWhenSourceIsEmptyTest"
+
+    ' Act
+    CollectionExt2.First New Collection
+
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
+
+End Sub
+
