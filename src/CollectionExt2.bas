@@ -121,10 +121,6 @@ Public Function Average(ByVal Source As Collection, Optional ByVal Selector As I
     If Source Is Nothing Then
         Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
-    
-'    If Selector Is Nothing Then
-'        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
-'    End If
 
     If Source.Count = 0 Then
         Average = 0
@@ -150,4 +146,23 @@ Public Function Average(ByVal Source As Collection, Optional ByVal Selector As I
     Sum = CollectionExt2.Sum(Source, Selector)
     Average = Sum / (Source.Count - NothingCount)
     
+End Function
+
+
+' Returns a number that represents how many elements in the specified sequence satisfy a condition.
+Public Function Count(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Long
+
+    Const MethodName = "Count"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Count = Source.Count
+        Exit Function
+    End If
+    
+    Count = CollectionExt2.Where(Source, Predicate).Count
+
 End Function

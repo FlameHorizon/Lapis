@@ -759,7 +759,7 @@ End Function
 ' Returns a number that represents how many elements in the specified sequence satisfy a condition.
 Public Function Count(ByVal Source As Collection, ByVal Predicate As Predicate) As Long
 
-    Const MethodName = "SelectOne"
+    Const MethodName = "Count"
 
     If Source Is Nothing Then
         Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName

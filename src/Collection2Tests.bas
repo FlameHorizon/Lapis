@@ -41,6 +41,9 @@ Public Sub Start()
     AverageReturnsValueWhenSourceContainsOnlyNothingTest
     AverageReturnsValueWhenSourceContainsReferecenTypesTest
     
+    CountTest
+    CountReturnsArgumentNullErrorWhenSourceIsNothingTest
+    
 End Sub
 
 
@@ -606,5 +609,40 @@ Private Sub AverageReturnsValueWhenSourceContainsReferecenTypesTest()
     Exit Sub
 ErrHandler:
     ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub CountTest()
+
+    On Error GoTo ErrHandler
+    Const MethodName = "CountTest"
+
+    Dim Source As Collection
+    Set Source = CollectionExt.Make(1, 2, 3)
+    
+    ' Act & Assert
+    ExUnit.AreEqual 3, CollectionExt2.Count(Source), GetSig(MethodName)
+    ExUnit.AreEqual 2, CollectionExt2.Count(Source, Lambda.Create("$1 >= 2")), GetSig(MethodName)
+
+    Exit Sub
+ErrHandler:
+    Lapis.ExUnit.TestFailRunTime GetSig(MethodName)
+
+End Sub
+
+
+Private Sub CountReturnsArgumentNullErrorWhenSourceIsNothingTest()
+
+    On Error GoTo ErrHandler
+    Const ExpectedError As Long = ErrorCode.ArgumentNull
+    Const MethodName = "CountReturnsArgumentNullErrorWhenSourceIsNothingTest"
+    
+    ' Act
+    CollectionExt2.Count Nothing
+
+    ' Assert
+ErrHandler:
+    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
 
 End Sub
