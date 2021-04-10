@@ -33,7 +33,6 @@ Public Sub Start()
     MaxWhenSourceContainsValueTypesTest
     MaxWhenSourceContainsReferencedTypesTest
     MaxReturnsArgumentNullErrorWhenSourceIsNothingTest
-    MaxReturnsArgumentNullErrorWhenComparerIsNothingTest
     MaxReturnsHighestValueWhenNothingIsPresentTest
     MaxReturnsNothingWhenOnlyNothingIsPresentTest
     
@@ -515,7 +514,7 @@ Private Sub MaxWhenSourceContainsValueTypesTest()
 
     ' Act
     Dim Actual As Variant
-    Actual = CollectionExt.Max(CollectionExt.Make(3, 2, 1), New LongComparer)
+    Actual = CollectionExt.Max(CollectionExt.Make(3, 2, 1))
     
     ' Assert
     ExUnit.AreEqual 3, Actual, GetSig(MethodName)
@@ -539,7 +538,7 @@ Private Sub MaxWhenSourceContainsReferencedTypesTest()
 
     ' Act
     Dim Actual As Object
-    Set Actual = CollectionExt.Max(Source, New TestCollectionComparer)
+    Set Actual = CollectionExt.Max(Source, Lambda.Create("$1.Count"))
     
     ' Assert
     ExUnit.AreEqual 2, Actual.Count, GetSig(MethodName)
@@ -560,23 +559,7 @@ Private Sub MaxReturnsArgumentNullErrorWhenSourceIsNothingTest()
     Const MethodName = "MaxReturnsArgumentNullErrorWhenSourceIsNothingTest"
 
     ' Act
-    CollectionExt.Max Nothing, New LongComparer
-    
-    ' Assert
-ErrHandler:
-    Lapis.ExUnit.IsException ExpectedError, Err.Number, GetSig(MethodName)
-
-End Sub
-
-
-Private Sub MaxReturnsArgumentNullErrorWhenComparerIsNothingTest()
-
-    On Error GoTo ErrHandler
-    Const ExpectedError As Long = ErrorCode.ArgumentNull
-    Const MethodName = "MaxReturnsArgumentNullErrorWhenComparerIsNothingTest"
-
-    ' Act
-    CollectionExt.Max New Collection, Nothing
+    CollectionExt.Max Nothing
     
     ' Assert
 ErrHandler:
@@ -596,7 +579,7 @@ Private Sub MaxReturnsHighestValueWhenNothingIsPresentTest()
     
     ' Act
     Dim Actual As Object
-    Set Actual = CollectionExt.Max(Source, New TestCollectionComparer)
+    Set Actual = CollectionExt.Max(Source, Lambda.Create("$1.Count"))
 
     ' Assert
     ExUnit.AreEqual 1, Actual.Count, GetSig(MethodName)
@@ -615,7 +598,7 @@ Private Sub MaxReturnsNothingWhenOnlyNothingIsPresentTest()
 
     ' Act
     Dim Actual As Object
-    Set Actual = CollectionExt.Max(CollectionExt.Make(Nothing), New TestCollectionComparer)
+    Set Actual = CollectionExt.Max(CollectionExt.Make(Nothing))
     
     ' Assert
     ExUnit.AreSame Nothing, Actual, GetSig(MethodName)
