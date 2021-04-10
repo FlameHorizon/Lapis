@@ -128,7 +128,7 @@ Public Sub Start()
     
     IndexOfTest
     IndexOfReturnsValueWhenItemNotExistsInSourceTest
-    IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest
+    IndexOfReturnsMinusOneWhenItemCantBeComparedTest
     IndexOfReturnsValueWhenItemImplementsIComparableTest
     
     ConvertTest
@@ -2148,10 +2148,10 @@ ErrHandler:
 End Sub
 
 
-Private Sub IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest()
+Private Sub IndexOfReturnsMinusOneWhenItemCantBeComparedTest()
 
     On Error GoTo ErrHandler
-    Const MethodName = "IndexOfReturnsArgumentErrorWhenItemCantBeComparedTest"
+    Const MethodName = "IndexOfReturnsMinusOneWhenItemCantBeComparedTest"
     
     ' Assert
     Lapis.ExUnit.AreEqual -1, CollectionExt.IndexOf(CollectionExt.Make(1, 2, 3, 4), ThisWorkbook), GetSig(MethodName)

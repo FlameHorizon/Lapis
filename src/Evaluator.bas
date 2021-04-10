@@ -329,7 +329,9 @@ Private Sub ObjectCaller(ByRef Stack() As Variant, ByRef StackPtr As Long, ByRef
     Set Obj = PopV(Stack, StackPtr)
     
     If Obj Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Obj", ModuleName & "." & "ObjectCaller"
+        Lapis.Errors.OnArgumentNull "Obj", _
+                                    "Method can't be called because variable is not object type. " _
+                                    & ModuleName & "." & "ObjectCaller"
     Else
         PushV Stack, StackPtr, StdCallByName(Obj, FuncName, CallerType, Args)
     End If
