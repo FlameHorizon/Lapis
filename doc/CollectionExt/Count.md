@@ -1,9 +1,9 @@
 # CollectionExt.Count Method
 
-Returns a number that represents how many elements in the specified sequence satisfy a condition.
+Returns a number that represents how many elements in the specified sequence satisfy a condition. If `Predicate` is not defined, returns the number of elements in a sequence.
 
 ```vb
-Public Function Count(ByVal Source As Collection, ByVal Predicate As Predicate) As Long
+Public Function Count(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Long
 ```
 
 ### Parameters
@@ -11,8 +11,8 @@ Public Function Count(ByVal Source As Collection, ByVal Predicate As Predicate) 
 **Source** `Collection` <br>
 A sequence that contains elements to be tested and counted.
 
-**Predicate** `Predicate` <br>
-A function to test each element for a condition.
+**Predicate** `ICallable` <br>
+Optional. A function to test each element for a condition.
 
 ### Returns
 
@@ -22,11 +22,11 @@ A number that represents how many elements in the sequence satisfy the condition
 ### Errors
 
 `OnArgumentNull` <br>
-`Source` or `Predicate` is `Nothing`
+`Source` is `Nothing`
 
 ## Examples
 
-The following code example demonstrates how to use Count(Collection, Predicate) to count the elements in an array that satisfy a condition.
+The following code example demonstrates how to use `Count` to count the elements in a set.
 
 ```vb
 Option Explicit
@@ -36,17 +36,30 @@ Public Sub Start()
     Dim Numbers As Collection
     Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
-    Dim Pred As Lapis.Predicate
-    Set Pred = Lapis.Factory.GetPredicate
-    
-    With Pred
-        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo
-        .ComparisonValue = 5
-        .Comparer = Lapis.Factory.GetLongComparer
-    End With
-    
     Dim Value As Variant
-    Value = Lapis.CollectionExt.Count(Numbers, Pred)
+    Value = Lapis.CollectionExt.Count(Numbers)
+    
+    Debug.Print "There are " & Value & " numbers."
+
+End Sub
+
+' This code produces the following output:
+'
+' There are 10 numbers.
+```
+
+The following code example demonstrates how to use `Count` to count the elements in a set that satisfy a condition.
+
+```vb
+Option Explicit
+
+Public Sub Start()
+
+    Dim Numbers As Collection
+    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+    Dim Value As Variant
+    Value = Lapis.CollectionExt.Count(Numbers, Lambda.Create("$1 >= 5"))
     
     Debug.Print "There are " & Value & " numbers greater than or equal to 5."
 
