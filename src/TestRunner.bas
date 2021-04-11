@@ -15,10 +15,9 @@ Public Sub Start()
     ExUnitTests.Start
     TreeNodeTests.Start
     CollectionTests.Start
-    PredicateTests.Start
+
     ComparersTests.Start
     LambdaTests.Start
-    'Collection2Tests.Start
 
     ' By defualt, method will print test results in the Immediate window.
     ExUnit.PrintTestResults
