@@ -54,3 +54,4 @@ Private Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant
     IEqualityComparer_Equals = Me.Equals(x, y)
 End Function
 
+

@@ -10,5 +10,8 @@ Attribute VB_Exposed = False
 '@Folder("Collection")
 Option Explicit
 
+
 Public Function Equals(ByVal Other As Variant) As Boolean
 End Function
+
+
