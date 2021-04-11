@@ -305,7 +305,8 @@ End Function
 
 
 ' Returns the minimum value in a sequence of values.
-Public Function Min(ByVal Source As Collection, ByVal Comparer As IComparer) As Variant
+Public Function Min(ByVal Source As Collection, _
+                    Optional ByVal Selector As ICallable) As Variant
 
     Const MethodName = "Min"
     
@@ -313,38 +314,63 @@ Public Function Min(ByVal Source As Collection, ByVal Comparer As IComparer) As 
         Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
-    If Comparer Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    Dim Comparer As IComparer
+    If (Selector Is Nothing) = False Then
+        Set Comparer = Comparers.Default(Selector.Run(Source.Item(1)))
+    Else
+        Set Comparer = Comparers.Default(Source.Item(1))
+    End If
+    
+    ' If comparer is still not found, throw the error.
+    If System.IsNothing(Comparer) Then
+        Lapis.Errors.OnInvalidOperation "Comparer", _
+                                        "Default comparer wasn't found for Value argument. " & ModuleName & "." & MethodName
+    End If
+    
+    ' Do the Min comparison.
+    
+    ' Find first, non-nothing element in source.
+    Dim Value As Variant
+    System.CopyVariant Value, Source.Item(1)
+    Dim Ndx As Long: Ndx = 2
+    Do Until System.IsNothing(Value) = False Or Source.Count < Ndx
+        Set Value = Source.Item(Ndx)
+        Ndx = Ndx + 1
+    Loop
+    
+    ' Check, if entire source is composed of Nothigns.
+    If Source.Count < Ndx Then
+        Set Min = Nothing
+        Exit Function
     End If
     
     Dim Item As Variant
-    Dim Value As Variant
-    If IsObject(Source.Item(1)) Then
-        Set Value = Source.Item(1)
+    For Each Item In Source
+        If System.IsNothing(Item) Then
+            GoTo NextItem
+        End If
         
-        For Each Item In Source
-            If (Item Is Nothing) = False And (Value Is Nothing Or Comparer.Compare(Item, Value) < 0) Then
-                Set Value = Item
-            End If
-        Next Item
-        Set Min = Value
+        Dim IsNewMax As Boolean
+        If (Selector Is Nothing) = False Then
+            IsNewMax = Comparer.Compare(Selector.Run(Item), Selector.Run(Value)) < 0
+        Else
+            IsNewMax = Comparer.Compare(Item, Value) < 0
+        End If
         
-    Else
-        Value = Source.Item(1)
-        For Each Item In Source
-            If Comparer.Compare(Item, Value) < 0 Then
-                Value = Item
-            End If
-        Next Item
-        Min = Value
-        
-    End If
-
+        If IsNewMax Then
+            System.CopyVariant Value, Item
+        End If
+NextItem:
+    Next Item
+    
+    System.CopyVariant Min, Value
+   
 End Function
 
 
-' Returns the minimum value in a sequence of values.
-Public Function Max(ByVal Source As Collection, ByVal Comparer As IComparer) As Variant
+' Returns the maximum value in a sequence of values.
+Public Function Max(ByVal Source As Collection, _
+                    Optional ByVal Selector As ICallable) As Variant
 
     Const MethodName = "Max"
     
@@ -352,33 +378,57 @@ Public Function Max(ByVal Source As Collection, ByVal Comparer As IComparer) As 
         Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
-    If Comparer Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Comparer", ModuleName & "." & MethodName
+    Dim Comparer As IComparer
+    If (Selector Is Nothing) = False Then
+        Set Comparer = Comparers.Default(Selector.Run(Source.Item(1)))
+    Else
+        Set Comparer = Comparers.Default(Source.Item(1))
+    End If
+    
+    ' If comparer is still not found, throw the error.
+    If System.IsNothing(Comparer) Then
+        Lapis.Errors.OnArgumentError "Comparer", _
+                                     "Default comparer wasn't found for Value argument. " & ModuleName & "." & MethodName
+    End If
+    
+    ' Do the Max comparison.
+    
+    ' Find first, non-nothing element in source.
+    Dim Value As Variant
+    System.CopyVariant Value, Source.Item(1)
+    Dim Ndx As Long: Ndx = 2
+    Do Until System.IsNothing(Value) = False Or Source.Count < Ndx
+        Set Value = Source.Item(Ndx)
+        Ndx = Ndx + 1
+    Loop
+    
+    ' Check, if entire source is composed of Nothigns.
+    If Source.Count < Ndx Then
+        Set Max = Nothing
+        Exit Function
     End If
     
     Dim Item As Variant
-    Dim Value As Variant
-    If IsObject(Source.Item(1)) Then
-        Set Value = Source.Item(1)
+    For Each Item In Source
+        If System.IsNothing(Item) Then
+            GoTo NextItem
+        End If
         
-        For Each Item In Source
-            If (Item Is Nothing) = False And (Value Is Nothing Or Comparer.Compare(Item, Value) > 0) Then
-                Set Value = Item
-            End If
-        Next Item
-        Set Max = Value
+        Dim IsNewMax As Boolean
+        If (Selector Is Nothing) = False Then
+            IsNewMax = Comparer.Compare(Selector.Run(Item), Selector.Run(Value)) > 0
+        Else
+            IsNewMax = Comparer.Compare(Item, Value) > 0
+        End If
         
-    Else
-        Value = Source.Item(1)
-        For Each Item In Source
-            If Comparer.Compare(Item, Value) > 0 Then
-                Value = Item
-            End If
-        Next Item
-        Max = Value
-        
-    End If
-
+        If IsNewMax Then
+            System.CopyVariant Value, Item
+        End If
+NextItem:
+    Next Item
+    
+    System.CopyVariant Max, Value
+   
 End Function
 
 
@@ -446,76 +496,6 @@ Public Function Reverse(ByVal Source As Collection) As Collection
 End Function
 
 
-' Computes the sum of a sequence of numeric values.
-Public Function Sum(ByVal Source As Collection, ByVal Selector As Lapis.IConverter) As Variant
-
-    Const MethodName = "Sum"
-
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-    
-    If Selector Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
-    End If
-
-    Dim Item As Variant
-    Dim Output As Variant: Output = 0
-    For Each Item In Source
-        If System.IsNothing(Item) Then
-            GoTo NextItem
-        End If
-        
-        Output = Output + Selector.Convert(Item)
-        
-NextItem:
-    Next Item
-    
-    Sum = Output
-
-End Function
-
-
-' Computes the average of a sequence of numeric values.
-Public Function Average(ByVal Source As Collection, ByVal Selector As Lapis.IConverter) As Variant
-
-    Const MethodName = "Average"
-    
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-    
-    If Selector Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
-    End If
-
-    If Source.Count = 0 Then
-        Average = 0
-        Exit Function
-    End If
-    
-    ' Do not take into account Nothing values when calculating average.
-    Dim NothingCount As Long
-    Dim Item As Variant
-    For Each Item In Source
-        If System.IsNothing(Item) Then
-            NothingCount = NothingCount + 1
-        End If
-    Next Item
-    
-    ' Case where the entire source contains only Nothing values.
-    If Source.Count - NothingCount = 0 Then
-        Average = 0
-        Exit Function
-    End If
-    
-    Dim Sum As Variant
-    Sum = CollectionExt.Sum(Source, Selector)
-    Average = Sum / (Source.Count - NothingCount)
-    
-End Function
-
-
 ' Returns a specified number of contiguous elements from the start of a sequence.
 Public Function Take(ByVal Source As Collection, ByVal Count As Long) As Collection
 
@@ -538,58 +518,6 @@ Public Function Take(ByVal Source As Collection, ByVal Count As Long) As Collect
     
     Set Take = Output
     
-End Function
-
-
-' Determines whether all elements of a sequence satisfy a condition.
-Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As Boolean
-
-    Const MethodName = "All"
-    
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-    
-    If Predicate Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
-    End If
-    
-    Dim Item As Variant
-    For Each Item In Source
-        If Predicate.Eval(Item) = False Then
-            All = False
-            Exit Function
-        End If
-    Next Item
-    
-    All = True
-
-End Function
-
-
-' Determines whether some element of a sequence exists or satisfies a condition.
-' Better matching word in this case is Any but it is reserved keyword.
-Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Boolean
-
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & ".Some"
-    End If
-
-    If Predicate Is Nothing Then
-        Some = Source.Count <> 0
-        Exit Function
-    End If
-    
-    Dim Item As Variant
-    For Each Item In Source
-        If Predicate.Eval(Item) = True Then
-            Some = True
-            Exit Function
-        End If
-    Next Item
-    
-    Some = False
-
 End Function
 
 
@@ -648,67 +576,6 @@ Public Function SequenceEqual(ByVal First As Collection, _
 End Function
 
 
-' Returns the first element in a sequence that satisfies a specified condition.
-Public Function First(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Variant
-    
-    Const MethodName = "First"
-    
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-    
-    If Predicate Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
-    End If
-    
-    If Source.Count = 0 Then
-        Lapis.Errors.OnInvalidOperation "Source", ModuleName & "." & MethodName
-    End If
-    
-    Dim Item As Variant
-    For Each Item In Source
-        If Predicate.Eval(Item) Then
-            Assing Item, First
-            Exit Function
-        End If
-    Next Item
-    
-    Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
-
-End Function
-
-
-' Returns the last element of a sequence that satisfies a specified condition.
-Public Function Last(ByVal Source As Collection, ByVal Predicate As Predicate) As Variant
-
-    Const MethodName = "Last"
-    
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
-    End If
-    
-    If Predicate Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
-    End If
-
-    Dim Output As Variant
-    Dim Item As Variant
-    For Each Item In Source
-        If Predicate.Eval(Item) Then
-            Assing Item, Output
-        End If
-    Next Item
-    
-    ' No item matches the predicate or source is empty.
-    If Output = vbEmpty Then
-        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
-    End If
-    
-    Assing Output, Last
-    
-End Function
-
-
 Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
     
     If IsObject(Source) Then
@@ -720,69 +587,38 @@ Private Sub Assing(ByVal Source As Variant, ByRef Destination As Variant)
 End Sub
 
 
-' Returns the only element of a sequence that satisfies a specified condition,
-' and throws an exception if more than one such element exists.
-Public Function SelectOne(ByVal Source As Collection, ByVal Predicate As Predicate) As Variant
+' Determines whether all elements of a sequence satisfy a condition.
+Public Function All(ByVal Source As Collection, ByVal Predicate As ICallable) As Boolean
 
-    Const MethodName = "SelectOne"
-
+    Const MethodName = "All"
+    
     If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
     If Predicate Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Predicate", MethodName & "." & MethodName
+        Lapis.Errors.OnArgumentNull "Predicate", ModuleName & "." & MethodName
     End If
-
-    Dim Output As Variant
+    
     Dim Item As Variant
     For Each Item In Source
-        If Predicate.Eval(Item) Then
-            If Output <> vbEmpty Then
-                Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
-            Else
-                Assing Item, Output
-            End If
+        If System.IsNothing(Item) Then
+            All = False
+            Exit Function
+        End If
+    
+        If Predicate.Run(Item) = False Then
+            All = False
+            Exit Function
         End If
     Next Item
     
-    ' No item matches the predicate or source is empty.
-    If Output = vbEmpty Then
-        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
-    End If
-    
-    Assing Output, SelectOne
+    All = True
 
 End Function
 
 
-' Returns a number that represents how many elements in the specified sequence satisfy a condition.
-Public Function Count(ByVal Source As Collection, ByVal Predicate As Predicate) As Long
-
-    Const MethodName = "SelectOne"
-
-    If Source Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
-    End If
-    
-    If Predicate Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Predicate", MethodName & "." & MethodName
-    End If
-
-    Dim Output As Long
-    Dim Item As Variant
-    For Each Item In Source
-        If Predicate.Eval(Item) Then
-            Output = Output + 1
-        End If
-    Next Item
-    
-    Count = Output
-
-End Function
-
-
-Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) As Collection
+Public Function Where(ByVal Source As Collection, ByVal Predicate As ICallable) As Collection
 
     Const MethodName = "Where"
 
@@ -797,7 +633,7 @@ Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) 
     Dim Output As New Collection
     Dim Item As Variant
     For Each Item In Source
-        If Predicate.Eval(Item) Then
+        If Predicate.Run(Item) Then
             Output.Add Item
         End If
     Next Item
@@ -807,8 +643,120 @@ Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) 
 End Function
 
 
+' Determines whether some element of a sequence exists or satisfies a condition.
+' Better matching word in this case is Any but it is reserved keyword.
+Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Boolean
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & ".Some"
+    End If
+
+    If Predicate Is Nothing Then
+        Some = Source.Count <> 0
+        Exit Function
+    End If
+    
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            Some = True
+            Exit Function
+        End If
+    Next Item
+    
+    Some = False
+
+End Function
+
+
+' Computes the sum of a sequence of numeric values.
+Public Function Sum(ByVal Source As Collection, Optional ByVal Selector As ICallable) As Variant
+
+    Const MethodName = "Sum"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    Dim Item As Variant
+    Dim Output As Variant: Output = 0
+    If Selector Is Nothing Then
+        For Each Item In Source
+            Output = Output + VBA.IIf(System.IsNothing(Item), 0, Item)
+        Next Item
+        
+        Sum = Output
+        Exit Function
+    End If
+    
+    For Each Item In Source
+        If System.IsNothing(Item) = False Then
+            Output = Output + Selector.Run(Item)
+        End If
+    Next Item
+    
+    Sum = Output
+
+End Function
+
+
+' Computes the average of a sequence of numeric values.
+Public Function Average(ByVal Source As Collection, Optional ByVal Selector As ICallable) As Variant
+
+    Const MethodName = "Average"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+
+    If Source.Count = 0 Then
+        Average = 0
+        Exit Function
+    End If
+    
+    ' Do not take into account Nothing values when calculating average.
+    Dim NothingCount As Long
+    Dim Item As Variant
+    For Each Item In Source
+        If System.IsNothing(Item) Then
+            NothingCount = NothingCount + 1
+        End If
+    Next Item
+    
+    ' Case where the entire source contains only Nothing values.
+    If Source.Count - NothingCount = 0 Then
+        Average = 0
+        Exit Function
+    End If
+    
+    Dim Sum As Variant
+    Sum = CollectionExt.Sum(Source, Selector)
+    Average = Sum / (Source.Count - NothingCount)
+    
+End Function
+
+
+' Returns a number that represents how many elements in the specified sequence satisfy a condition.
+Public Function Count(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Long
+
+    Const MethodName = "Count"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Count = Source.Count
+        Exit Function
+    End If
+    
+    Count = CollectionExt.Where(Source, Predicate).Count
+
+End Function
+
+
 ' Projects each element of a sequence into a new form.
-Public Function Convert(ByVal Source As Collection, ByVal Converter As Lapis.IConverter) As Collection
+Public Function Convert(ByVal Source As Collection, ByVal Selector As ICallable) As Collection
 
     Const MethodName As String = "Convert"
     
@@ -816,16 +764,142 @@ Public Function Convert(ByVal Source As Collection, ByVal Converter As Lapis.ICo
         Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
     End If
     
-    If Converter Is Nothing Then
-        Lapis.Errors.OnArgumentNull "Converter", ModuleName & "." & MethodName
+    If Selector Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Selector", ModuleName & "." & MethodName
     End If
     
     Dim Output As New Collection
     Dim Item As Variant
     For Each Item In Source
-        Output.Add Converter.Convert(Item)
+        Output.Add Selector.Run(Item)
     Next Item
     
     Set Convert = Output
 
 End Function
+
+
+' Returns the first element in a sequence that satisfies a specified condition.
+Public Function First(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
+    
+    Const MethodName = "First"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Assign First, Source.Item(1)
+        Exit Function
+    End If
+    
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            Assign First, Item
+            Exit Function
+        End If
+    Next Item
+    
+    Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+
+End Function
+
+
+Private Sub Assign(ByRef Destination As Variant, ByVal Source As Variant)
+    System.CopyVariant Destination, Source
+End Sub
+
+
+' Returns the last element of a sequence that satisfies a specified condition.
+Public Function Last(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
+
+    Const MethodName = "Last"
+    
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", ModuleName & "." & MethodName
+    End If
+    
+    If Predicate Is Nothing Then
+        Assign Last, Source.Item(Source.Count)
+        Exit Function
+    End If
+
+    Dim Output As Variant
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            Assign Output, Item
+        End If
+    Next Item
+    
+    ' No item matches the predicate or source is empty.
+    If VBA.IsObject(Output) Then
+        If Not (Output Is Nothing) Then
+            Assign Last, Output
+            Exit Function
+        End If
+    ElseIf Output = vbEmpty Then
+        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Assign Last, Output
+    
+End Function
+
+
+' Returns the only element of a sequence that satisfies a specified condition,
+' and throws an exception if more than one such element exists.
+Public Function SelectOne(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
+
+    Const MethodName = "SelectOne"
+
+    If Source Is Nothing Then
+        Lapis.Errors.OnArgumentNull "Source", MethodName & "." & MethodName
+    End If
+    
+    If Source.Count = 0 Then
+        Lapis.Errors.OnInvalidOperation "Source", _
+                                        "The input sequence is empty. " _
+                                        & ModuleName & "." & MethodName
+    End If
+
+    
+    If Predicate Is Nothing And Source.Count > 1 Then
+        Lapis.Errors.OnInvalidOperation vbNullString, _
+                                        "The input sequence contains more than one element. " _
+                                        & ModuleName & "." & MethodName
+    ElseIf Source.Count = 1 Then
+        Assign SelectOne, Source.Item(1)
+        Exit Function
+    End If
+
+    Dim Output As Variant
+    Dim Item As Variant
+    For Each Item In Source
+        If Predicate.Run(Item) Then
+            If Output <> vbEmpty Then
+                Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+            Else
+                Assign Output, Item
+            End If
+        End If
+    Next Item
+    
+    ' No item matches the predicate or source is empty.
+    If Output = vbEmpty Then
+        Lapis.Errors.OnInvalidOperation vbNullString, ModuleName & "." & MethodName
+    End If
+    
+    Assign SelectOne, Output
+
+End Function
+

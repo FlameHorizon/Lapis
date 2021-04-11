@@ -3,7 +3,7 @@
 Projects each element of a sequence into a new form.
 
 ```vb
-Public Function Convert(ByVal Source As Collection, ByVal Converter As Lapis.IConverter) As Collection
+Public Function Convert(ByVal Source As Collection, ByVal Selector As ICallable) As Collection
 ```
 
 ### Parameters
@@ -11,7 +11,7 @@ Public Function Convert(ByVal Source As Collection, ByVal Converter As Lapis.ICo
 **Source** `Collection` <br>
 A sequence of values to invoke a transform function on.
 
-**Converter** `Lapis.IConverter` <br>
+**Selector** `ICallable` <br>
 A transform function to apply to each element.
 
 ### Returns
@@ -26,24 +26,7 @@ A set whose elements are the result of invoking the transform function on each e
 
 ## Examples
 
-The following code example demonstrates how to use Convert(Collection, Lapis.IConverter) to force immediate query evaluation and return a set of results.
-
-```vb
-' MathSquareConverter class module
-Option Explicit
-
-Implements Lapis.IConverter
-
-
-Public Function Convert(ByVal Item As Variant) As Variant
-    Convert = Item * Item
-End Function
-
-
-Private Function IConverter_Convert(ByVal Item As Variant) As Variant
-    IConverter_Convert = Me.Convert(Item)
-End Function
-```
+The following code example demonstrates how to use `Convert` to return a set of results.
 
 ```vb
 Option Explicit
@@ -54,7 +37,7 @@ Public Sub Start()
     Set Numbers = Lapis.CollectionExt.Range(1, 10)
     
     Dim Squares As Collection
-    SetSquares = Lapis.CollectionExt.Convert(Numbers, New MathSquareConverter)
+    Set Squares = Lapis.CollectionExt.Convert(Numbers, Lambda.Create("$1 * $1"))
 
     Dim Item As Variant
     For Each Item In Squares

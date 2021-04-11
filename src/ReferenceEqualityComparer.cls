@@ -30,6 +30,11 @@ Public Function Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
         Exit Function
     End If
     
+    If TypeOf x Is IComparable Then
+        Equals = CompareUsingComparable(x, y)
+        Exit Function
+    End If
+    
     Equals = x Is y
     
 End Function
@@ -40,7 +45,13 @@ Private Function CompareUsingEquatable(ByVal Value As IEquatable, ByVal y As Var
 End Function
 
 
+Private Function CompareUsingComparable(ByVal x As IComparable, ByVal y As Variant) As Boolean
+    CompareUsingComparable = (x.CompareTo(y) = 0)
+End Function
+
+
 Private Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean
     IEqualityComparer_Equals = Me.Equals(x, y)
 End Function
+
 

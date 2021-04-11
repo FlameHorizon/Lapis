@@ -1,9 +1,9 @@
 # CollectionExt.Last Method
 
-Returns the last element of a sequence.
+Returns the last element of a sequence that satisfies a specified condition. If `Predicate` is not specified, returns the last element of a sequence.
 
 ```vb
-Public Function Last(ByVal Source As Collection, ByVal Predicate As Predicate) As Variant
+Public Function Last(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Variant
 ```
 
 ### Parameters
@@ -11,8 +11,8 @@ Public Function Last(ByVal Source As Collection, ByVal Predicate As Predicate) A
 **Source** `Collection` <br>
 A collection to return an element from.
 
-**Predicate** `Predicate` <br>
-A function to test each element for a condition.
+**Predicate** `ICallable` <br>
+Optional. A function to test each element for a condition.
 
 ### Returns
 
@@ -22,7 +22,7 @@ The last element in the sequence that passes the test in the specified predicate
 ### Errors
 
 `OnArgumentNull` <br>
-`Source` or `Predicate` is `Nothing`
+`Source` is `Nothing`
 
 `OnInvalidOperation` <br>
 When the number of elements in Source is zero
@@ -33,7 +33,30 @@ No element satisfies the condition in predicate.
 
 ## Examples
 
-The following code example demonstrates how to use Last(Collection, Predicate) to return the last element of a collection that satisfies a condition.
+The following code example demonstrates how to use `Last` to return the last element of a collection.
+
+```vb
+Option Explicit
+
+Public Sub Start()
+
+    Dim Numbers As Collection
+    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _
+                                           83, 23, 87, 67, 12, 19)
+
+    Dim Last As Variant
+    Last = Lapis.CollectionExt.Last(Numbers)
+    
+    Debug.Print Last
+
+End Sub
+
+' This code produces the following output:
+'
+' 19
+```
+
+The following code example demonstrates how to use `Last` to return the last element of a collection that satisfies a condition.
 
 ```vb
 Option Explicit
@@ -44,17 +67,8 @@ Public Sub Start()
     Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _
                                            83, 23, 87, 67, 12, 19)
     
-    Dim Pred As Lapis.Predicate
-    Set Pred = Lapis.Factory.GetPredicate
-    
-    With Pred
-        .Operator = Lapis.ComparisonOperator.GreaterThan
-        .ComparisonValue = 80
-        .Comparer = Lapis.Factory.GetLongComparer
-    End With
-    
     Dim Last As Variant
-    Last = Lapis.CollectionExt.Last(Numbers, Pred)
+    Last = Lapis.CollectionExt.Last(Numbers, Lambda.Create("#1 > 80"))
     
     Debug.Print Last
 

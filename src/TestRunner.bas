@@ -15,7 +15,7 @@ Public Sub Start()
     ExUnitTests.Start
     TreeNodeTests.Start
     CollectionTests.Start
-    PredicateTests.Start
+
     ComparersTests.Start
     LambdaTests.Start
 

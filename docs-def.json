@@ -204,12 +204,12 @@
         ],
         "example": "If you want to compare sequence of objects of some custom data type, you have to implement the IEqualityComparer interface in a helper class. The following code example shows how to implement this interface in a custom data type and provided Equals methods. The following example shows how to implement and equality comparer that can be used in the `Intersect` method.\n\n```vb\n' Product class\nOption Explicit\nPublic Name As String\nPublic Code As Long\n```\n\n```vb\n' ProductComparer class\n' A custom comparer for the Product class\nOption Explicit\nImplements Lapis.IEqualityComparer\n\nPublic Function Equals(ByVal x As Product, ByVal y As Product) As Boolean\n\n    If x Is y Then\n        Equals = True\n    \n    ElseIf x Is Nothing Or y Is Nothing Then\n        Equals = False\n    \n    Else\n        Equals = (x.Code = y.Code And x.Name = y.Name)\n    \n    End If\n\nEnd Function\n\nPrivate Function IEqualityComparer_Equals(ByVal x As Variant, ByVal y As Variant) As Boolean\n    IEqualityComparer_Equals = Me.Equals(x, y)\nEnd Function\n```\n\nAfter you implement this comparer, you can use sequences of Product objects in the `Intersect` method, as shown in the following example:\n\n```vb\n' Main module\nOption Explicit\nPublic Sub Start()\n    \n    Dim Fruits1 As Collection\n    Set Fruits1 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"orange\", 4))\n    \n    Dim Fruits2 As Collection\n    Set Fruits2 = CollectionExt.Make(MakeProduct(\"apple\", 9), _\n                                     MakeProduct(\"lemon\", 12))\n    \n    ' Get the products from the first collection\n    ' that have duplicates in the second array.\n    \n    Dim Duplicates As Collection\n    Set Duplicates = CollectionExt.Intersect(Fruits1, Fruits2, New ProductComparer)\n    \n    Dim Item As Product\n    For Each Item In Duplicates\n        Debug.Print Item.Name & \" \" & Item.Code\n    Next Item\n    \nEnd Sub\n\nPrivate Function MakeProduct(ByVal Name As String, ByVal Code As Long) As Product\n    \n    Dim Output As New Product\n    Output.Name = Name\n    Output.Code = Code\n    Set MakeProduct = Output\n    \nEnd Function\n\n' This code produces the following output:\n' apple 9\n```"
     },
-    "CollectionExt.Min (Collection, IComparer)": {
-        "short-description": "Invokes a Comparer on each element of a sequence and returns the minimum resulting value.",
-        "description": "Invokes a Comparer on each element of a sequence and returns the minimum resulting value.",
+    "CollectionExt.Min (Collection, ICallable)": {
+        "short-description": "Invokes a transform function on each element of a generic sequence and returns the minimum resulting value.",
+        "description": "Invokes a transform function on each element of a generic sequence and returns the minimum resulting value.",
         "parameters": {
-            "Source": "A sequence of values to determine the minimum value of `Source`.",
-            "Comparer": "A Comparer to apply to each element."
+            "Source": "A sequence of values to determine the minimum value of",
+            "Selector": "Optional. A transform function to apply to each element."
         },
         "returns": [
             "Variant",
@@ -221,18 +221,18 @@
                 "`Source` is `Nothing`."
             ],
             [
-                "OnArgumentNull",
-                "`Comparer` is `Nothing`."
+                "OnInvalidOperation",
+                "Default comparer wasn't found for `Value` argument."
             ]
         ],
-        "example": "The following code example demonstrates how to use `Min` to determine the minimum value in a sequence of projected values.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' PetByAgeComparer class module\nOption Explicit\n\nImplements Lapis.IComparer\n\nPublic Function Compare(ByVal x As Pet, ByVal y As Pet) As Long\n\n    Compare = IIf(x.Age < y.Age, -1, _\n              IIf(x.Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Min As Pet\n    Set Min = CollectionExt.Min(Pets, New PetByAgeComparer)\n    \n    Debug.Print \"The youngest animal is age \" & Min.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The youngest animal is age 1\n```"
+        "example": "The following code example demonstrates how to use `Min` to determine the minimum value in a sequence.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n    \n    Dim Doubles As Collection\n    Set Doubles = CollectionExt.Make(1.5E+104, 9E+103, -2E+103)\n\n    Dim Min As Double\n    Min = CollectionExt.Min(Doubles)\n    \n    Debug.Print \"The smallest number is \" & Min\n    \nEnd Sub\n\n' The example displays the following output:\n' The youngest animal is age -2E+103\n\n```\n\nThe following code example demonstrates how to use `Min` to determine the minimum value in a sequence of projected values.\n\n```vb\n' Pet class module\n\nOption Explicit\n\nImplements IComparable\n\nPublic Name As String\nPublic Age As Long\n\n\nPublic Function CompareTo(ByVal x As Pet) As Long\n\n    Compare = IIf(Age < y.Age, -1, _\n              IIf(Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparable_CompareTo(ByRef x As Variant) As Long\n    IComparable_CompareTo = Me.CompareTo(x)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Min As Pet\n    Set Min = CollectionExt.Min(Pets, Lambda.Create(\"$1.Age\")\n    \n    Debug.Print \"The youngest animal is age \" & Min.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The youngest animal is age 1\n```"
     },
-    "CollectionExt.Max (Collection, IComparer)": {
-        "short-description": "Invokes a Comparer on each element of a sequence and returns the maximum resulting value.",
-        "description": "Invokes a Comparer on each element of a sequence and returns the maximum resulting value.",
+    "CollectionExt.Max (Collection, ICallable)": {
+        "short-description": "Invokes a transform function on each element of a sequence and returns the maximum value.",
+        "description": "Invokes a transform function on each element of a sequence and returns the maximum value.",
         "parameters": {
             "Source": "A sequence of values to determine the maximum value of `Source`.",
-            "Comparer": "A Comparer to apply to each element."
+            "Selector": "Optional. A Comparer to apply to each element."
         },
         "returns": [
             "Variant",
@@ -244,11 +244,11 @@
                 "`Source` is `Nothing`."
             ],
             [
-                "OnArgumentNull",
-                "`Comparer` is `Nothing`."
+                "OnInvalidOperation",
+                "Default comparer wasn't found for `Value` argument."
             ]
         ],
-        "example": "The following code example demonstrates how to use `Max` to determine the maximum value in a sequence of projected values.\n\n```vb\n' Pet class module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' PetByAgeComparer class module\nOption Explicit\n\nImplements Lapis.IComparer\n\nPublic Function Compare(ByVal x As Pet, ByVal y As Pet) As Long\n\n    Compare = IIf(x.Age < y.Age, -1, _\n              IIf(x.Age = y.Age, 0, 1))\n              \nEnd Function\n\n\nPrivate Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long\n    IComparer_Compare = Me.Compare(x, y)\nEnd Function\n```\n\n```vb\n' Main module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 8), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 1))\n    \n    Dim Max As Pet\n    Set Max = CollectionExt.Max(Pets, New PetByAgeComparer)\n    \n    Debug.Print \"The oldest animal is age \" & Max.Age\n    \nEnd Sub\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n\n' The example displays the following output:\n' The oldest animal is age 8\n```"
+        "example": "The following code example demonstrates how to use `Max` to determine the maximum value in a sequence\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Longs As Collection\n    Set Longs = CollectionExt.Make(4294967296#, 466855135#, 81125#)\n    \n    Dim Max As LongLong\n    Max = CollectionExt.Max(Longs)\n    Debug.Print \"The largest number is \" & Max & \".\"\n\nEnd Sub\n\n' The example displays the following output:\n' The largest number is 4294967296.\n```\n\n\nThe following code example demonstrates how to use `Max` to determine the maximum value in a sequence of projected values.\n\n```vb\n' Class Module: TestStone\nOption Explicit\n\nPublic Weight As Single\nPublic Age As Single\n```\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Stones As Collection\n    Set Stones = CollectionExt.Make(MakeStone(3, 10), _\n                                    MakeStone(8, 20), _\n                                    MakeStone(6, 14))\n\n    Dim Max As TestStone\n    Set Max = CollectionExt.Max(Stones, Lambda.Create(\"$1.Age\"))\n\n    Debug.Print \"The oldest stone is age \" & Max.Age\n\nEnd Sub\n\n' The example displays the following output:\n' The oldest stone is age 8\n\n\nPublic Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone\n\n    Dim Output As New TestStone\n    Output.Age = Age\n    Output.Weight = Weight\n    Set MakeStone = Output\n\nEnd Function\n```"
     },
     "CollectionExt.Range (Long, Long)": {
         "short-description": "Generates a sequence of integral numbers within a specified range.",
@@ -310,12 +310,12 @@
         ],
         "example": "The following code example demonstrates how to use Reverse to reverse the order of elements in an array.\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Apple As Collection\n    Set Apple = CollectionExt.Make(\"a\", \"p\", \"p\", \"l\", \"e\")\n    \n    Dim Reversed As Collection\n    Set Reversed = CollectionExt.Reverse(Apple)\n    \n    Debug.Print CollectionExt.ToString(Reversed, Factory.GetValueTypeToStringConverter, \" \")\n    \nEnd Sub\n```"
     },
-    "CollectionExt.Sum (Collection, Lapis.IConverter)": {
-        "short-description": "Computes the sum of a sequence of Int32 values.",
-        "description": "Computes the sum of a sequence of Int32 values.",
+    "CollectionExt.Sum (Collection, ICallable)": {
+        "short-description": "Computes the sum of a sequence of values. If `Selector` is not defined computes the sum of a sequence values.",
+        "description": "Computes the sum of a sequence of values. If `Selector` is not defined computes the sum of a sequence values.",
         "parameters": {
             "Source": "A sequence of values to calculate the sum of.",
-            "Selector": "Method how elements of array will be converted into summable values."
+            "Selector": "Optional. Method how elements of set will be converted into summable values."
         },
         "returns": [
             "Variant",
@@ -325,20 +325,16 @@
             [
                 "OnArgumentNull",
                 "`Source` is `Nothing`"
-            ],
-            [
-                "OnArgumentNull",
-                "`Selector` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Sum to sum the values of a sequence.\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = CollectionExt.Make(2, 3, 5, 10)\n    \n    Dim Sum As Long\n    Sum = CollectionExt.Sum(Numbers, Factory.GetValueTypeToNumericConverter)\n    \n    Debug.Print \"The sum fo the numbers is \" & Sum\n    \nEnd Sub\n\n' This code produces the following output:\n\n' The sum fo the numbers is 20\n```"
+        "example": "The following code example demonstrates how to use Sum to sum the values of a sequence.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = CollectionExt.Make(2, 3, 5, 10)\n    \n    Dim Sum As Long\n    Sum = CollectionExt.Sum(Numbers)\n    \n    Debug.Print \"The sum fo the numbers is \" & Sum\n    \nEnd Sub\n\n' This code produces the following output:\n' The sum fo the numbers is 20\n```\n\nComputes the sum of the sequence of values that are obtained by invoking a transform function on each element of the input sequence.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone\n\n    Dim Output As New TestStone\n    Output.Age = Age\n    Output.Weight = Weight\n    Set MakeStone = Output\n\nEnd Function\n\n\nPublic Function MakeTestStones() As Collection\n    \n    Dim Output As New Collection\n    Output.Add MakeStone(12, 23)\n    Output.Add MakeStone(43, 27.5)\n    Output.Add MakeStone(23, 11)\n    Set MakeTestStones = Output\n    \nEnd Function\n\n\nPublic Sub Start()\n\n    Dim Stones As Collection\n    Set Stones = MakeTestStones\n    \n    Dim Sum As Single\n    Sum = CollectionExt.Sum(Stones, Lambda.Create(\"$1.Weight\"))\n    \n    Debug.Print \"The total weight of the stones is: \" & Sum\n    \nEnd Sub\n\n' This code produces the following output:\n' The total weight of the stones is: 61,5\n```"
     },
-    "CollectionExt.Average (Collection, Lapis.IConverter)": {
-        "short-description": "Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.",
+    "CollectionExt.Average (Collection, ICallable)": {
+        "short-description": "Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence. If `Selector` is not defined,computes the average of a sequence values.",
         "description": "Computes the average of a sequence of values that is obtained by invoking a projection function on each element of the input sequence.",
         "parameters": {
             "Source": "A sequence of values that are used to calculate an average.",
-            "Selector": "A projection function to apply to each element."
+            "Selector": "Optional. A projection function to apply to each element."
         },
         "returns": [
             "Variant",
@@ -348,13 +344,9 @@
             [
                 "OnArgumentNull",
                 "`Source` is `Nothing`"
-            ],
-            [
-                "OnArgumentNull",
-                "`Selector` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Average to calculate the average String length in a sequence of values of type String.\n\n```vb\n' StringToLengthConverter class module\nOption Explicit\n\nImplements Lapis.IConverter\n\n\nPublic Function Convert(ByVal Item As Variant) As Variant\n    Convert = VBA.Len(Item)\nEnd Function\n\n\nPrivate Function IConverter_Convert(ByVal Item As Variant) As Variant\n    IConverter_Convert = Me.Convert(Item)\nEnd Function\n```\n\n```vb\n' Start module\nOption Explicit\n\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n    \n    Dim Average As Double\n    Average = CollectionExt.Average(Fruits, New StringToLengthConverter)\n    \n    Debug.Print \"The average string length is \" & Average\n    \nEnd Sub\n\n' This code produces the following output:\n\n' The average string length is 6,5\n```"
+        "example": "The following code example demonstrates how to use Average to calculate the average String length in a sequence of values of type String.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n    \n    Dim Average As Double\n    Average = CollectionExt.Average(Fruits, Lambda.Create(\"len($1)\"))\n    \n    Debug.Print \"The average string length is \" & Average\n    \nEnd Sub\n\n' This code produces the following output:\n' The average string length is 6,5\n```"
     },
     "CollectionExt.Take (Collection, Long)": {
         "short-description": "Returns a specified number of contiguous elements from the start of a sequence.",
@@ -375,7 +367,7 @@
         ],
         "example": "The following code example demonstrates how to use Take to return elements from the start of a sequence.\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Grades As Collection\n    Set Grades = CollectionExt.Make(59, 82, 70, 56, 92, 98, 85)\n    \n    Dim BottomThreeGrades As Collection\n    Set BottomThreeGrades = CollectionExt.Take( _\n        CollectionExt.Sort(Grades, Lapis.Factory.GetLongComparer), 3)\n        \n    Debug.Print \"The bottom three grades are:\"\n        \n    Dim Grade As Variant\n    For Each Grade In BottomThreeGrades\n        Debug.Print Grade\n    Next Grade\n\nEnd Sub\n\n\n' This code produces the following output:\n' 56 \n' 59 \n' 70 \n```"
     },
-    "CollectionExt.All (Collection, Predicate)": {
+    "CollectionExt.All (Collection, ICallable)": {
         "short-description": "Determines whether all elements of a sequence satisfy a condition.",
         "description": "Determines whether all elements of a sequence satisfy a condition.",
         "parameters": {
@@ -392,14 +384,14 @@
                 "`Source` or `Predicate` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with \"B\" or if the pets array is empty.\n\n```vb\n' Pet Class Module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 10), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 6))\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    Pred.ComparisonValue = 5\n    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n\n    Dim AllOlderThan5Years As Boolean\n    AllOlderThan5Years = CollectionExt.All(Pets, Pred)\n    \n    If AllOlderThan5Years Then\n        Debug.Print \"All pets are older than 5 years.\"\n    Else\n        Debug.Print \"Not all pets are older than 5 years.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Not all pets are older than 5 years.\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n```"
+        "example": "The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable `AllOlderThan15Years` is true if all the stones are older than 15.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Stones As Collection\n    Set Stones = MakeTestStones\n\n    Dim AllOlderThan15Years As Boolean\n    AllOlderThan15Years = CollectionExt.All(Stones, Lambda.Create(\"$1.Age >= 15\"))\n    \n    If AllOlderThan15Years Then\n        Debug.Print \"All Stones are older than 15 years.\"\n    Else\n        Debug.Print \"Not all Stones are older than 15 years.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n' Not all Stones are older than 15 years.\n\n\nPublic Function MakeTestStones() As Collection\n    \n    Dim Output As New Collection\n    Output.Add MakeStone(12, 23)\n    Output.Add MakeStone(43, 27.5)\n    Output.Add MakeStone(23, 11)\n    Set MakeTestStones = Output\n    \nEnd Function\n\n\nPublic Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone\n\n    Dim Output As New TestStone\n    Output.Age = Age\n    Output.Weight = Weight\n    Set MakeStone = Output\n\nEnd Function\n\n```"
     },
-    "CollectionExt.Some (Collection, Predicate)": {
-        "short-description": "Determines whether any element of a sequence satisfies a condition.",
-        "description": "Determines whether any element of a sequence satisfies a condition.",
+    "CollectionExt.Some (Collection, ICallable)": {
+        "short-description": "Determines whether any element of a sequence satisfies a condition. If `Predicate` is not given, then determines whether a sequence contains any elements.",
+        "description": "Determines whether any element of a sequence satisfies a condition. If `Predicate` is not given, then determines whether a sequence contains any elements.",
         "parameters": {
             "Source": "A Collection whose elements to apply the predicate to.",
-            "Predicate": "A function to test each element for a condition."
+            "Predicate": "Optional. A function to test each element for a condition."
         },
         "returns": [
             "Boolean",
@@ -411,7 +403,7 @@
                 "`Source` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with \"B\" or if the pets array is empty.\n\n```vb\n' Pet Class Module\nOption Explicit\n\nPublic Name As String\nPublic Age As Long\n```\n\n```vb\n' Start Module\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Pets As Collection\n    Set Pets = CollectionExt.Make(MakePet(\"Barley\", 10), _\n                                  MakePet(\"Boots\", 4), _\n                                  MakePet(\"Whiskers\", 6))\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    Pred.ComparisonValue = 5\n    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n\n    Dim AnyOlderThan5Years As Boolean\n    AnyOlderThan5Years = CollectionExt.Some(Pets, Pred)\n    \n    If AnyOlderThan5Years Then\n        Debug.Print \"Some pets are older than 5 years.\"\n    Else\n        Debug.Print \"Not pet is older than 5 years.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n'\n' Some pets are older than 5 years.\n\n\nPrivate Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet\n    \n    Dim Output As New Pet\n    Output.Name = Name\n    Output.Age = Age\n    Set MakePet = Output\n    \nEnd Function\n```"
+        "example": "The following code example demonstrates how to use `Some` to determine whether a sequence contains any elements.\n\n```vb\n' Class Module: TestStone\nOption Explicit\n\nPublic Weight As Single\nPublic Age As Single\n```\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Stones As Collection\n    Set Stones = MakeTestStones\n    \n    If CollectionExt.Any(Stones) Then\n        Debug.Print \"Set is not empty\"\n    Else\n        Debug.Print \"Set is empty.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n' Set is not empty.\n\n\nPublic Function MakeTestStones() As Collection\n    \n    Dim Output As New Collection\n    Output.Add MakeStone(12, 23)\n    Output.Add MakeStone(43, 27.5)\n    Output.Add MakeStone(23, 11)\n    Set MakeTestStones = Output\n    \nEnd Function\n\n\nPublic Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone\n\n    Dim Output As New TestStone\n    Output.Age = Age\n    Output.Weight = Weight\n    Set MakeStone = Output\n\nEnd Function\n```\n\nThe following code example demonstrates how to use `Some` to determine whether any element in a sequence satisfies a condition.\n\n```vb\n' Class Module: TestStone\nOption Explicit\n\nPublic Weight As Single\nPublic Age As Single\n```\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Stones As Collection\n    Set Stones = MakeTestStones\n\n    Dim SomeMatches As Boolean\n    SomeMatches = CollectionExt.Some(Stones, Lambda.Create(\"$1.Age <= 10 and $1.Weight = 20\"))\n    \n    If SomeMatches Then\n        Debug.Print \"There are some big young stones\"\n    Else\n        Debug.Print \"There are no big young stones\"\n    End If\n    \nEnd Sub\n\n' This code produces the following output:\n' There are no big young stones\n\nPublic Function MakeTestStones() As Collection\n    \n    Dim Output As New Collection\n    Output.Add MakeStone(12, 23)\n    Output.Add MakeStone(43, 27.5)\n    Output.Add MakeStone(23, 11)\n    Set MakeTestStones = Output\n    \nEnd Function\n\n\nPublic Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone\n\n    Dim Output As New TestStone\n    Output.Age = Age\n    Output.Weight = Weight\n    Set MakeStone = Output\n\nEnd Function\n```\n"
     },
     "CollectionExt.Skip (Collection, Long)": {
         "short-description": "Bypasses a specified number of elements in a sequence and then returns the remaining elements.",
@@ -432,21 +424,21 @@
         ],
         "example": "The following code example demonstrates how to use Skip to skip a specified number of elements in a sorted array and return the remaining elements.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Grades As Collection\n    Set Grades = Lapis.CollectionExt.Make(59, 82, 70, 85, 56, 92, 98)\n    \n    Dim Ordered As Collection\n    Set Ordered = Lapis.CollectionExt.Sort(Grades, Lapis.Factory.GetLongComparer)\n    \n    Dim LowerGrades As Collection\n    Set LowerGrades = Lapis.CollectionExt.Skip(Ordered, 3)\n    \n    Debug.Print \"All grades except the top three are:\"\n    Dim Grade As Variant\n    For Each Grade In LowerGrades\n        Debug.Print Grade\n    Next Grade\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' All grades except the top three are:\n' 82\n' 70\n' 59\n' 56\n```"
     },
-    "CollectionExt.First (Collection, Predicate)": {
-        "short-description": "Returns the first element in a sequence that satisfies a specified condition.",
+    "CollectionExt.First (Collection, ICallable)": {
+        "short-description": "Returns the first element in a sequence that satisfies a specified condition. If `Predicate` is not defined then returns the first element of a sequence.",
         "description": "Returns the first element in a sequence that satisfies a specified condition.",
         "parameters": {
             "Source": "A collection to return an element from.",
-            "Predicate": "A function to test each element for a condition."
+            "Predicate": "Optional. A function to test each element for a condition."
         },
         "returns": [
             "Variant",
-            "The first element in the sequence that passes the test in the specified predicate function.."
+            "The first element in the sequence that passes the test in the specified predicate function."
         ],
         "errors": [
             [
                 "OnArgumentNull",
-                "`Source` or `Predicate` is `Nothing`"
+                "`Source` is `Nothing`"
             ],
             [
                 "OnInvalidOperation",
@@ -457,14 +449,14 @@
                 "No element satisfies the condition in predicate."
             ]
         ],
-        "example": "The following code example demonstrates how to use First(Collection, Predicate) to return the first element of a collection that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 435, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim First As Variant\n    First = Lapis.CollectionExt.First(Numbers, Pred)\n    \n    Debug.Print First\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' 92\n```"
+        "example": "The following code example demonstrates how to use `First` to return the first element of a set.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 435, 67, 12, 19)\n\n    Dim First As Variant\n    First = CollectionExt.First(Numbers)\n    \n    Debug.Print First\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' 9\n```\n\nThe following code example demonstrates how to use `First` to return the first element of a collection that satisfies a condition.\n\n```vb\n' Standard Module: Main\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 435, 67, 12, 19)\n\n    Dim First As Variant\n    First = CollectionExt.First(Numbers, Lambda.Create(\"$1 > 80\"))\n    \n    Debug.Print First\n    \nEnd Sub\n\n' This code produces the following output:\n'\n' 92\n```"
     },
-    "CollectionExt.Last (Collection, Predicate)": {
-        "short-description": "Returns the last element of a sequence.",
-        "description": "Returns the last element of a sequence.",
+    "CollectionExt.Last (Collection, ICallable)": {
+        "short-description": "Returns the last element of a sequence that satisfies a specified condition. If `Predicate` is not specified, returns the last element of a sequence.",
+        "description": "Returns the last element of a sequence that satisfies a specified condition. If `Predicate` is not specified, returns the last element of a sequence.",
         "parameters": {
             "Source": "A collection to return an element from.",
-            "Predicate": "A function to test each element for a condition."
+            "Predicate": "Optional. A function to test each element for a condition."
         },
         "returns": [
             "Variant",
@@ -473,7 +465,7 @@
         "errors": [
             [
                 "OnArgumentNull",
-                "`Source` or `Predicate` is `Nothing`"
+                "`Source` is `Nothing`"
             ],
             [
                 "OnInvalidOperation",
@@ -484,14 +476,14 @@
                 "No element satisfies the condition in predicate."
             ]
         ],
-        "example": "The following code example demonstrates how to use Last(Collection, Predicate) to return the last element of a collection that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThan\n        .ComparisonValue = 80\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers, Pred)\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 87\n```"
+        "example": "The following code example demonstrates how to use `Last` to return the last element of a collection.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n\n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers)\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 19\n```\n\nThe following code example demonstrates how to use `Last` to return the last element of a collection that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(9, 34, 65, 92, 87, 435, 3, 54, _\n                                           83, 23, 87, 67, 12, 19)\n    \n    Dim Last As Variant\n    Last = Lapis.CollectionExt.Last(Numbers, Lambda.Create(\"#1 > 80\"))\n    \n    Debug.Print Last\n\nEnd Sub\n\n' This code produces the following output:\n'\n' 87\n```"
     },
-    "CollectionExt.SelectOne (Collection, Predicate)": {
-        "short-description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.",
-        "description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists.",
+    "CollectionExt.SelectOne (Collection, ICallable)": {
+        "short-description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists. If `Predicate` is not specified, returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.",
+        "description": "Returns the only element of a sequence that satisfies a specified condition, and throws an exception if more than one such element exists. If `Predicate` is not specified, returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.",
         "parameters": {
             "Source": "A Collection to return a single element from.",
-            "Predicate": "A function to test an element for a condition."
+            "Predicate": "Optional. A function to test an element for a condition."
         },
         "returns": [
             "Variant",
@@ -500,29 +492,29 @@
         "errors": [
             [
                 "OnArgumentNull",
-                "`Source` or `Predicate` is `Nothing`"
+                "`Source` is `Nothing`"
             ],
             [
                 "OnInvalidOperation",
-                "When the number of elements in `Source is zero"
+                "When the number of elements in `Source` is zero"
             ],
             [
                 "OnInvalidOperation",
-                "No element satisfies the condition in `predicate`."
+                "No element satisfies the condition in `Predicate`."
             ],
             [
                 "OnInvalidOperation",
-                "More than one element satisfies the condition in `predicate`"
+                "More than one element satisfies the condition in `Predicate`"
             ]
         ],
-        "example": "The following code example demonstrates how to use SelectOne(Collection, Predicate) to select the only element of a set that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 10\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits, Pred)\n    \n    Debug.Print Fruit1\n\nEnd Sub\n\n' This code produces the following output:\n'\n' passionfruit\n```"
+        "example": "The following code example demonstrates how to use `SelectOne` to select the only element of a set.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"orange\")\n\n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits)\n    \n    Debug.Print Fruit1\n\nEnd Sub\n\n' This code produces the following output:\n'\n' orange\n```\n\nThe following code example demonstrates that `SelectOne` throws an exception when the sequence does not contain exactly one element.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    On Error GoTo ErrHandler\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"orange\", \"apple\")\n\n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits)\n    \n    Debug.Print Fruit1\n    Exit Sub\n\nErrHandler:\n    If Err.Number = ErrorCode.InvalidOperation Then\n        Debug.Print \"The collection does not contain exactly one element.\"\n    End If\n\nEnd Sub\n\n' This code produces the following output:\n'\n' The collection does not contain exactly one element.\n```\n\nThe following code example demonstrates how to use `SelectOne` to select the only element of a set that satisfies a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"banana\", \"mango\", \"orange\", \"passionfruit\", \"grape\")\n\n    Dim Fruit1 As Variant\n    Fruit1 = Lapis.CollectionExt.SelectOne(Fruits, Lambda.Create(\"len($1) >= 10\"))\n    \n    Debug.Print Fruit1\n\nEnd Sub\n\n' This code produces the following output:\n'\n' passionfruit\n```"
     },
-    "CollectionExt.Count (Collection, Predicate)": {
-        "short-description": "Returns a number that represents how many elements in the specified sequence satisfy a condition.",
-        "description": "Returns a number that represents how many elements in the specified sequence satisfy a condition.",
+    "CollectionExt.Count (Collection, ICallable)": {
+        "short-description": "Returns a number that represents how many elements in the specified sequence satisfy a condition. If `Predicate` is not defined, returns the number of elements in a sequence.",
+        "description": "Returns a number that represents how many elements in the specified sequence satisfy a condition. If `Predicate` is not defined, returns the number of elements in a sequence.",
         "parameters": {
             "Source": "A sequence that contains elements to be tested and counted.",
-            "Predicate": "A function to test each element for a condition."
+            "Predicate": "Optional. A function to test each element for a condition."
         },
         "returns": [
             "Long",
@@ -531,12 +523,12 @@
         "errors": [
             [
                 "OnArgumentNull",
-                "`Source` or `Predicate` is `Nothing`"
+                "`Source` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Count(Collection, Predicate) to count the elements in an array that satisfy a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    \n    With Pred\n        .Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo\n        .ComparisonValue = 5\n        .Comparer = Lapis.Factory.GetLongComparer\n    End With\n    \n    Dim Value As Variant\n    Value = Lapis.CollectionExt.Count(Numbers, Pred)\n    \n    Debug.Print \"There are \" & Value & \" numbers greater than or equal to 5.\"\n\nEnd Sub\n\n' This code produces the following output:\n'\n' There are 6 numbers greater than or equal to 5.\n```"
+        "example": "The following code example demonstrates how to use `Count` to count the elements in a set.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n    Dim Value As Variant\n    Value = Lapis.CollectionExt.Count(Numbers)\n    \n    Debug.Print \"There are \" & Value & \" numbers.\"\n\nEnd Sub\n\n' This code produces the following output:\n'\n' There are 10 numbers.\n```\n\nThe following code example demonstrates how to use `Count` to count the elements in a set that satisfy a condition.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Make(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)\n\n    Dim Value As Variant\n    Value = Lapis.CollectionExt.Count(Numbers, Lambda.Create(\"$1 >= 5\"))\n    \n    Debug.Print \"There are \" & Value & \" numbers greater than or equal to 5.\"\n\nEnd Sub\n\n' This code produces the following output:\n'\n' There are 6 numbers greater than or equal to 5.\n```"
     },
-    "CollectionExt.Where (Collection, Predicate)": {
+    "CollectionExt.Where (Collection, ICallable)": {
         "short-description": "Filters a sequence of values based on a predicate",
         "description": "Filters a sequence of values based on a predicate",
         "parameters": {
@@ -553,14 +545,14 @@
                 "`Source` or `Predicate` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Where(Collection, Predicate) to filter a sequence.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Pred As Lapis.Predicate\n    Set Pred = Lapis.Factory.GetPredicate\n    With Pred\n        .ComparisonValue = 6\n        .Operator = Lapis.ComparisonOperator.LessThan\n        .Comparer = Lapis.Factory.GetWordLengthComparer\n    End With\n    \n    Dim Query As Collection\n    Set Query = Lapis.CollectionExt.Where(Fruits, Pred)\n    \n    Dim Fruit As Variant\n    For Each Fruit In Query\n        Debug.Print Fruit\n    Next Fruit\n\nEnd Sub\n\n' This code produces the following output:\n' apple\n' mango\n' grape\n```"
+        "example": "The following code example demonstrates how to use `Where` to filter a sequence.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Fruits As Collection\n    Set Fruits = Lapis.CollectionExt.Make(\"apple\", \"passionfruit\", \"banana\", \"mango\", _\n                                         \"orange\", \"blueberry\", \"grape\", \"strawberry\")\n    \n    Dim Query As Collection\n    Set Query = Lapis.CollectionExt.Where(Fruits, Lambda.Create(\"len($1) < 6\"))\n    \n    Dim Fruit As Variant\n    For Each Fruit In Query\n        Debug.Print Fruit\n    Next Fruit\n\nEnd Sub\n\n' This code produces the following output:\n' apple\n' mango\n' grape\n```"
     },
-    "CollectionExt.Convert (Collection, Lapis.IConverter)": {
+    "CollectionExt.Convert (Collection, ICallable)": {
         "short-description": "Projects each element of a sequence into a new form.",
         "description": "Projects each element of a sequence into a new form.",
         "parameters": {
             "Source": "A sequence of values to invoke a transform function on.",
-            "Converter": "A transform function to apply to each element."
+            "Selector": "A transform function to apply to each element."
         },
         "returns": [
             "Collection",
@@ -572,7 +564,7 @@
                 "`Source` or `Converter` is `Nothing`"
             ]
         ],
-        "example": "The following code example demonstrates how to use Convert(Collection, Lapis.IConverter) to force immediate query evaluation and return a set of results.\n\n```vb\n' MathSquareConverter class module\nOption Explicit\n\nImplements Lapis.IConverter\n\n\nPublic Function Convert(ByVal Item As Variant) As Variant\n    Convert = Item * Item\nEnd Function\n\n\nPrivate Function IConverter_Convert(ByVal Item As Variant) As Variant\n    IConverter_Convert = Me.Convert(Item)\nEnd Function\n```\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Range(1, 10)\n    \n    Dim Squares As Collection\n    SetSquares = Lapis.CollectionExt.Convert(Numbers, New MathSquareConverter)\n\n    Dim Item As Variant\n    For Each Item In Squares\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n\n' This code produces the following output:\n'\n' 1\n' 4\n' 9\n' 16\n' 25\n' 36\n' 49\n' 64\n' 81\n' 100\n```"
+        "example": "The following code example demonstrates how to use `Convert` to return a set of results.\n\n```vb\nOption Explicit\n\nPublic Sub Start()\n\n    Dim Numbers As Collection\n    Set Numbers = Lapis.CollectionExt.Range(1, 10)\n    \n    Dim Squares As Collection\n    Set Squares = Lapis.CollectionExt.Convert(Numbers, Lambda.Create(\"$1 * $1\"))\n\n    Dim Item As Variant\n    For Each Item In Squares\n        Debug.Print Item\n    Next Item\n\nEnd Sub\n\n\n' This code produces the following output:\n'\n' 1\n' 4\n' 9\n' 16\n' 25\n' 36\n' 49\n' 64\n' 81\n' 100\n```"
     },
     "CollectionExt.SequenceEqual (Collection, Collection, IEqualityComparer)": {
         "short-description": "Determines whether two sequences are equal by comparing their elements by using a specified IEqualityComparer.",

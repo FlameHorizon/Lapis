@@ -1,9 +1,9 @@
 # CollectionExt.Some Method
 
-Determines whether any element of a sequence satisfies a condition.
+Determines whether any element of a sequence satisfies a condition. If `Predicate` is not given, then determines whether a sequence contains any elements.
 
 ```vb
-Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As Predicate) As Boolean
+Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As ICallable) As Boolean
 ```
 
 ### Parameters
@@ -11,8 +11,8 @@ Public Function Some(ByVal Source As Collection, Optional ByVal Predicate As Pre
 **Source** `Collection` <br>
 A Collection whose elements to apply the predicate to.
 
-**Predicate** `Predicate` <br>
-A function to test each element for a condition.
+**Predicate** `ICallable` <br>
+Optional. A function to test each element for a condition.
 
 ### Returns
 
@@ -26,54 +26,110 @@ A function to test each element for a condition.
 
 ## Examples
 
-The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with "B" or if the pets array is empty.
+The following code example demonstrates how to use `Some` to determine whether a sequence contains any elements.
 
 ```vb
-' Pet Class Module
+' Class Module: TestStone
 Option Explicit
 
-Public Name As String
-Public Age As Long
+Public Weight As Single
+Public Age As Single
 ```
 
 ```vb
-' Start Module
+' Standard Module: Main
 Option Explicit
 
 Public Sub Start()
 
-    Dim Pets As Collection
-    Set Pets = CollectionExt.Make(MakePet("Barley", 10), _
-                                  MakePet("Boots", 4), _
-                                  MakePet("Whiskers", 6))
-    Dim Pred As Lapis.Predicate
-    Set Pred = Lapis.Factory.GetPredicate
-    Pred.ComparisonValue = 5
-    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo
-
-    Dim AnyOlderThan5Years As Boolean
-    AnyOlderThan5Years = CollectionExt.Some(Pets, Pred)
+    Dim Stones As Collection
+    Set Stones = MakeTestStones
     
-    If AnyOlderThan5Years Then
-        Debug.Print "Some pets are older than 5 years."
+    If CollectionExt.Any(Stones) Then
+        Debug.Print "Set is not empty"
     Else
-        Debug.Print "Not pet is older than 5 years."
+        Debug.Print "Set is empty."
     End If
 
 End Sub
 
 ' This code produces the following output:
-'
-' Some pets are older than 5 years.
+' Set is not empty.
 
 
-Private Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet
+Public Function MakeTestStones() As Collection
     
-    Dim Output As New Pet
-    Output.Name = Name
-    Output.Age = Age
-    Set MakePet = Output
+    Dim Output As New Collection
+    Output.Add MakeStone(12, 23)
+    Output.Add MakeStone(43, 27.5)
+    Output.Add MakeStone(23, 11)
+    Set MakeTestStones = Output
     
 End Function
+
+
+Public Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone
+
+    Dim Output As New TestStone
+    Output.Age = Age
+    Output.Weight = Weight
+    Set MakeStone = Output
+
+End Function
 ```
+
+The following code example demonstrates how to use `Some` to determine whether any element in a sequence satisfies a condition.
+
+```vb
+' Class Module: TestStone
+Option Explicit
+
+Public Weight As Single
+Public Age As Single
+```
+
+```vb
+' Standard Module: Main
+Option Explicit
+
+Public Sub Start()
+
+    Dim Stones As Collection
+    Set Stones = MakeTestStones
+
+    Dim SomeMatches As Boolean
+    SomeMatches = CollectionExt.Some(Stones, Lambda.Create("$1.Age <= 10 and $1.Weight = 20"))
+    
+    If SomeMatches Then
+        Debug.Print "There are some big young stones"
+    Else
+        Debug.Print "There are no big young stones"
+    End If
+    
+End Sub
+
+' This code produces the following output:
+' There are no big young stones
+
+Public Function MakeTestStones() As Collection
+    
+    Dim Output As New Collection
+    Output.Add MakeStone(12, 23)
+    Output.Add MakeStone(43, 27.5)
+    Output.Add MakeStone(23, 11)
+    Set MakeTestStones = Output
+    
+End Function
+
+
+Public Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone
+
+    Dim Output As New TestStone
+    Output.Age = Age
+    Output.Weight = Weight
+    Set MakeStone = Output
+
+End Function
+```
+
 

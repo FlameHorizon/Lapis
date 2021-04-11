@@ -3,7 +3,7 @@
 Determines whether all elements of a sequence satisfy a condition.
 
 ```vb
-Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As Boolean
+Public Function All(ByVal Source As Collection, ByVal Predicate As ICallable) As Boolean
 ```
 
 ### Parameters
@@ -11,7 +11,7 @@ Public Function All(ByVal Source As Collection, ByVal Predicate As Predicate) As
 **Source** `Collection` <br>
 A Collection that contains the elements to apply the predicate to.
 
-**Predicate** `Predicate` <br>
+**Predicate** `ICallable` <br>
 A function to test each element for a condition.
 
 ### Returns
@@ -26,54 +26,51 @@ A function to test each element for a condition.
 
 ## Examples
 
-The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable AllOlderThan5Years is true if all the pet names start with "B" or if the pets array is empty.
+The following code example demonstrates how to use All to determine whether all the elements in a sequence satisfy a condition. Variable `AllOlderThan15Years` is true if all the stones are older than 15.
 
 ```vb
-' Pet Class Module
-Option Explicit
-
-Public Name As String
-Public Age As Long
-```
-
-```vb
-' Start Module
+' Standard Module: Main
 Option Explicit
 
 Public Sub Start()
 
-    Dim Pets As Collection
-    Set Pets = CollectionExt.Make(MakePet("Barley", 10), _
-                                  MakePet("Boots", 4), _
-                                  MakePet("Whiskers", 6))
-    Dim Pred As Lapis.Predicate
-    Set Pred = Lapis.Factory.GetPredicate
-    Pred.ComparisonValue = 5
-    Pred.Operator = Lapis.ComparisonOperator.GreaterThanOrEqualTo
+    Dim Stones As Collection
+    Set Stones = MakeTestStones
 
-    Dim AllOlderThan5Years As Boolean
-    AllOlderThan5Years = CollectionExt.All(Pets, Pred)
+    Dim AllOlderThan15Years As Boolean
+    AllOlderThan15Years = CollectionExt.All(Stones, Lambda.Create("$1.Age >= 15"))
     
-    If AllOlderThan5Years Then
-        Debug.Print "All pets are older than 5 years."
+    If AllOlderThan15Years Then
+        Debug.Print "All Stones are older than 15 years."
     Else
-        Debug.Print "Not all pets are older than 5 years."
+        Debug.Print "Not all Stones are older than 15 years."
     End If
 
 End Sub
 
 ' This code produces the following output:
-'
-' Not all pets are older than 5 years.
+' Not all Stones are older than 15 years.
 
 
-Private Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet
+Public Function MakeTestStones() As Collection
     
-    Dim Output As New Pet
-    Output.Name = Name
-    Output.Age = Age
-    Set MakePet = Output
+    Dim Output As New Collection
+    Output.Add MakeStone(12, 23)
+    Output.Add MakeStone(43, 27.5)
+    Output.Add MakeStone(23, 11)
+    Set MakeTestStones = Output
     
 End Function
+
+
+Public Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone
+
+    Dim Output As New TestStone
+    Output.Age = Age
+    Output.Weight = Weight
+    Set MakeStone = Output
+
+End Function
+
 ```
 
