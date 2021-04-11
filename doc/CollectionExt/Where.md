@@ -3,7 +3,7 @@
 Filters a sequence of values based on a predicate
 
 ```vb
-Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) As Collection
+Public Function Where(ByVal Source As Collection, ByVal Predicate As ICallable) As Collection
 ```
 
 ### Parameters
@@ -11,7 +11,7 @@ Public Function Where(ByVal Source As Collection, ByVal Predicate As Predicate) 
 **Source** `Collection` <br>
 A sequence to filter.
 
-**Predicate** `Predicate` <br>
+**Predicate** `ICallable` <br>
 A function to test each element for a condition.
 
 ### Returns
@@ -26,7 +26,7 @@ A set that contains elements from the input sequence that satisfy the condition.
 
 ## Examples
 
-The following code example demonstrates how to use Where(Collection, Predicate) to filter a sequence.
+The following code example demonstrates how to use `Where` to filter a sequence.
 
 ```vb
 Option Explicit
@@ -37,16 +37,8 @@ Public Sub Start()
     Set Fruits = Lapis.CollectionExt.Make("apple", "passionfruit", "banana", "mango", _
                                          "orange", "blueberry", "grape", "strawberry")
     
-    Dim Pred As Lapis.Predicate
-    Set Pred = Lapis.Factory.GetPredicate
-    With Pred
-        .ComparisonValue = 6
-        .Operator = Lapis.ComparisonOperator.LessThan
-        .Comparer = Lapis.Factory.GetWordLengthComparer
-    End With
-    
     Dim Query As Collection
-    Set Query = Lapis.CollectionExt.Where(Fruits, Pred)
+    Set Query = Lapis.CollectionExt.Where(Fruits, Lambda.Create("len($1) < 6"))
     
     Dim Fruit As Variant
     For Each Fruit In Query
