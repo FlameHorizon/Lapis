@@ -12,7 +12,7 @@ Public Function Min(ByVal Source As Collection, Optional ByVal Selector As ICall
 A sequence of values to determine the minimum value of
 
 **Selector** `ICallable` <br>
-A transform function to apply to each element.
+Optional.A transform function to apply to each element.
 
 ### Returns
 
@@ -28,6 +28,29 @@ The minimum value in the sequence.
 Default comparer wasn't found for `Value` argument. 
 
 ## Examples
+
+The following code example demonstrates how to use `Min` to determine the minimum value in a sequence.
+
+```vb
+' Standard Module: Main
+Option Explicit
+
+Public Sub Start()
+    
+    Dim Doubles As Collection
+    Set Doubles = CollectionExt.Make(1.5E+104, 9E+103, -2E+103)
+
+    Dim Min As Double
+    Min = CollectionExt.Min(Doubles)
+    
+    Debug.Print "The smallest number is " & Min
+    
+End Sub
+
+' The example displays the following output:
+' The youngest animal is age -2E+103
+
+```
 
 The following code example demonstrates how to use `Min` to determine the minimum value in a sequence of projected values.
 
