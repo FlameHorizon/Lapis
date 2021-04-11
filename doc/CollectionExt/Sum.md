@@ -1,6 +1,6 @@
 # CollectionExt.Sum Method
 
-Computes the sum of a sequence of values.
+Computes the sum of a sequence of values. If `Selector` is not defined computes the sum of a sequence values.
 
 ```vb
 Public Function Sum(ByVal Source As Collection, Optional ByVal Selector As ICallable) As Variant
