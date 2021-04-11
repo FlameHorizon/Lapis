@@ -12,7 +12,7 @@ Public Function Min(ByVal Source As Collection, Optional ByVal Selector As ICall
 A sequence of values to determine the minimum value of
 
 **Selector** `ICallable` <br>
-Optional.A transform function to apply to each element.
+Optional. A transform function to apply to each element.
 
 ### Returns
 
@@ -25,7 +25,7 @@ The minimum value in the sequence.
 `Source` is `Nothing`.
 
 `OnInvalidOperation` <br>
-Default comparer wasn't found for `Value` argument. 
+Default comparer wasn't found for `Value` argument.
 
 ## Examples
 

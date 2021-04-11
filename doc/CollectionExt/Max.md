@@ -1,9 +1,9 @@
 # CollectionExt.Max Method
 
-Invokes a Comparer on each element of a sequence and returns the maximum resulting value.
+Invokes a transform function on each element of a sequence and returns the maximum value.
 
 ```vb
-Public Function Max(ByVal Source As Collection, ByVal Comparer As IComparer) As Variant
+Public Function Max(ByVal Source As Collection, Optional ByVal Selector As ICallable) As Variant
 ```
 
 ### Parameters
@@ -11,8 +11,8 @@ Public Function Max(ByVal Source As Collection, ByVal Comparer As IComparer) As 
 **Source** `Collection` <br>
 A sequence of values to determine the maximum value of `Source`.
 
-**Comparer** `IComparer` <br>
-A Comparer to apply to each element.
+**Selector** `ICallable` <br>
+Optional. A Comparer to apply to each element.
 
 ### Returns
 
@@ -24,70 +24,72 @@ The maximum value in the sequence.
 `OnArgumentNull` <br>
 `Source` is `Nothing`.
 
--or-
-
-`Comparer` is `Nothing`.
+`OnInvalidOperation` <br>
+Default comparer wasn't found for `Value` argument.
 
 ## Examples
 
-The following code example demonstrates how to use `Max` to determine the maximum value in a sequence of projected values.
+The following code example demonstrates how to use `Max` to determine the maximum value in a sequence
 
 ```vb
-' Pet class module
-Option Explicit
-
-Public Name As String
-Public Age As Long
-```
-
-```vb
-' PetByAgeComparer class module
-Option Explicit
-
-Implements Lapis.IComparer
-
-Public Function Compare(ByVal x As Pet, ByVal y As Pet) As Long
-
-    Compare = IIf(x.Age < y.Age, -1, _
-              IIf(x.Age = y.Age, 0, 1))
-              
-End Function
-
-
-Private Function IComparer_Compare(ByRef x As Variant, ByRef y As Variant) As Long
-    IComparer_Compare = Me.Compare(x, y)
-End Function
-```
-
-```vb
-' Main module
+' Standard Module: Main
 Option Explicit
 
 Public Sub Start()
 
-    Dim Pets As Collection
-    Set Pets = CollectionExt.Make(MakePet("Barley", 8), _
-                                  MakePet("Boots", 4), _
-                                  MakePet("Whiskers", 1))
+    Dim Longs As Collection
+    Set Longs = CollectionExt.Make(4294967296#, 466855135#, 81125#)
     
-    Dim Max As Pet
-    Set Max = CollectionExt.Max(Pets, New PetByAgeComparer)
-    
-    Debug.Print "The oldest animal is age " & Max.Age
-    
+    Dim Max As LongLong
+    Max = CollectionExt.Max(Longs)
+    Debug.Print "The largest number is " & Max & "."
+
 End Sub
 
+' The example displays the following output:
+' The largest number is 4294967296.
+```
 
-Private Function MakePet(ByVal Name As String, ByVal Age As Long) As Pet
-    
-    Dim Output As New Pet
-    Output.Name = Name
-    Output.Age = Age
-    Set MakePet = Output
-    
-End Function
+
+The following code example demonstrates how to use `Max` to determine the maximum value in a sequence of projected values.
+
+```vb
+' Class Module: TestStone
+Option Explicit
+
+Public Weight As Single
+Public Age As Single
+```
+
+```vb
+' Standard Module: Main
+Option Explicit
+
+Public Sub Start()
+
+    Dim Stones As Collection
+    Set Stones = CollectionExt.Make(MakeStone(3, 10), _
+                                    MakeStone(8, 20), _
+                                    MakeStone(6, 14))
+
+    Dim Max As TestStone
+    Set Max = CollectionExt.Max(Stones, Lambda.Create("$1.Age"))
+
+    Debug.Print "The oldest stone is age " & Max.Age
+
+End Sub
 
 ' The example displays the following output:
-' The oldest animal is age 8
+' The oldest stone is age 8
+
+
+Public Function MakeStone(ByVal Age As Single, ByVal Weight As Single) As TestStone
+
+    Dim Output As New TestStone
+    Output.Age = Age
+    Output.Weight = Weight
+    Set MakeStone = Output
+
+End Function
 ```
 
