@@ -1,6 +1,6 @@
 # Lapis
 
-Lapis in Excel Add-in with a collection of various methods and data types which will increase developer's efficiency and reduce development time while working with VBA.
+Lapis is an Excel Add-in with collection of various methods and data types which will increase developer's efficiency and reduce development time while working with VBA.
 
 ## Getting started
 
@@ -14,4 +14,4 @@ Documentation can be found under [this link](./doc/index.md).
 
 ## Change log
 
-If you would like to to see a change log, please refer the [change log file](./CHANGE_LOG.md).
+If you would like to to see the change log, please refer to the [change log file](./CHANGE_LOG.md).
